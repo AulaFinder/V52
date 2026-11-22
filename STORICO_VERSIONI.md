@@ -1,3 +1,9 @@
+## V53 · Essenziale e accessibile
+- Rimosso l'eccesso di animazioni e gradienti a favore di colori pieni e maggior contrasto.
+- Percorsi con geometrie del corridoio e svolte a 90°, punta del pin centrata sull'aula.
+- Home, mobile, piantine, Orari e tutorial rifiniti, con test Chromium in memoria.
+- **Anteprima Home:** `assets/versioni-home/V53.webp`
+
 # AulaFinder · Registro delle versioni V1–V52
 
 Le note sono ricostruite a partire dai file/rapporti originali contenuti negli archivi storici. L’anteprima della Home di ogni versione è consultabile nella pagina **Versioni** del sito.

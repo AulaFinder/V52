@@ -23,19 +23,10 @@ function showActions(g){
     var schedule=document.createElement('button');schedule.type='button';schedule.dataset.mapAction='schedule';schedule.textContent='Vedi orario';box.appendChild(schedule);
   }
   actionsPanel=box;actionRoom=code;
-  if(window.matchMedia('(max-width:680px)').matches){
-    // Outside the SVG container: never covers the selected room on phones.
-    box.classList.add('room-actions--mobile');
-    holder.parentElement.insertBefore(box,holder);
-    return;
-  }
-  holder.appendChild(box);
-  var rect=g.getBoundingClientRect(),h=holder.getBoundingClientRect();
-  var maxLeft=Math.max(8,holder.clientWidth-box.offsetWidth-8);
-  var left=Math.min(maxLeft,Math.max(8,(rect.left+rect.width/2)-h.left-box.offsetWidth/2));
-  var top=(rect.bottom-h.top+8);
-  if(top+box.offsetHeight>holder.clientHeight-5)top=Math.max(6,rect.top-h.top-box.offsetHeight-8);
-  box.style.left=left+'px';box.style.top=top+'px';
+  var banner=holder.closest('.plan-card').querySelector('.plan-banner');
+  if(!banner)return;
+  banner.appendChild(box);
+
 }
 
 function hideTip(){

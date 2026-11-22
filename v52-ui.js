@@ -15,7 +15,9 @@
    const el=event.target.closest('a[href], [data-page], [data-schedule], #menuButton, #sidebarClose, #finderLaunch, #finderClose, #logoButton, #themeToggle');
    if(!el)return;
    const allowedFinder=activeStep===4&&(el.matches('#finderLaunch, #finderClose'));
-   const allowedSchedule=(activeStep===1||activeStep===2)&&el.matches('[data-schedule]')&&el.closest('#orariPage');
+   const allowedSchedule=el.matches('[data-schedule]')&&el.closest('#orariPage')&&
+     ((activeStep===1&&['classes','rooms','teachers'].includes(el.dataset.schedule))||
+      (activeStep===2&&['freeRooms','freeTeachers'].includes(el.dataset.schedule)));
    if(allowedFinder||allowedSchedule||el.matches('#themeToggle'))return;
    event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
   },true);
@@ -76,22 +78,7 @@
   controls.prepend(pin);renderPin();
  }
 
- // Sidebar/footer: the fade follows the pointer or keyboard focus, not a perpetual repaint.
- for(const selector of ['#siteFooter','.site-header','.home-search-area']){
-  const el=document.querySelector(selector);if(!el)continue;
-  let frameId=0;
-  el.addEventListener('pointermove',e=>{
-   if(frameId||reduced())return;
-   const x=e.clientX,y=e.clientY;
-   frameId=requestAnimationFrame(()=>{
-    const r=el.getBoundingClientRect();
-    el.style.setProperty('--af52-px',((x-r.left)/Math.max(1,r.width)*100).toFixed(1)+'%');
-    el.style.setProperty('--af52-py',((y-r.top)/Math.max(1,r.height)*100).toFixed(1)+'%');
-    frameId=0;
-   });
-  },{passive:true});
- }
-
+ // V53: niente inseguimento del puntatore; eliminati i listener di illuminazione.
  // Immagini: in caso di cache difettosa tenta una sola lettura di rete con URL aggiornato.
  // Non cambia formato, non comprime e non nasconde l'errore persistente.
  const imageRetried=new WeakSet();

@@ -1,0 +1,194 @@
+/* AulaFinder V53 — essenziale, accessibile, senza luci inseguipuntatore. */
+:root{--v53-accent:#087f82;--v53-focus:#225a75;--v53-ink:#17333d;--v53-border:#abc9c9;--v53-surface:#f8fbfa}
+/* Stesse priorità di lettura su desktop e mobile. Nessun effetto aurico sui comandi. */
+.site-header{background:#15516a!important}
+html[data-theme="dark"] .site-header{background:#102e40!important}
+.site-header::before,#siteFooter::before,.home-search-area::before{content:none!important;display:none!important}
+#sidebar .side-link:hover,#sidebar .schedule-subnav button:hover,#siteFooter a:hover,#siteFooter button:hover{filter:none!important;opacity:1!important}
+#homePage .home-search-area,#orariPage .orari-dashboard,#tutorialPage .af52-guide-instructions{background-image:none!important}
+#siteFooter .footer-admin-button{background:#185b73!important;border-color:#6bb4b9!important;box-shadow:none!important;color:#fff!important}
+#siteFooter .footer-admin-button:hover{background:#23758a!important;transform:none!important}
+/* Focus da tastiera sempre visibile, ma né giallo né un riquadro fluorescente. */
+:where(input,textarea,select,button,a):focus-visible,
+:is(#searchInput,#versioniSearch,#navFrom,#navTo,#scheduleQuickSearch,#finderQuestion,#finderClass):focus-visible,
+#homePage .search-form:has(input:focus-visible),#logoButton:focus-visible,
+#scheduleSubnavToggle:focus-visible{outline:2px solid var(--v53-focus)!important;outline-offset:2px!important;box-shadow:none!important}
+html[data-theme="dark"] :where(input,textarea,select,button,a):focus-visible,
+html[data-theme="dark"] :is(#searchInput,#versioniSearch,#navFrom,#navTo,#scheduleQuickSearch,#finderQuestion,#finderClass):focus-visible,
+html[data-theme="dark"] #homePage .search-form:has(input:focus-visible){outline-color:#8ee3e3!important}
+/* I contenitori non creano una seconda cornice quando si scrive. */
+#homePage .search-form:focus-within,#homePage .search-form:has(input:focus-visible),
+#navigatorPage .navigator-field:focus-within,#orariPage :is(.schedule-quick-field,.orari-filter-row):focus-within,
+#versioniPage .versioni-search-label:focus-within,.versioni-search-label:focus-within,
+#orariPage .schedule-quick-search:focus,.navigator-field:focus-within,
+#versioniSearch:focus,.search-form:focus-within{box-shadow:none!important;filter:none!important}
+/* Bordi tenui, differenza visibile fra focus tastiera e selezione puntatore. */
+:is(#searchInput,#versioniSearch,#navFrom,#navTo,#scheduleQuickSearch,#finderQuestion):focus:not(:focus-visible){outline:0!important;box-shadow:none!important}
+#homePage #freeRoomsShortcut,#homePage #freeTeachersShortcut{
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;
+  width:100%!important;min-height:52px!important;padding:9px 14px!important;border-radius:11px!important;
+  border:1px solid #a6caca!important;color:#123b46!important;background:#e6f4f3!important;
+  background-image:none!important;box-shadow:none!important;transform:none!important;filter:none!important;
+  animation:none!important;isolation:auto!important
+}
+#homePage #freeTeachersShortcut{background:#eef0f8!important;border-color:#bcc4da!important;color:#283d58!important}
+#homePage #freeRoomsShortcut::before,#homePage #freeTeachersShortcut::before,
+#homePage #freeRoomsShortcut::after,#homePage #freeTeachersShortcut::after{display:none!important;animation:none!important}
+#homePage #freeRoomsShortcut:hover{background:#d3ece9!important}
+#homePage #freeTeachersShortcut:hover{background:#e1e7f3!important}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) :is(.home-room-icon,.home-coffee-icon){width:22px;height:22px;flex:0 0 22px}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-body{display:flex!important;flex:1 1 auto;min-width:0;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-body strong{font-size:14px!important;color:inherit!important}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-meta{font-size:12px!important;font-weight:650!important;color:#345f65!important;opacity:1!important;text-align:right}
+#homePage #freeTeachersShortcut .af50-quick-meta{color:#455579!important}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) :is(svg,[data-icon]){color:inherit!important}
+html[data-theme="dark"] #homePage #freeRoomsShortcut{background:#184b53!important;border-color:#386b73!important;color:#f0fffd!important}
+html[data-theme="dark"] #homePage #freeTeachersShortcut{background:#303f61!important;border-color:#58688b!important;color:#f2f5ff!important}
+html[data-theme="dark"] #homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) :is(.af50-quick-meta,.af50-quick-body strong,svg){color:#f0ffff!important}
+html[data-theme="dark"] #homePage #freeRoomsShortcut:hover{background:#205b62!important}
+html[data-theme="dark"] #homePage #freeTeachersShortcut:hover{background:#3a4b70!important}
+/* Disponibilità e altre categorie: solo la selezionata ha il colore pieno. */
+#orariPage .orari-category-tabs button,#scheduleSubnav button,
+#orariPage .orari-category-tabs button[data-schedule="freeRooms"],#orariPage .orari-category-tabs button[data-schedule="freeTeachers"],
+#scheduleSubnav button[data-schedule="freeRooms"],#scheduleSubnav button[data-schedule="freeTeachers"]{
+ background-image:none!important;box-shadow:none!important;filter:none!important;animation:none!important;transform:none!important
+}
+#orariPage .orari-category-tabs button:not(.is-active){background-color:transparent!important}
+#orariPage .orari-category-tabs button.is-active{background:#166a72!important;border-color:#166a72!important;color:white!important}
+#sidebar .schedule-subnav:not([hidden]){background:#f3f8f7!important;border:1px solid #cbdfde!important;border-radius:9px!important}
+#sidebar .schedule-subnav button{background:transparent!important;color:#224c55!important}
+#sidebar .schedule-subnav button.is-active{background:#d0e8e4!important;border-left:3px solid #267a7f!important;color:#103c45!important}
+#sidebar .side-orari-heading .side-link.is-active[aria-expanded="true"]{background:transparent!important;box-shadow:none!important;color:inherit!important}
+html[data-theme="dark"] #sidebar .schedule-subnav:not([hidden]){background:#193a45!important;border-color:#376575!important}
+html[data-theme="dark"] #sidebar .schedule-subnav button{color:#e7f5f4!important}
+html[data-theme="dark"] #sidebar .schedule-subnav button.is-active{background:#285b63!important;color:#fff!important}
+html[data-theme="dark"] #orariPage .orari-category-tabs button.is-active{background:#2e7984!important;border-color:#6cb9c1!important;color:#fff!important}
+/* Eliminazione degli effetti che sovraccaricano la UI. */
+#af50Lightbox .af50-lightbox-actions button,#logoButton,#logoButton img,
+#sidebar .side-link,#siteFooter button,#tutorialPage .af48-tour-tab,
+#homePage .free-rooms-shortcut,#orariPage .orari-category-tabs button,
+#navigatorPage .nav-route-polyline,#navigatorPage .nav-route-shadow,
+.nav-legend-line,.af49-tap-glow,.af49-brand-glow{
+  animation:none!important;filter:none!important;text-shadow:none!important
+}
+#sidebar .side-link:hover,#siteFooter button:hover,#homePage .free-rooms-shortcut:hover,
+#orariPage .orari-category-tabs button:hover{transform:none!important}
+#navigatorPage .nav-route-shadow{display:none!important}
+#navigatorPage .nav-route-polyline{stroke:#177e91!important;stroke-width:3.3!important;stroke-dasharray:none!important;filter:none!important;animation:none!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+#navigatorPage .nav-legend-line{background:#177e91!important;background-image:none!important;box-shadow:none!important}
+#navigatorPage .nav-field-indicator{animation:none!important;background-image:none!important}
+#navigatorPage .nav-symbol-departure-ring,#navigatorPage .nav-symbol-stairs{animation:none!important}
+#tutorialPage .af52-guide-instructions{background:#eff5f4!important}
+html[data-theme="dark"] #tutorialPage .af52-guide-instructions{background:#203c48!important}
+/* Mappa: azioni selezionate nella testata, accanto al nome dell'aula. */
+#piantinaPage .plan-banner{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
+#piantinaPage .plan-banner .sel-chip{font-weight:800;min-width:0}
+#piantinaPage .plan-banner .room-actions{
+ position:static!important;left:auto!important;top:auto!important;display:flex!important;flex-direction:row!important;
+ align-items:center!important;flex-wrap:wrap;gap:7px!important;min-width:0!important;max-width:100%!important;
+ margin-left:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ background:none!important;box-shadow:none!important;color:inherit!important
+}
+#piantinaPage .plan-banner .room-actions-title{display:none!important}
+#piantinaPage .plan-banner .room-actions button{min-height:36px!important;padding:6px 10px!important;border-radius:8px!important;
+ background:#f3f8f7!important;color:#144754!important;border:1px solid #b6d5d3!important;text-align:center!important;white-space:nowrap}
+#piantinaPage .plan-banner .room-actions button:hover{background:#daeae7!important}
+html[data-theme="dark"] #piantinaPage .plan-banner .room-actions button{background:#244e5d!important;border-color:#79a5ad!important;color:#f2ffff!important}
+@media(max-width:680px){#piantinaPage .plan-banner .room-actions{width:100%;flex:0 1 auto!important}
+#piantinaPage .plan-banner .room-actions button{font-size:12px!important}}
+/* Tutorial: fotogramma in proporzioni fisse (un solo sito reale). */
+#tutorialPage .af51-live-frame{position:relative!important;overflow:hidden!important;min-width:0;height:var(--v53-guide-height,640px)!important}
+#tutorialPage .af51-live-frame iframe{position:absolute!important;top:0!important;left:0!important;width:1024px!important;min-width:1024px!important;
+ height:960px!important;transform:scale(var(--v53-guide-scale,1))!important;transform-origin:top left!important;border:0!important}
+#tutorialPage .af52-guide-instructions{max-width:100%}
+#tutorialPage .af48-tour-tab{line-height:1.25!important;overflow-wrap:normal!important;word-break:normal!important}
+@media(max-width:720px){#tutorialPage .af48-tour-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:440px){#tutorialPage .af48-tour-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-body{gap:3px 9px}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-meta{text-align:left}}
+/* I controlli telefono Home e Tema devono occupare due slot adiacenti. */
+@media(max-width:680px){
+ .site-header{position:relative}
+ #mobileHomeButton{order:2!important;margin-right:0!important;flex:0 0 40px!important;width:40px!important;height:40px!important}
+ #themeToggle{order:3!important;position:static!important;inset:auto!important;transform:none!important;
+  align-self:center!important;flex:0 0 40px!important;margin:0!important;width:40px!important;height:40px!important}
+ .header-controls{order:4!important;flex:0 0 100%!important}
+}
+@media(max-width:355px){#mobileHomeButton{flex-basis:35px!important;width:35px!important}#themeToggle{flex-basis:35px!important;width:35px!important}}
+/* Responsive più prevedibile, compresi 320px, zoom 200% e landscape. */
+html,body{max-width:100%;overflow-x:clip}
+.page,.workspace,.main-content{min-width:0}
+img,video,iframe,svg{max-width:100%}
+#tutorialPage .af51-live-frame iframe{max-width:none!important}
+@media(max-width:680px){.navigator-inputs,.navigator-form,.orari-filter-row,.versioni-toolbar{min-width:0;max-width:100%}}
+/* Le scelte di movimento dell'utente hanno sempre la priorità. */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition-duration:.01ms!important}}
+@media(prefers-contrast:more){#homePage .free-rooms-shortcut,#scheduleSubnav button,.orari-category-tabs button{border-width:2px!important}
+:where(input,textarea,select,button,a):focus-visible{outline-width:3px!important}}
+
+/* Nella demo Orari, i collegamenti alle funzioni non previste dalla tappa sono nascosti. */
+.af52-in-demo[data-af52-demo-step="1"] #orariPage .orari-category-tabs button[data-schedule="freeRooms"],
+.af52-in-demo[data-af52-demo-step="1"] #orariPage .orari-category-tabs button[data-schedule="freeTeachers"]{display:none!important}
+.af52-in-demo[data-af52-demo-step="2"] #orariPage .orari-category-tabs button[data-schedule="classes"],
+.af52-in-demo[data-af52-demo-step="2"] #orariPage .orari-category-tabs button[data-schedule="rooms"],
+.af52-in-demo[data-af52-demo-step="2"] #orariPage .orari-category-tabs button[data-schedule="teachers"]{display:none!important}
+.af52-in-demo #sidebar,.af52-in-demo #menuButton,.af52-in-demo #mobileHomeButton{pointer-events:none!important}
+
+/* Desktop: il tema mantiene il suo slot alla fine della testata. */
+@media(min-width:681px){.site-header>#themeToggle{order:5;flex:0 0 42px;align-self:center;margin:0 0 0 8px;width:42px;height:40px}}
+
+/* Nessun alone mobile nell'aside o nelle Versioni, anche se i CSS storici lo prevedono. */
+#sidebar{background-image:none!important;background-color:#10485a!important}
+html[data-theme="dark"] #sidebar{background-image:none!important;background-color:#102d3e!important}
+.versioni-list::before,#sidebar::before,#sidebar::after{animation:none!important;background-image:none!important;box-shadow:none!important}
+.af51-gradient-touch,.af49-tap-glow{animation:none!important;background-image:none!important}
+#homePage .home-search-area{box-shadow:none!important}
+/* Il focus non lascia sottolineature gialle sulle barre di ricerca o sui selettori. */
+#versioniPage #versioniSearch:is(:focus,:focus-visible),#navFrom:focus,#navTo:focus,
+#orariPage input:focus,#orariPage select:focus,#daySelect:focus,#hourSelect:focus,
+#homePage #searchInput:focus,#finderQuestion:focus{
+  box-shadow:none!important;border-color:#7baab0!important;filter:none!important
+}
+#versioniPage #versioniSearch:focus-visible,#navFrom:focus-visible,#navTo:focus-visible,
+#orariPage input:focus-visible,#orariPage select:focus-visible,#daySelect:focus-visible,#hourSelect:focus-visible,
+#homePage #searchInput:focus-visible,#finderQuestion:focus-visible{
+  outline:2px solid var(--v53-focus)!important;outline-offset:2px!important
+}
+html[data-theme="dark"] #versioniPage #versioniSearch:focus-visible,
+html[data-theme="dark"] #orariPage input:focus-visible,
+html[data-theme="dark"] #orariPage select:focus-visible{outline-color:#9bdfdd!important}
+#sidebar .side-link:hover:not(.is-active){background:#e7f3f2!important;color:#19404a!important}
+html[data-theme="dark"] #sidebar .side-link:hover:not(.is-active){background:#215161!important;color:#ecfffd!important}
+/* Un percorso ben leggibile, uguale sul tema chiaro e scuro. */
+html[data-theme="dark"] #navigatorPage .nav-route-polyline{stroke:#82d8df!important}
+#navigatorPage .nav-legend-line{height:4px!important}
+/* Contrasto della pagina e delimitazione dei controlli senza pesanti ombre. */
+#navigatorPage .navigator-panel,#orariPage .orari-content-grid,#tutorialPage .af48-tour-wrap{box-shadow:none!important}
+#homePage .free-rooms-shortcut:focus-visible,#orariPage .orari-category-tabs button:focus-visible{
+ outline:2px solid var(--v53-focus)!important;outline-offset:2px!important
+}
+/* I campi e le azioni tattili conservano obiettivi ampi, anche con zoom. */
+:is(#themeToggle,#mobileHomeButton,#menuButton,#scheduleSubnavToggle){min-width:40px;min-height:40px}
+@media(hover:none){.side-link:hover,.free-rooms-shortcut:hover,.orari-category-tabs button:hover{transform:none!important;filter:none!important}}
+/* Il pin SVG conserva la punta sull'esatto centro aula: l'origine CSS
+   ereditata dalla vecchia animazione ne traslava falsamente la posizione. */
+#navigatorPage .nav-point-marker-layer>.nav-point-destination{
+ transform-origin:0 0!important;transform-box:view-box!important;animation:none!important
+}
+/* V53: nome e disponibilità sulla medesima riga, non uno sotto l'altro. */
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-body{
+ flex-direction:row!important;flex-wrap:nowrap!important;gap:7px!important
+}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-body strong{flex:0 0 auto;white-space:nowrap}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-meta{flex:0 1 auto;min-width:0;font-size:11px!important;white-space:normal;text-align:right!important}
+@media(max-width:390px){#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-body strong{font-size:12px!important}
+#homePage :is(#freeRoomsShortcut,#freeTeachersShortcut) .af50-quick-meta{font-size:10px!important}}
+/* Footer e orb: superfici uniformi, senza raggi o anelli animati. */
+#siteFooter{background:#123f4d!important;background-image:none!important;box-shadow:none!important}
+html[data-theme="dark"] #siteFooter{background:#0e303e!important}
+#finderLaunch{background:#123e50!important;background-image:none!important;
+ animation:none!important;box-shadow:0 3px 12px #0b293b42!important;border:2px solid #6eb8bd!important}
+#finderLaunch::before,#finderLaunch::after{display:none!important;animation:none!important}
+#finderLaunch .finder-launch-icon{animation:none!important;box-shadow:none!important;filter:none!important}
+#finderLaunch:focus-visible{outline:2px solid #225a75!important;outline-offset:4px!important}
+html[data-theme="dark"] #finderLaunch:focus-visible{outline-color:#9bdfdd!important}

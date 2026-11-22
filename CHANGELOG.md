@@ -1,3 +1,12 @@
+# V53 · Essenziale e accessibile (22 novembre 2026)
+
+- Interfaccia a colori solidi, senza glows al puntatore, gradienti e animazioni eccessive; focus unico e leggibile.
+- Home con scorciatoie disponibilità più sottili e dati sulla stessa riga, tema e Home adiacenti su mobile.
+- Navigator con grafo geometrico dei corridoi, segmenti ortogonali, penalità alle svolte, pin in centro (corretta origine CSS).
+- Piantine con azioni in testata, Orari con una sola categoria evidenziata, tutorial live vincolato alla tappa.
+- Verifiche sintetiche Chromium a 320, 390, 768 e 1280 px, versione V53 nell'archivio.
+- Media V52 rifatta conservati; nessuna riconversione dei file originali.
+
 # V52 · Esperienza rifinita (19 novembre 2026)
 
 - Effetti aurici a dissolvenza estesi a Home, header, aside e footer, con coerenza mobile/desktop e temi chiaro/scuro.

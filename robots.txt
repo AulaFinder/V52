@@ -1,4 +1,4 @@
 # Per una pubblicazione con dominio personalizzato o nella root del sito.
 User-agent: *
 Allow: /
-Sitemap: https://aulafinder.github.io/V52/sitemap.xml
+Sitemap: https://aulafinder.github.io/V53/sitemap.xml

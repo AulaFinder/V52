@@ -1004,5 +1004,18 @@
       "Admin con panoramica locale"
     ],
     "preview": "assets/versioni-home/V52.webp"
+  },
+  {
+    "number": 53,
+    "version": "V53",
+    "title": "Essenziale e accessibile",
+    "details": [
+      "Interfaccia più essenziale: ridotti gradienti, illuminazioni e animazioni superflue.",
+      "Navigatore ortogonale su corridoi verificati dalla piantina, con pin al centro dell'aula.",
+      "Comandi rapidi compatti, tema accanto a Home su mobile e selezione attiva degli Orari corretta.",
+      "Piantine con azioni in testata e tutorial del sito reale vincolato alla tappa.",
+      "Verifiche responsive, accessibilità e risorse multimediali originali conservate."
+    ],
+    "preview": "assets/versioni-home/V53.webp"
   }
 ]

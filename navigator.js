@@ -73,7 +73,7 @@
       // il rettangolo della palestra resta fuori dal grafo transitabile.
       const gymEntry=text==='Palestra' ? (floor==='sotto'?{x:781,y:255}:
         floor==='terra'?{x:407,y:475}:null) : null;
-      locations.push({id:text,floor,description:(g.dataset.t||'').split('·').slice(1).join('·').trim(),cx:gymEntry?.x??Number(g.dataset.cx),cy:gymEntry?.y??Number(g.dataset.cy),rect:{x,y,w,h}});
+      locations.push({id:text,floor,description:(g.dataset.t||'').split('·').slice(1).join('·').trim(),cx:gymEntry?.x??Number(g.dataset.cx),cy:gymEntry?.y??Number(g.dataset.cy),pinX:Number(g.dataset.cx),pinY:Number(g.dataset.cy),rect:{x,y,w,h}});
     });
   });
   const uniq=new Map();
@@ -253,8 +253,12 @@
     const attach=loc=>{
       let best=null;
       for(let i=0;i<edges.length;i++){
-        const projected=projection(centerOf(loc),...edges[i]);
-        const d=distance(centerOf(loc),projected);
+        const r=loc.rect,center=centerOf(loc);
+        const doors=r?[point(center.x,r.y),point(center.x,r.y+r.h),point(r.x,center.y),point(r.x+r.w,center.y)]:[center];
+        const options=doors.map(door=>({door,p:projection(door,...edges[i])}));
+        options.sort((a,b)=>distance(a.door,a.p)-distance(b.door,b.p));
+        const projected=options[0].p;
+        const d=distance(options[0].door,projected);
         if(!best||d<best.dist)best={segment:i,p:projected,dist:d};
       }
       return best;
@@ -284,25 +288,34 @@
     });
     const source=vertex(a.p),target=vertex(b.p);
     if(source===target)return [points.get(source)];
-    const cost=new Map([...points.keys()].map(k=>[k,Infinity]));cost.set(source,0);
-    const previous=new Map(),pending=new Set(points.keys());
+    // Ricerca con stato (vertice, direzione), svolte penalizzate molto più dei metri.
+    // I segmenti sono quelli effettivamente contenuti nei corridoi della SVG.
+    const stateKey=(key,dir)=>key+'|'+dir;
+    const cost=new Map(),previous=new Map(),pending=new Set();
+    const first=stateKey(source,'start');cost.set(first,0);pending.add(first);
+    const bendPenalty=72;
+    let targetState=null;
     while(pending.size){
       let current=null,min=Infinity;
-      for(const key of pending){if(cost.get(key)<min){current=key;min=cost.get(key);}}
-      if(!current||!Number.isFinite(min))break;
-      if(current===target)break;
-      pending.delete(current);
-      for(const [next,w] of links.get(current)||[]){
-        const total=min+w;
-        if(total<cost.get(next)){cost.set(next,total);previous.set(next,current);}
+      for(const k of pending){const v=cost.get(k);if(v<min){min=v;current=k;}}
+      if(current===null)break;pending.delete(current);
+      const split=current.lastIndexOf('|'),vertex=current.slice(0,split),oldDir=current.slice(split+1);
+      if(vertex===target){targetState=current;break;}
+      for(const [next,w] of links.get(vertex)||[]){
+        const a=points.get(vertex),b=points.get(next);
+        const dir=Math.abs(a.x-b.x)<.07?'V':Math.abs(a.y-b.y)<.07?'H':'D';
+        const key=stateKey(next,dir);
+        const candidate=min+w+(oldDir!=='start'&&oldDir!==dir?bendPenalty:0);
+        if(candidate<(cost.get(key)??Infinity)-1e-8){cost.set(key,candidate);previous.set(key,current);pending.add(key);}
       }
     }
-    if(!Number.isFinite(cost.get(target)))return null;
-    const result=[];for(let k=target;k;k=previous.get(k)){
-      result.push(points.get(k));if(k===source)break;
+    if(!targetState)return null;
+    const result=[];for(let k=targetState;k;k=previous.get(k)){
+      const vertex=k.slice(0,k.lastIndexOf('|'));
+      result.push(points.get(vertex));if(k===first)break;
     }
     result.reverse();
-    // Drop intermediate collinear vertices: smooth, geometrically verified path.
+    // Tolti i vertici ridondanti, conservando esclusivamente cambi di direzione reali.
     return result.filter((p,i)=>{
       if(i===0||i===result.length-1)return true;
       const before=result[i-1],after=result[i+1];
@@ -369,7 +382,8 @@
     const validCells=[];
     for(let i=0;i<valid.length;i++)if(valid[i])validCells.push(i);
     function nearest(loc){let best=-1,dist=Infinity;
-      for(const i of validCells){const p=coord(i),d=(p.x-loc.cx)**2+(p.y-loc.cy)**2;
+      const anchor=loc.id==='Palestra'?point(loc.cx,loc.cy):centerOf(loc);
+      for(const i of validCells){const p=coord(i),d=(p.x-anchor.x)**2+(p.y-anchor.y)**2;
         if(d<dist){dist=d;best=i;}}
       return best;
     }
@@ -412,8 +426,8 @@
         if(next<0||next>=valid.length||!valid[next])continue;
         // A decisive penalty for bends avoids the staircase/zigzag effect.
         // Near doors, a short segment close to a wall is still allowed.
-        const turn=oldDir===d?0:10;
-        const clearancePenalty=16.0/(clearance[next]+.9);
+        const turn=oldDir===d?0:72;
+        const clearancePenalty=24.0/(clearance[next]+1.2);
         const v=(next<<2)|d;
         const candidate=g+1+turn+clearancePenalty;
         if(candidate+1e-8<costs[v]){costs[v]=candidate;prev[v]=u;push(v,candidate);}
@@ -435,8 +449,6 @@
   }
   function shortestHall(floor,start,end){
     // Prefer the verified corridor centerline, with the old walkable grid as safe fallback.
-    const spine=spineHall(floor,start,end);
-    if(spine?.length)return spine;
     const actual=actualHall(floor,start,end);
     // Non presentare un tracciato schematico che taglia muri o esce dalla piantina.
     // Se i corridoi disegnati non collegano i due punti, nessun percorso viene mostrato.
@@ -477,37 +489,39 @@
   }
   // La linea entra e termina in centro alle aule. Ogni tratto fuori dal
   // corridoio è limitato al collegamento aula→corridoio, mai una scorciatoia tra stanze.
-  const centerOf=loc=>loc?.rect?point(loc.rect.x+loc.rect.w/2,loc.rect.y+loc.rect.h/2):point(loc.cx,loc.cy);
+  const centerOf=loc=>Number.isFinite(loc?.pinX)&&Number.isFinite(loc?.pinY)?point(loc.pinX,loc.pinY):loc?.rect?point(loc.rect.x+loc.rect.w/2,loc.rect.y+loc.rect.h/2):point(loc.cx,loc.cy);
   function routeRoomBridge(loc,hall,floor){
     if(!loc||!hall)return [];
-    const r=loc.rect,center=centerOf(loc);
-    if(!r)return [center];
-    const inset=Math.min(1.2,r.w*.06,r.h*.06);
-    const candidates=[point(center.x,r.y),point(center.x,r.y+r.h),point(r.x,center.y),point(r.x+r.w,center.y)];
-    const corridor=geometryCorridors.get(floor);
-    const rooms=locations.filter(q=>q.floor===floor&&q!==loc&&canon(q.id)!==canon(loc.id));
-    const segmentPenalty=(a,b)=>{
-      let score=0;
-      for(let i=1;i<=14;i++){
-        const t=i/15,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t;
-        if(rooms.some(room=>x>room.rect.x+inset&&x<room.rect.x+room.rect.w-inset&&y>room.rect.y+inset&&y<room.rect.y+room.rect.h-inset))score+=100;
-        if(!corridor?.isPointInFill?.(new DOMPoint(x,y)))score+=1;
-      }
-      return score;
-    };
-    let best=null;
-    for(const door of candidates){
-      const bends=[point(door.x,hall.y),point(hall.x,door.y)];
-      for(const bend of bends){
-        const d=distance(door,bend)+distance(bend,hall);
-        const penalty=segmentPenalty(door,bend)+segmentPenalty(bend,hall);
-        const cost=d+penalty*8;
-        if(!best||cost<best.cost)best={door,bend,cost};
-      }
+    const center=centerOf(loc);
+    // Palestra: è raggiungibile da un ingresso specifico, poi il segno deve
+    // arrivare fino al centro della stanza, non fermarsi sulla porta.
+    if(loc.id==='Palestra'){
+      const entry=point(loc.cx,loc.cy);
+      const path=[center,point(center.x,entry.y),entry,point(entry.x,hall.y),hall];
+      return path.filter((p,i)=>i===0||!close(p,path[i-1]));
     }
-    if(!best)return [center];
-    const sequence=[center,best.door,best.bend,hall];
-    return sequence.filter((v,i)=>i===0||!close(v,sequence[i-1]));
+    const corridor=geometryCorridors.get(floor);
+    const rect=loc.rect;
+    if(!corridor||!rect)return [center,point(center.x,hall.y),hall].filter((p,i,a)=>i===0||!close(p,a[i-1]));
+    const otherRooms=locations.filter(q=>q.floor===floor&&q!==loc&&canon(q.id)!==canon(loc.id));
+    const inside=(p,r,eps=0)=>p.x>=r.x-eps&&p.x<=r.x+r.w+eps&&p.y>=r.y-eps&&p.y<=r.y+r.h+eps;
+    const scoreSegment=(a,b)=>{
+      const n=Math.max(8,Math.ceil(distance(a,b)/.9));
+      let invalid=0;
+      for(let i=1;i<n;i++){
+        const t=i/n,p=point(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t);
+        if(otherRooms.some(r=>inside(p,r.rect,-.45)))invalid+=10000;
+        if(!inside(p,rect,.85)&&!corridor.isPointInFill(new DOMPoint(p.x,p.y)))invalid+=24;
+      }
+      return invalid;
+    };
+    // Due varianti ortogonali. Non si gira intorno a una parete fuori dal
+    // corridoio: penalizziamo fortemente ogni cella fuori da aula o corsia.
+    const variants=[[center,point(center.x,hall.y),hall],[center,point(hall.x,center.y),hall]];
+    const choices=variants.map(path=>({path:path.filter((p,i)=>i===0||!close(p,path[i-1])),
+      score:routeLength(path)+scoreSegment(path[0],path[1])+scoreSegment(path[1],path[2])}));
+    choices.sort((a,b)=>a.score-b.score||a.path.length-b.path.length);
+    return choices[0].path;
   }
   function cloneMap(floor,where,{routePoints=[],start=null,end=null,transfer=false,entryPoint=null,exitPoint=null}={}){
     where.innerHTML='';
@@ -535,24 +549,7 @@
       const d=unique.length?`M ${fmt(unique[0].x)} ${fmt(unique[0].y)} `+unique.slice(1).map(p=>`L ${fmt(p.x)} ${fmt(p.y)}`).join(' '):'';
       // Coordinate reali per il gradiente: objectBoundingBox ha altezza zero
       // nei tratti perfettamente orizzontali e alcuni browser disegnano solo il contorno.
-      const gradientFrom=unique[0]||{x:0,y:0};
-      const gradientTo=unique.at(-1)||{x:1,y:1};
-      const noSpan=distance(gradientFrom,gradientTo)<0.01;
-      const defs=svgNode('defs');
-      const grad=svgNode('linearGradient',{
-        id:'aula-nav-route-gradient',gradientUnits:'userSpaceOnUse',
-        x1:fmt(gradientFrom.x),y1:fmt(gradientFrom.y),
-        x2:fmt(gradientTo.x+(noSpan?1:0)),y2:fmt(gradientTo.y+(noSpan?1:0))
-      });
-      [['0%','#65F0F5'],['33%','#A68BFF'],['67%','#FAD46B'],['100%','#65F0F5']].forEach(([offset,color],i)=>{
-        const stop=svgNode('stop',{offset,'stop-color':color});
-        if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-          const anim=svgNode('animate',{attributeName:'stop-color',values:i===2?'#FAD46B;#F994C9;#65F0F5;#FAD46B':'#65F0F5;#A68BFF;#FAD46B;#65F0F5',dur:'5s',repeatCount:'indefinite',begin:(i*-.9)+'s'});
-          stop.append(anim);
-        }
-        grad.append(stop);
-      });
-      defs.append(grad);layer.append(defs);
+      // V53: linea unica ad alto contrasto, senza gradiente o SMIL.
       if(unique.length>1){
         layer.append(svgNode('path',{d,class:'nav-route-shadow'}));
         layer.append(svgNode('path',{d,class:'nav-route-polyline'}));

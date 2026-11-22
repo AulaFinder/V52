@@ -106,35 +106,8 @@
  });
  document.addEventListener('visibilitychange',()=>{if(document.hidden)mics.forEach(stopMic);});
 
- // Version timeline follows hover or keyboard selection as well.
- const historyList=$('versioniList');
- if(historyList){
-  historyList.addEventListener('pointermove',e=>{
-   const r=historyList.getBoundingClientRect();historyList.style.setProperty('--af51-history-y',((e.clientY-r.top)/r.height*100).toFixed(2)+'%');
-  },{passive:true});
-  historyList.addEventListener('focusin',e=>{
-   const r=historyList.getBoundingClientRect(),p=e.target.getBoundingClientRect();historyList.style.setProperty('--af51-history-y',((p.top+p.height/2-r.top)/r.height*100).toFixed(2)+'%');
-  });
- }
- // Sidebar gradient follows pointer position and keyboard focus without altering navigation.
- const sidebar=$('sidebar');
- if(sidebar){
-  sidebar.addEventListener('pointermove',e=>{
-   const r=sidebar.getBoundingClientRect();sidebar.style.setProperty('--af51-side-y',((e.clientY-r.top)/r.height*100).toFixed(2)+'%');
-  },{passive:true});
-  sidebar.addEventListener('focusin',e=>{
-   const r=sidebar.getBoundingClientRect(),p=e.target.getBoundingClientRect();sidebar.style.setProperty('--af51-side-y',((p.top+p.height/2-r.top)/r.height*100).toFixed(2)+'%');
-  });
- }
- // Gradient touch feedback: no water ripples; disable on reduced-motion preference.
- document.addEventListener('pointerdown',e=>{
-  if(reduced())return;
-  const btn=e.target.closest('button,.side-link,.versioni-entry>summary');
-  if(!btn||btn.disabled||btn.closest('.af51-admin-keyboard'))return;
-  const r=btn.getBoundingClientRect();btn.style.setProperty('--af51-touch-x',((e.clientX-r.left)/r.width*100)+'%');
-  btn.classList.remove('af51-gradient-touch');void btn.offsetWidth;btn.classList.add('af51-gradient-touch');
-  btn.addEventListener('animationend',()=>btn.classList.remove('af51-gradient-touch'),{once:true});
- },{passive:true});
+ // V53: eliminati i listener di illuminazione al puntatore sulla sidebar,
+ // nelle Versioni e sui pulsanti. La navigazione resta identica.
 
  // Browser return animation of Finder kept; refresh webm when visible to avoid a frozen orb.
  const launch=$('finderLaunch'),launchVideo=launch?.querySelector('video');
