@@ -107,7 +107,23 @@ window.AFPiantina={show:function(room){
   hideTip();clear();gs.forEach(mark);cur=gs[0];showActions(gs[0]);
   focusRoom(gs[0]);
   return true;
-}};
+ },
+ getRoomActions:function(room){
+  var code=cleanRoomName(room);
+  return {room:code,navigable:isNavigableRoom(code),hasSchedule:hasRoomSchedule(code)};
+ },
+ runRoomAction:function(room,kind){
+  var code=cleanRoomName(room);
+  if(!isNavigableRoom(code))return false;
+  if(kind==='navigate'){
+   var btn=document.querySelector('.side-link[data-page="navigator"]');
+   if(window.AulaFinderNavigator?.setDestination(code)&&btn){btn.click();return true;}
+  }else if(kind==='schedule'&&hasRoomSchedule(code)&&window.AulaFinderRoomSchedule){
+   window.AulaFinderRoomSchedule(code);return true;
+  }
+  return false;
+ }
+};
 document.addEventListener('mouseover',function(e){
   var g=e.target && e.target.closest ? e.target.closest('g.room') : null;
   if(!g || (e.relatedTarget && g.contains(e.relatedTarget))) return;
@@ -123,12 +139,7 @@ document.addEventListener('click',function(e){
   var action=e.target.closest&&e.target.closest('[data-map-action]');
   if(action){
     e.preventDefault();var room=actionRoom;
-    if(action.dataset.mapAction==='navigate'){
-      var navBtn=document.querySelector('.side-link[data-page="navigator"]');
-      if(navBtn&&window.AulaFinderNavigator?.setDestination(room))navBtn.click();
-    } else if(action.dataset.mapAction==='schedule' && window.AulaFinderRoomSchedule){
-      window.AulaFinderRoomSchedule(room);
-    }
+    window.AFPiantina.runRoomAction(room,action.dataset.mapAction);
     hideActions();return;
   }
   var g=e.target.closest ? e.target.closest('#piantinaPage g.room') : null;

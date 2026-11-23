@@ -1017,5 +1017,28 @@
       "Verifiche responsive, accessibilità e risorse multimediali originali conservate."
     ],
     "preview": "assets/versioni-home/V53.webp"
+  },
+  {
+    "number": 54,
+    "version": "V54",
+    "title": "Tutorial e piantine più intuitivi",
+    "details": [
+      "Tutorial con schede dei passaggi leggibili e zoom mirato sulla funzione mostrata, anche da smartphone.",
+      "Fullscreen delle piantine con zoom a due dita e azioni Portami qui / Vedi orario accanto al nome dell’aula selezionata.",
+      "Stato delle Versioni corretto e calcolato automaticamente, senza etichette obsolete.",
+      "Mantenuti i dati, le immagini e le funzioni della V53."
+    ],
+    "source": "Interventi V54 sulla base V53",
+    "documented": true,
+    "preview": "assets/versioni-home/V54.webp",
+    "changedFiles": [
+      "index.html",
+      "v54.css",
+      "v54-ui.js",
+      "v49-ui.js",
+      "piantina.js",
+      "versioni.js",
+      "sw.js"
+    ]
   }
 ]

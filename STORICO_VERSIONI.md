@@ -400,3 +400,6 @@ Le note sono ricostruite a partire dai file/rapporti originali contenuti negli a
 - Menu laterale, cronologia, logo ingrandibile; Piantina e Tutorial ancora da sviluppare.
 - **Fonte:** Pacchetto originale AulaFinderV1; README.md (verificato con i file).
 - **Anteprima Home:** `assets/versioni-home/V1.webp`
+
+## V54 (23 novembre 2026)
+Tutorial più leggibile con zoom per tappa, Versioni aggiornate, fullscreen piantine con pinch e azioni selezione aula.

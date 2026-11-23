@@ -1,3 +1,11 @@
+# V54 · Tutorial e piantine più intuitivi (23 novembre 2026)
+
+- Tutorial: schede dei passaggi con dimensioni e a capo corretti anche a 320 px; inquadratura della demo reale ingrandita sulla funzione illustrata, con +/−/Adatta.
+- Versioni: stato «Versione attuale» e «Rilascio precedente» calcolati dall'ultima versione disponibile; V54 inserita in cronologia con anteprima originale.
+- Piantine fullscreen: pinch-to-zoom a due dita, trascinamento con un dito, selezione tastiera, titolo e azioni «Portami qui» / «Vedi orario» in testata.
+- Invariate le immagini e i video storici originali; aggiornate le chiavi cache e i riferimenti per GitHub Pages sul repository già utilizzato (`/V52/`).
+- Collaudi con documenti reali ricomposti in Chromium in memoria, non su GitHub Pages: consultare VERIFICHE_V54.md.
+
 # V53 · Essenziale e accessibile (22 novembre 2026)
 
 - Interfaccia a colori solidi, senza glows al puntatore, gradienti e animazioni eccessive; focus unico e leggibile.

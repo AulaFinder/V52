@@ -1,0 +1,73 @@
+/* V54 - Rifiniture localizzate: la V53 rimane intatta. */
+/* Il testo deve restare interamente leggibile nei pulsanti delle sette tappe. */
+#tutorialPage .af48-tour-tabs{
+ display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:8px!important;
+}
+#tutorialPage .af48-tour-tab{
+ box-sizing:border-box!important;min-width:0!important;min-height:66px!important;height:auto!important;
+ padding:11px 9px!important;gap:6px!important;display:flex!important;flex-wrap:wrap!important;
+ align-content:center!important;align-items:center!important;justify-content:center!important;
+ line-height:1.4!important;font-size:12px!important;text-align:center!important;
+ white-space:normal!important;overflow-wrap:anywhere!important;word-break:normal!important;
+ overflow:visible!important;
+}
+#tutorialPage .af48-tour-tab>span{flex:0 0 25px!important;width:25px!important;height:25px!important;}
+@media(max-width:1120px){#tutorialPage .af48-tour-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:560px){#tutorialPage .af48-tour-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:350px){#tutorialPage .af48-tour-tab{font-size:11.5px!important;min-height:70px!important;padding:8px 5px!important}}
+
+/* Zoom guidato per area: il frame resta un'istanza autentica del sito, ma inquadrata in modo diverso. */
+#tutorialPage .af51-live-frame{position:relative!important;overflow:hidden!important;height:var(--af54-guide-height,600px)!important;min-height:340px!important}
+#tutorialPage .af51-live-frame iframe{
+ width:1024px!important;min-width:1024px!important;max-width:none!important;
+ height:1080px!important;position:absolute!important;left:0!important;top:44px!important;
+ transform:translate(var(--af54-guide-x,0px),var(--af54-guide-y,0px)) scale(var(--af54-guide-scale,1))!important;
+ transform-origin:top left!important;will-change:transform;
+}
+#tutorialPage .af54-guide-controls{
+ position:absolute;inset:0 0 auto 0;z-index:5;min-height:44px;display:flex;align-items:center;justify-content:flex-end;gap:5px;
+ padding:3px 10px;border-radius:0;border:0;border-bottom:1px solid #b4c9d0;
+ background:#f7fafb;color:#133e4e;box-shadow:none;
+}
+#tutorialPage .af54-guide-controls button{min-width:38px;min-height:38px;border:1px solid #aac6ca;border-radius:7px;background:#fff;color:#174650;font-size:16px;font-weight:700;cursor:pointer}
+#tutorialPage .af54-guide-controls button[data-af54-zoom="reset"]{padding:0 8px;font-size:12px}
+#tutorialPage #af54GuideZoom{font-size:11px;min-width:34px;text-align:center;font-weight:800}
+#tutorialPage .af54-guide-controls button:focus-visible{outline:3px solid #195b90;outline-offset:2px}
+html[data-theme="dark"] #tutorialPage .af54-guide-controls{background:#173c49ef;color:#efffff;border-color:#7395a0}
+html[data-theme="dark"] #tutorialPage .af54-guide-controls button{background:#234f5a;border-color:#80a6b0;color:#fff}
+@media(max-width:560px){#tutorialPage .af54-guide-controls{gap:3px;padding:3px 6px}#tutorialPage .af54-guide-controls button{min-height:34px;min-width:34px}}
+@media(prefers-reduced-motion:reduce){#tutorialPage .af51-live-frame iframe{will-change:auto}}
+
+/* Fullscreen: testata realmente fluida, con nome dell'aula e azioni sempre visibili. */
+#af49MapViewer{display:flex;flex-direction:column;width:100%;height:100%;height:100dvh}
+#af49MapViewer[hidden]{display:none!important}
+#af49MapViewer .af49-map-viewer-bar{
+ position:relative!important;inset:auto!important;flex:0 0 auto;display:flex!important;
+ gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+ background:#102f3d!important;box-shadow:none!important;
+ padding:10px max(10px,env(safe-area-inset-right)) 10px max(10px,env(safe-area-inset-left));
+}
+#af49MapViewer .af54-map-header{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;min-width:0;flex:1 1 360px}
+#af49MapViewer .af54-map-selection{display:flex;align-items:center;flex-wrap:wrap;gap:6px 9px;min-width:0}
+#af49MapViewer .af54-map-selection[hidden]{display:none!important}
+#af49MapViewer #af54MapRoomName{font-weight:800;color:#d1faf0;font-size:14px;max-width:100%;overflow-wrap:anywhere}
+#af49MapViewer .af54-map-selection button{border:1px solid #b1d6cd;border-radius:8px;padding:8px 10px;min-height:40px;background:#eef8f6;color:#143c48;font-size:12px;font-weight:800;cursor:pointer}
+#af49MapViewer .af54-map-selection button:hover{background:#d2ece6}
+#af49MapViewer .af54-map-selection button:focus-visible{outline:3px solid #fbbf24;outline-offset:2px}
+#af49MapViewer .af49-viewer-buttons{flex:0 0 auto;margin-left:auto}
+#af49MapViewer .af49-map-viewer-scene{
+ position:relative!important;inset:auto!important;flex:1 1 auto!important;min-height:0!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ overflow:auto!important;touch-action:none!important;overscroll-behavior:contain;
+}
+#af49MapViewer .af49-map-viewer-stage{flex-shrink:0!important;margin:auto!important}
+#af49MapViewer .af49-map-viewer-note{position:relative!important;inset:auto!important;flex:0 0 auto;min-height:32px;padding-bottom:max(6px,env(safe-area-inset-bottom))}
+#af49MapViewer .af49-map-viewer-stage svg g.room{cursor:pointer;outline:none}
+#af49MapViewer .af49-map-viewer-stage svg g.room:focus-visible .box{stroke:#e0a100!important;stroke-width:2.6px!important}
+@media(max-width:680px){
+ #af49MapViewer .af49-map-viewer-bar{padding:7px 8px}
+ #af49MapViewer .af54-map-header{flex:1 1 100%}
+ #af49MapViewer .af54-map-selection button{min-height:36px;padding:6px 8px}
+ #af49MapViewer .af49-viewer-buttons{margin-left:auto}
+ #af49MapViewer .af49-map-viewer-scene{inset:auto!important}
+}

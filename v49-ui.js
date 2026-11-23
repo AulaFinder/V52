@@ -10,11 +10,34 @@
  const cards=[...document.querySelectorAll('#piantinaPage .plan-card')];
  const viewer=document.createElement('div');viewer.id='af49MapViewer';viewer.className='af49-map-viewer';viewer.hidden=true;
  viewer.setAttribute('role','dialog');viewer.setAttribute('aria-modal','true');viewer.setAttribute('aria-label','Piantina a schermo intero');
- viewer.innerHTML=`<div class="af49-map-viewer-bar"><strong id="af49ViewerTitle">Piantina</strong><div class="af49-viewer-buttons"><button type="button" id="af49ZoomOut" aria-label="Riduci ingrandimento">−</button><span id="af49ZoomLabel" aria-live="polite">100%</span><button type="button" id="af49ZoomIn" aria-label="Ingrandisci mappa">+</button><button type="button" id="af49ViewerClose" aria-label="Chiudi la piantina a schermo intero">✕</button></div></div><div class="af49-map-viewer-scene" tabindex="0" aria-label="Mappa scorrevole: trascina per esplorare le aule"><div class="af49-map-viewer-stage" id="af49ViewerStage"></div></div><div class="af49-map-viewer-note" id="af49ViewerNote" aria-live="polite">Tocca un'aula per vedere il nome.</div>`;
+ viewer.innerHTML=`<div class="af49-map-viewer-bar"><div class="af54-map-header"><strong id="af49ViewerTitle">Piantina</strong><div id="af54MapSelection" class="af54-map-selection" hidden role="group" aria-label="Azioni per l’aula selezionata"><span id="af54MapRoomName" aria-live="polite"></span><button type="button" id="af54MapNavigate">Portami qui</button><button type="button" id="af54MapSchedule">Vedi orario</button></div></div><div class="af49-viewer-buttons"><button type="button" id="af49ZoomOut" aria-label="Riduci ingrandimento">−</button><span id="af49ZoomLabel" aria-live="polite">100%</span><button type="button" id="af49ZoomIn" aria-label="Ingrandisci mappa">+</button><button type="button" id="af49ViewerClose" aria-label="Chiudi la piantina a schermo intero">✕</button></div></div><div class="af49-map-viewer-scene" tabindex="0" aria-label="Piantina: trascina per spostarti, usa due dita per ingrandire o ridurre"><div class="af49-map-viewer-stage" id="af49ViewerStage"></div></div><div class="af49-map-viewer-note" id="af49ViewerNote" aria-live="polite">Tocca un'aula per selezionarla. Due dita per ingrandire.</div>`;
  document.body.append(viewer);
  const stage=viewer.querySelector('#af49ViewerStage');
  const scene=viewer.querySelector('.af49-map-viewer-scene');
- let opener=null,zoom=1,fitWidth=900,fitHeight=600;
+ let opener=null,zoom=1,fitWidth=900,fitHeight=600,selectedRoom='';
+ const selection=viewer.querySelector('#af54MapSelection');
+ const roomName=viewer.querySelector('#af54MapRoomName');
+ const navigate=viewer.querySelector('#af54MapNavigate');
+ const schedule=viewer.querySelector('#af54MapSchedule');
+ function clearSelection(){selectedRoom='';selection.hidden=true;stage.querySelectorAll('.af49-room-highlight').forEach(el=>el.classList.remove('af49-room-highlight'));}
+ function selectRoom(g){
+  const name=(g.dataset.t||'').split('·')[0].trim();
+  const actions=window.AFPiantina?.getRoomActions?.(name);
+  clearSelection();
+  if(!actions?.navigable){viewer.querySelector('#af49ViewerNote').textContent=name||'Ambiente selezionato';return;}
+  selectedRoom=actions.room;
+  roomName.textContent=selectedRoom;
+  selection.hidden=false;schedule.hidden=!actions.hasSchedule;
+  g.classList.add('af49-room-highlight');
+  viewer.querySelector('#af49ViewerNote').textContent='Selezionata: '+selectedRoom+' · Azioni disponibili in alto';
+ }
+ function executeSelection(kind){
+  const room=selectedRoom;if(!room)return;
+  closeViewer();window.AFPiantina?.runRoomAction?.(room,kind);
+ }
+ navigate.addEventListener('click',()=>executeSelection('navigate'));
+ schedule.addEventListener('click',()=>executeSelection('schedule'));
+
  function setZoom(value){
   zoom=Math.min(3.2,Math.max(.65,value));
   stage.style.width=Math.round(fitWidth*zoom)+'px';stage.style.height=Math.round(fitHeight*zoom)+'px';
@@ -25,9 +48,9 @@
  function showFloor(card){
   const svg=card.querySelector('svg.plan');if(!svg)return;
   opener=document.activeElement;
-  stage.replaceChildren();
+  stage.replaceChildren();selection.hidden=true;selectedRoom='';
   const copy=svg.cloneNode(true);copy.classList.add('af49-viewer-plan');copy.removeAttribute('id');
-  copy.querySelectorAll('g.room').forEach(g=>{g.removeAttribute('tabindex');g.removeAttribute('role');});
+  copy.querySelectorAll('g.room').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label','Seleziona aula '+(g.dataset.t||''));});
   stage.append(copy);
   viewer.querySelector('#af49ViewerTitle').textContent=card.querySelector('.plan-banner h2')?.textContent||'Piantina';
   viewer.dataset.theme=document.documentElement.dataset.theme||'light';
@@ -41,7 +64,7 @@
    scene.scrollTop=Math.max(0,(scene.scrollHeight-scene.clientHeight)/2);
   }));
   viewer.querySelector('#af49ViewerClose').focus({preventScroll:true});
-  viewer.querySelector('#af49ViewerNote').textContent="Piantina originale · usa +/− per ingrandire, trascina per esplorare.";
+  viewer.querySelector('#af49ViewerNote').textContent="Piantina originale · trascina per esplorare, due dita per zoomare, o usa +/−.";
   // Fullscreen API opzionale: l'overlay funziona anche su Safari senza supporto alla API.
   if(viewer.requestFullscreen){
    try {
@@ -54,7 +77,7 @@
  }
  function closeViewer(){
   if(viewer.hidden)return;
-  viewer.hidden=true;stage.replaceChildren();document.body.classList.remove('af49-map-fullscreen-open');
+  clearSelection();viewer.hidden=true;stage.replaceChildren();document.body.classList.remove('af49-map-fullscreen-open');
   if(document.fullscreenElement===viewer)document.exitFullscreen?.().catch?.(()=>{});
   opener?.focus?.({preventScroll:true});
  }
@@ -74,11 +97,50 @@
   scene.scrollLeft=(left+scene.clientWidth*px)*ratio-scene.clientWidth*px;
   scene.scrollTop=(top+scene.clientHeight*py)*ratio-scene.clientHeight*py;
  }
- let pan=null;
- scene.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;pan={id:e.pointerId,x:e.clientX,y:e.clientY,left:scene.scrollLeft,top:scene.scrollTop,moved:false};});
- scene.addEventListener('pointermove',e=>{if(!pan||e.pointerId!==pan.id)return;const dx=e.clientX-pan.x,dy=e.clientY-pan.y;
-  if(Math.hypot(dx,dy)>7){pan.moved=true;try{scene.setPointerCapture(e.pointerId);}catch(_){}scene.scrollLeft=pan.left-dx;scene.scrollTop=pan.top-dy;}});
- scene.addEventListener('pointerup',()=>{pan=null;});scene.addEventListener('pointercancel',()=>{pan=null;});
+ // Un singolo dito trascina; due dita effettuano pinch-to-zoom senza alterare lo zoom del browser.
+ // Calcolo ancorato al punto centrale delle dita per mantenere stabile il punto osservato.
+ const activePointers=new Map();
+ let pan=null,pinch=null,lastGestureTime=-Infinity;
+ const pairInfo=()=>{
+  const a=[...activePointers.values()];if(a.length<2)return null;
+  return {distance:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2};
+ };
+ scene.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  try{scene.setPointerCapture(e.pointerId);}catch(_){}
+  if(activePointers.size===1){pan={id:e.pointerId,x:e.clientX,y:e.clientY,left:scene.scrollLeft,top:scene.scrollTop,moved:false};pinch=null;}
+  else if(activePointers.size===2){const info=pairInfo();pinch={...info,zoom};pan=null;lastGestureTime=performance.now();}
+ });
+ scene.addEventListener('pointermove',e=>{
+  if(!activePointers.has(e.pointerId))return;
+  activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(activePointers.size>=2&&pinch){
+   const info=pairInfo(),rect=scene.getBoundingClientRect();
+   if(info.distance>0&&pinch.distance>0){
+    zoomAt(pinch.zoom*info.distance/pinch.distance,(info.x-rect.left)/rect.width,(info.y-rect.top)/rect.height);
+    pinch={...info,zoom};
+    lastGestureTime=performance.now();
+   }
+   e.preventDefault();return;
+  }
+  if(pan&&pan.id===e.pointerId){
+   const dx=e.clientX-pan.x,dy=e.clientY-pan.y;
+   if(Math.hypot(dx,dy)>7)pan.moved=true;
+   if(pan.moved){scene.scrollLeft=pan.left-dx;scene.scrollTop=pan.top-dy;lastGestureTime=performance.now();e.preventDefault();}
+  }
+ });
+ function pointerFinish(e){
+  const wasPinching=activePointers.size>=2;
+  activePointers.delete(e.pointerId);
+  if(wasPinching||pan?.moved)lastGestureTime=performance.now();
+  pinch=null;
+  if(activePointers.size===1){const [id,pt]=activePointers.entries().next().value;pan={id,x:pt.x,y:pt.y,left:scene.scrollLeft,top:scene.scrollTop,moved:false};}
+  else pan=null;
+ }
+ scene.addEventListener('pointerup',pointerFinish);
+ scene.addEventListener('pointercancel',pointerFinish);
+ scene.addEventListener('lostpointercapture',e=>{if(activePointers.has(e.pointerId))pointerFinish(e);});
  scene.addEventListener('wheel',e=>{if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();const r=scene.getBoundingClientRect();zoomAt(zoom+(e.deltaY<0?.15:-.15),(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height);},{passive:false});
  viewer.querySelector('#af49ViewerClose').addEventListener('click',closeViewer);
  viewer.querySelector('#af49ZoomIn').addEventListener('click',()=>zoomAt(zoom+.25));
@@ -92,11 +154,14 @@
    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
   }
  });
- viewer.addEventListener('click',e=>{
+ scene.addEventListener('click',e=>{
+  if(performance.now()-lastGestureTime<280){e.preventDefault();return;}
+  const g=e.target.closest('g.room');if(g)selectRoom(g);
+ });
+ scene.addEventListener('keydown',e=>{
+  if(!['Enter',' '].includes(e.key))return;
   const g=e.target.closest('g.room');if(!g)return;
-  const name=(g.dataset.t||'').split('·')[0].trim();
-  stage.querySelectorAll('.af49-room-highlight').forEach(el=>el.classList.remove('af49-room-highlight'));
-  g.classList.add('af49-room-highlight');viewer.querySelector('#af49ViewerNote').textContent=name||'Ambiente selezionato';
+  e.preventDefault();selectRoom(g);
  });
  document.addEventListener('fullscreenchange',()=>{
   if(!document.fullscreenElement&&!viewer.hidden){
