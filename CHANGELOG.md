@@ -386,3 +386,8 @@
 - La documentazione disponibile non permette di attribuire modifiche specifiche a questa versione.
 
 *Fonte: Documentazione e pacchetti consultabili non sufficienti*
+
+## V55 - Tutorial a ritaglio naturale (24 novembre 2026)
+
+- Interfaccia reale responsive senza zoom forzato; evidenziazione progressiva dei comandi e ritorno morbido del footer.
+- Nessuna modifica alle funzionalità delle altre pagine, dati o risorse originali.

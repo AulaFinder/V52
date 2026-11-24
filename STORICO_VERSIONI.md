@@ -403,3 +403,6 @@ Le note sono ricostruite a partire dai file/rapporti originali contenuti negli a
 
 ## V54 (23 novembre 2026)
 Tutorial più leggibile con zoom per tappa, Versioni aggiornate, fullscreen piantine con pinch e azioni selezione aula.
+
+### V55 - 24 novembre 2026
+Tutorial con ritaglio nativo, guida interattiva ai controlli e footer con ritorno delicato. La Home è invariata rispetto alla V54.

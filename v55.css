@@ -1,0 +1,55 @@
+/* V55: inquadratura fedele e responsive del sito reale, nessuno zoom forzato. */
+#tutorialPage .af51-live-frame.af55-natural-crop{
+ position:relative!important;overflow:hidden!important;
+ height:clamp(470px,66dvh,720px)!important;min-height:0!important;
+ background:#f7fafb;
+}
+#tutorialPage .af55-natural-crop #af51LiveFrame{
+ display:block!important;position:static!important;inset:auto!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ height:100%!important;margin:0!important;border:0!important;
+ transform:none!important;transition:none!important;will-change:auto!important;
+ background:#fff;
+}
+#tutorialPage .af54-guide-controls{display:none!important}
+#tutorialPage .af55-guide-toolbar{
+ display:flex;align-items:center;gap:10px;padding:10px 13px;
+ border-top:1px solid #ccdce0;background:#e9f4f2;color:#193d46;
+ font-size:13px;line-height:1.45;
+}
+#tutorialPage .af55-guide-icon{font-weight:800;color:#167d77;font-size:20px}
+#tutorialPage #af55GuideHint{flex:1;min-width:0;overflow-wrap:anywhere}
+#tutorialPage #af55GuideRefocus{
+ flex:0 0 auto;min-height:40px;padding:8px 12px;
+ border:1px solid #558d91;border-radius:8px;
+ background:#fff;color:#174b55;cursor:pointer;font-weight:750;
+}
+#tutorialPage #af55GuideRefocus:focus-visible{outline:3px solid #207aa4;outline-offset:2px}
+html[data-theme="dark"] #tutorialPage .af55-guide-toolbar{background:#193b43;color:#f0fffd;border-color:#416875}
+html[data-theme="dark"] #tutorialPage #af55GuideRefocus{background:#274e5d;color:#fff;border-color:#8fbfc4}
+@media(max-width:500px){
+ #tutorialPage .af51-live-frame.af55-natural-crop{height:clamp(440px,64dvh,650px)!important}
+ #tutorialPage .af55-guide-toolbar{gap:6px;padding:7px 9px;font-size:12px;flex-wrap:wrap}
+ #tutorialPage #af55GuideRefocus{min-height:40px;font-size:12px;padding:7px 8px}
+}
+/* La demo evidenzia solo il controllo realmente da usare, senza oscurare il sito. */
+.af55-inside-tour .af55-guide-target{
+ outline:3px solid #137e89!important;outline-offset:3px!important;
+ box-shadow:0 0 0 6px #e3f8ed!important;
+ border-radius:7px!important;position:relative;z-index:2;
+ animation:af55-guide-breathe 1.9s ease-in-out infinite;
+}
+.af55-inside-tour #finderLaunch.af55-guide-target{z-index:60;position:fixed}
+.af55-inside-tour #finderPanel .af55-guide-target{z-index:4}
+.af55-inside-tour svg g.room.af55-guide-target{filter:drop-shadow(0 0 3px #0e8594);outline:none!important}
+@keyframes af55-guide-breathe{
+ 0%,100%{box-shadow:0 0 0 4px #d7f3ed}
+ 50%{box-shadow:0 0 0 8px #9ce2db}
+}
+@media(prefers-reduced-motion:reduce){.af55-inside-tour .af55-guide-target{animation:none!important;transition:none!important}}
+/* Nella sola tappa Finder l'orb resta interamente dentro il ritaglio, ben visibile.
+   Il sito normale non viene riposizionato. */
+.af55-inside-tour[data-af52-demo-step="4"] #finderLaunch.af55-guide-target{
+ bottom:clamp(110px,24dvh,175px)!important;
+ right:clamp(16px,14vw,90px)!important;
+}

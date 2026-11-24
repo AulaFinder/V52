@@ -5,7 +5,7 @@
  const reduced=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
  // Demo LIVE: load the real site in the same section, not a mockup or external URL.
  const frame=$('af51LiveFrame'),jump=$('af51LiveJump'),tip=$('af51LiveTip');
- const isNestedDemo=new URLSearchParams(location.search).has('af51tutorial');
+ const isNestedDemo=new URLSearchParams(location.search).has('af51tutorial')||window.frameElement?.id==='af51LiveFrame';
  if(frame&&!isNestedDemo&&frame.dataset.liveSrc)frame.src=frame.dataset.liveSrc; // never recursively embed the tutorial inside itself
  if(frame&&isNestedDemo)frame.removeAttribute('src');
  const targets=['home','orari','orari','navigator','home','piantina','home'];

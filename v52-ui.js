@@ -33,7 +33,7 @@
     document.querySelector(`#orariPage [data-schedule="${category}"]`)?.click();
    }
    if(activeStep!==4 && $('finderPanel') && !$('finderPanel').hidden){$('finderClose')?.click();}
-   if(activeStep===4 && $('finderPanel')?.hidden){$('finderLaunch')?.click();}
+   // V55: Finder parte chiuso; l'orb viene evidenziato e aperto dall'utente.
    if(activeStep===6){
     requestAnimationFrame(()=>document.querySelector('#siteFooter')?.scrollIntoView({block:'start',behavior:'instant'}));
    }else{
