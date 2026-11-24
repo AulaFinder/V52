@@ -1,0 +1,71 @@
+/* AulaFinder V56 — Ritocchi mirati senza alterare la geometria del navigatore. */
+/* Ripristino dello storico gradiente header, senza l’alone mobile che inseguiva il cursore. */
+.site-header{background:linear-gradient(112deg,#0a4355 0%,#16777b 49%,#2a6390 100%)!important;}
+html[data-theme="dark"] .site-header{background:linear-gradient(112deg,#071e30 0%,#135160 46%,#263f70 100%)!important;}
+.site-header::before{content:none!important;display:none!important;}
+/* Solo colore del percorso: nessun cambiamento a dimensioni, svolte, frecce, marcatori o algoritmo. */
+#navigatorPage .navigator-map .nav-route-polyline{stroke:#b4235a!important;}
+html[data-theme="dark"] #navigatorPage .navigator-map .nav-route-polyline{stroke:#ffda55!important;}
+#navigatorPage .nav-legend-line{background-color:#b4235a!important;}
+html[data-theme="dark"] #navigatorPage .nav-legend-line{background-color:#ffda55!important;}
+/* Barre di ricerca: nessuna cornice aggiuntiva quando si clicca o si digita.
+   Per la tastiera un accento inferiore visibile, non un rettangolo. */
+#homePage .search-form:focus-within,#homePage .search-form:has(:focus-visible),
+#orariPage .schedule-quick-field:focus-within,#orariPage .orari-filter-row:focus-within,
+#navigatorPage .navigator-field:focus-within,
+#versioniPage .versioni-search-label:focus-within,#versioniPage .versioni-toolbar:focus-within,
+#finderPanel .finder-form:focus-within{outline:0!important;box-shadow:none!important;filter:none!important;}
+#homePage #searchInput:is(:focus,:focus-visible),
+#orariPage #scheduleQuickSearch:is(:focus,:focus-visible),
+#navigatorPage :is(#navFrom,#navTo):is(:focus,:focus-visible),
+#versioniPage #versioniSearch:is(:focus,:focus-visible),
+#finderPanel #finderQuestion:is(:focus,:focus-visible){
+ outline:0!important;outline-offset:0!important;box-shadow:none!important;filter:none!important;
+}
+#homePage #searchInput:focus-visible,
+#orariPage #scheduleQuickSearch:focus-visible,
+#navigatorPage :is(#navFrom,#navTo):focus-visible,
+#versioniPage #versioniSearch:focus-visible,
+#finderPanel #finderQuestion:focus-visible{
+ box-shadow:inset 0 -3px 0 #216277!important;
+}
+html[data-theme="dark"] #homePage #searchInput:focus-visible,
+html[data-theme="dark"] #orariPage #scheduleQuickSearch:focus-visible,
+html[data-theme="dark"] #navigatorPage :is(#navFrom,#navTo):focus-visible,
+html[data-theme="dark"] #versioniPage #versioniSearch:focus-visible,
+html[data-theme="dark"] #finderPanel #finderQuestion:focus-visible{
+ box-shadow:inset 0 -3px 0 #9be5db!important;
+}
+/* Banner dell’istruzione: leggibile e di chiara priorità rispetto alla demo. */
+#tutorialPage .af56-guide-toolbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+ padding:13px 16px;background:#dbece9;color:#113845;border-top:1px solid #97b5b4;
+}
+#tutorialPage .af56-guide-copy{display:flex;flex:1 1 230px;flex-direction:column;gap:4px;min-width:0;}
+#tutorialPage .af56-guide-label{font-size:11px;font-weight:900;letter-spacing:.08em;color:#125e64;}
+#tutorialPage #af55GuideHint{font-size:clamp(15px,1.5vw,17px);font-weight:800;line-height:1.35;color:#103741;}
+#tutorialPage .af56-substep-nav{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+#tutorialPage .af56-substep-nav button{display:grid;place-items:center;min-width:44px;min-height:44px;
+ background:#ffffff;color:#145266;border:1px solid #6d9a9e;border-radius:9px;font-size:27px;line-height:1;
+ cursor:pointer;font-weight:800;}
+#tutorialPage .af56-substep-nav button:not(:disabled):hover{background:#c5e0de;}
+#tutorialPage .af56-substep-nav button:disabled{opacity:.35;cursor:not-allowed;}
+#tutorialPage .af56-substep-nav button:focus-visible{outline:2px solid #135d86!important;outline-offset:2px!important;}
+#tutorialPage #af56PhaseCount{min-width:45px;text-align:center;font-size:13px;font-weight:800;color:#24515e;}
+html[data-theme="dark"] #tutorialPage .af56-guide-toolbar{background:#1e4651;color:#f1ffff;border-color:#527a7b;}
+html[data-theme="dark"] #tutorialPage .af56-guide-label{color:#9dede0;}
+html[data-theme="dark"] #tutorialPage #af55GuideHint{color:#f7ffff;}
+html[data-theme="dark"] #tutorialPage .af56-substep-nav button{background:#295968;border-color:#8bbcc0;color:#fff;}
+html[data-theme="dark"] #tutorialPage #af56PhaseCount{color:#d6f8ef;}
+@media(max-width:540px){#tutorialPage .af56-guide-toolbar{gap:8px;padding:11px;}
+ #tutorialPage .af56-guide-copy{flex:1 1 100%;}
+ #tutorialPage .af56-substep-nav{margin-left:auto;}
+ #tutorialPage #af55GuideHint{font-size:15px;}
+}
+/* Guida visiva: un velo leggero su tutto il resto, foro trasparente sul controllo.
+   I veli non prendono MAI il puntatore né il focus. */
+.af56-tour-veil{position:fixed;z-index:2147483000;pointer-events:none;background:rgba(5,25,38,.27);visibility:hidden;}
+.af56-tour-ring{position:fixed;z-index:2147483001;pointer-events:none;visibility:hidden;
+ border:3px solid #f1c045;border-radius:10px;box-shadow:0 0 0 2px #173c50,0 0 15px 4px #f5d876a8;}
+.af55-inside-tour .af55-guide-target{animation:none!important;box-shadow:none!important;outline:none!important;filter:none!important;}
+.af55-inside-tour svg g.room.af55-guide-target{filter:drop-shadow(0 0 4px #dfa834)!important;}
+@media(prefers-reduced-motion:reduce){.af56-tour-ring,.af56-tour-veil{transition:none!important;}}

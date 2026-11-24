@@ -998,12 +998,29 @@
     "version": "V52",
     "title": "Esperienza rifinita",
     "details": [
-      "Tutorial guidato solo con demo reale",
-      "Design aurico uniforme",
-      "Navigatore e Finder ottimizzati",
-      "Admin con panoramica locale"
+      "Design aurico coerente in Home, menu, Orari e footer, con hover a dissolvenza e focus accessibile.",
+      "Tutorial unificato: sette passaggi nella demo reale, navigazione guidata e FAQ riallineate.",
+      "Navigatore: instradamento più regolare al centro dei corridoi e marcatori centrati nelle aule.",
+      "Finder: animazioni più fluide, orb in ciclo continuo e blocco posizione sul dispositivo.",
+      "Piantine a schermo intero più centrate, con tipografia e colori originali ripristinati.",
+      "Versioni: ricerca con corrispondenze in anteprima, 52 rilasci e miniature complete.",
+      "Admin: panoramica locale delle classi, aule, docenti e modifiche; preparazione GitHub Pages."
     ],
-    "preview": "assets/versioni-home/V52.webp"
+    "source": "Implementazione V52; README_V52.md e VERIFICHE_V52.md",
+    "documented": true,
+    "preview": "assets/versioni-home/V52.webp",
+    "changedFiles": [
+      "index.html",
+      "tutorial-v52.js",
+      "v52-ui.js",
+      "v52.css",
+      "navigator.js",
+      "versioni.js",
+      "finder.js",
+      "v49-ui.js",
+      "sw.js",
+      "admin-ui.js"
+    ]
   },
   {
     "number": 53,
@@ -1016,7 +1033,17 @@
       "Piantine con azioni in testata e tutorial del sito reale vincolato alla tappa.",
       "Verifiche responsive, accessibilità e risorse multimediali originali conservate."
     ],
-    "preview": "assets/versioni-home/V53.webp"
+    "source": "Aggiornamento V53 da base V52 rifatta",
+    "documented": true,
+    "preview": "assets/versioni-home/V53.webp",
+    "changedFiles": [
+      "v53.css",
+      "v53-ui.js",
+      "navigator.js",
+      "piantina.js",
+      "index.html",
+      "sw.js"
+    ]
   },
   {
     "number": 54,
@@ -1038,6 +1065,54 @@
       "v49-ui.js",
       "piantina.js",
       "versioni.js",
+      "sw.js"
+    ]
+  },
+  {
+    "number": 55,
+    "version": "V55",
+    "title": "Tutorial a ritaglio e guida interattiva",
+    "details": [
+      "Il tutorial mostra la parte interessata del sito alle dimensioni reali, anche su smartphone, senza zoom artificiale.",
+      "I controlli da usare vengono evidenziati in sequenza finché l’utente non interagisce, compreso Finder.",
+      "Nella tappa Footer lo scorrimento è libero e la visualizzazione torna dolcemente al footer dopo una breve pausa.",
+      "Tutte le sezioni e i dati della V54 restano invariati."
+    ],
+    "source": "Intervento V55 sul tutorial della V54",
+    "documented": true,
+    "preview": "assets/versioni-home/V55.webp",
+    "changedFiles": [
+      "index.html",
+      "v55.css",
+      "v55-tutorial.js",
+      "v52-ui.js",
+      "v51-ui.js",
+      "versioni.js",
+      "sw.js"
+    ]
+  },
+  {
+    "number": 56,
+    "version": "V56",
+    "title": "Tutorial guidato e percorso ben visibile",
+    "details": [
+      "Il tutorial evidenzia il controllo da usare oscurando leggermente il resto della demo e mostra istruzioni più evidenti.",
+      "Le frecce consentono di avanzare e tornare nei sottopassaggi, senza il vecchio pulsante Rimetti a fuoco.",
+      "Nella sezione Disponibilità si passa da Aule libere a Professori liberi senza dover scegliere giorno e ora.",
+      "Eliminati i rettangoli colorati durante la ricerca, mantenendo un indicatore discreto per la navigazione da tastiera.",
+      "Ripristinato il gradiente statico nell’header e reso più contrastato soltanto il colore del tracciato del Navigatore.",
+      "Conservati percorsi, Finder, piantine, orari e tutte le altre funzionalità della V55."
+    ],
+    "source": "Aggiornamento mirato V56 sulla base della V55",
+    "documented": true,
+    "preview": "assets/versioni-home/V56.webp",
+    "changedFiles": [
+      "index.html",
+      "v56.css",
+      "v56-tutorial.js",
+      "tutorial-v52.js",
+      "versioni.js",
+      "versioni-data.json",
       "sw.js"
     ]
   }

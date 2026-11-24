@@ -12,7 +12,7 @@
  const actions=[
   'Cerca una classe, un docente o un’aula nella Home della demo.',
   'Apri Orari e scegli una classe, un’aula o un docente.',
-  'Apri Orari → Aule libere o Professori liberi e seleziona la fascia.',
+  'Apri Orari → Aule libere o Professori liberi e consulta la disponibilità mostrata.',
   'Imposta la partenza e la destinazione nel Navigatore reale.',
   'Apri Finder toccando l’orb luminoso, poi scrivi una domanda.',
   'Cambia piano e seleziona le stanze delle piantine originali.',

@@ -1,3 +1,11 @@
+## V56 - Tutorial guidato e migliore contrasto (24 novembre 2026)
+- Disponibilità guidata senza obbligo di selezionare giorno e ora.
+- Istruzioni più marcate, evidenziazione con leggero oscuramento e frecce dei sottopassaggi.
+- Barra di ricerca senza cornici colorate superflue, mantenendo focus da tastiera a sottolineatura.
+- Solo colore del percorso del Navigatore aggiornato; geometria e comportamento invariati.
+- Ripristino del gradiente statico nell’header, senza effetti luminosi extra.
+- Tutte le altre funzioni della V55 mantenute.
+
 # V54 · Tutorial e piantine più intuitivi (23 novembre 2026)
 
 - Tutorial: schede dei passaggi con dimensioni e a capo corretti anche a 320 px; inquadratura della demo reale ingrandita sulla funzione illustrata, con +/−/Adatta.

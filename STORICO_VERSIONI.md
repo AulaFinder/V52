@@ -1,3 +1,8 @@
+### V56 - 24 novembre 2026
+- Tutorial con istruzioni rafforzate, leggero oscuramento del resto, frecce per i sottopassaggi e disponibilità senza richiesta di giorno/ora.
+- Colore del percorso Navigatore più contrastato, mantenendo il resto identico.
+- Ricerca senza rettangoli di focus aggiuntivi e gradiente statico ripristinato nell’header.
+
 ## V53 · Essenziale e accessibile
 - Rimosso l'eccesso di animazioni e gradienti a favore di colori pieni e maggior contrasto.
 - Percorsi con geometrie del corridoio e svolte a 90°, punta del pin centrata sull'aula.
