@@ -1,0 +1,414 @@
+AULAFINDER – REGISTRO FORMALE DEI REQUISITI E DELLE VERSIONI
+Edizione V58 | 28 novembre 2026 | Progetto scolastico
+
+1. FINALITÀ DEL PROGETTO
+AulaFinder è un sito web destinato alla consultazione degli orari scolastici, alla ricerca di classi, aule e docenti, alla verifica della disponibilità prevista, alla consultazione delle piantine e alla visualizzazione di percorsi interni. Il progetto include Finder, un assistente locale basato sui dati caricati, il tutorial interattivo, la cronologia delle versioni e una sezione Admin per modifiche locali.
+
+2. ARCHITETTURA, LIMITI E ASSUNZIONI
+• Applicazione web prevalentemente statica basata su HTML, CSS, JavaScript e file di dati locali, pubblicabile con GitHub Pages mediante HTTPS.
+• Gli orari caricati sono predefiniti e non costituiscono una fonte di aggiornamenti in tempo reale; eventuali modifiche dell’ultimo momento non sono indicate.
+• Finder utilizza logiche locali e i dati disponibili: non equivale a un modello generativo e non può garantire informazioni non registrate.
+• La protezione Admin realizzata sul client non garantisce segretezza dei codici né gestione sicura dei permessi; per funzioni condivise occorrono autenticazione lato server, database e API.
+• I percorsi rappresentano un supporto schematico: l’effettiva accessibilità delle porte, delle scale e delle barriere richiede verifica fisica.
+• Le anteprime storiche vengono conservate come risorse disponibili; dove manca una prova dell’originalità non deve essere dichiarata una corrispondenza certificata.
+• Per la pubblicazione usare il contenuto della cartella del sito come radice del repository e verificare GitHub Pages su branch main, cartella /(root).
+
+3. REQUISITI FUNZIONALI DEL RILASCIO V58
+V58-01. Allineare l’interruttore del tema ai selettori Giorno e Ora su computer e riposizionarlo accanto a Home sui dispositivi mobili, senza sovrapposizioni.
+V58-02. Stabilizzare l’animazione del titolo «AulaFinder» nell’intestazione, impedendo lo spostamento verticale dell’orbita durante il passaggio del puntatore.
+V58-03. Eliminare i contorni arancioni residui durante apertura e chiusura dell’ingrandimento del logo.
+V58-04. Rimuovere i tooltip testuali invasivi che coprono il marchio durante l’interazione con il logo.
+V58-05. Sostituire il simbolo generico dell’accesso Admin con un pittogramma SVG originale, coerente con l’identità visiva del progetto.
+V58-06. Applicare ai ritratti dei creatori una traccia luminosa progressiva che percorra il bordo circolare durante hover, focus e selezione.
+V58-07. Usare il gradiente distintivo AulaFinder come sfondo della sezione dedicata ai creatori, mantenendo inalterate le fotografie.
+V58-08. Formulare con chiarezza la nota sugli orari: «eventuali cambiamenti dell’ultimo momento non sono indicati».
+V58-09. Rendere il tutorial focalizzato sulla sola funzione pertinente a ciascuna tappa, riducendo la visibilità e l’accesso alle altre parti del sito.
+V58-10. Ripristinare l’icona del comando di fissaggio di Finder anche durante la guida interattiva.
+V58-11. Eliminare l’ulteriore rettangolo di focus interno ai campi di ricerca, evitando di alterare lo stato grafico dei pulsanti contenitori.
+V58-12. Far sì che il posizionamento fissato di Finder si adatti proporzionalmente al cambio di sezione, senza conservare coordinate assolute inappropriate.
+V58-13. Impedire che Finder si sposti a sinistra al momento del fissaggio della sua posizione.
+V58-14. Correggere la transizione fra le dimensioni normali e lo schermo intero di Finder senza chiusure intermittenti, scomparse o riaperture obbligatorie.
+V58-15. Completare l’ultima tappa del tutorial con indicazioni su tema, preferiti, cronologia, titolo animato e logo ingrandibile.
+V58-16. Aumentare visibilità e contrasto del comando a forma di occhio nell’accesso Admin, con stato visivo coerente all’attivazione della visualizzazione della password.
+V58-17. Rimuovere dalla sezione Admin la frase «Lezione letta dagli orari attualmente caricati».
+V58-18. Rifinire graficamente l’accesso Admin, centrando il testo e mantenendo uno stile coerente con i controlli del sito.
+V58-19. Evitare la ripetizione del nome della materia nel dettaglio delle aule quando essa è già presente nel titolo.
+V58-20. Mantenere il menu «Orari» evidenziato anche quando si espande il relativo sottomenu con la freccia laterale.
+V58-21. Nelle piantine normali, mostrare vicino all’aula selezionata i comandi «Portami qui» e «Vedi orario», senza coprire i comandi generali.
+V58-22. Garantire che le piantine a schermo intero conservino grafica, colori e possibilità di selezionare le aule, con le stesse funzioni della visualizzazione normale.
+V58-23. Conservare il colore e l’aspetto dell’aula selezionata anche nel passaggio al visualizzatore a schermo intero, eliminando etichette sovrapposte non necessarie.
+V58-24. Far arrivare il segmento del percorso riferito alla palestra fino al centro della stanza, senza fermarsi sul suo bordo.
+V58-25. Mantenere il tracciato del navigatore il più possibile centrato nei corridoi e coerente con la geometria della piantina, verificando i raccordi.
+V58-26. Rimuovere dal visualizzatore delle versioni storiche la simulazione della modalità scura.
+V58-27. Estendere l’animazione di evidenziazione della scheda di versione attuale ai pulsanti delle altre versioni.
+V58-28. Rendere cliccabile il riquadro «Versione attuale» nella testata dell’archivio, aprendo la relativa voce e la sua anteprima con un effetto luminoso.
+V58-29. Rimuovere il contatore ridondante «57 versioni su 57» dalla sezione Versioni.
+V58-30. Mantenere descrizioni dettagliate degli aggiornamenti e verificare la fedeltà delle anteprime disponibili, senza modificare arbitrariamente i file storici.
+V58-31. Controllare l’attendibilità delle risposte di Finder rispetto ai dati scolastici disponibili, distinguendo gli esempi dalle informazioni certe.
+V58-32. Conservare i suggerimenti di domande a comparsa e aggiungere un comando opzionale per consultare l’elenco completo degli esempi.
+V58-33. Eseguire verifiche di qualità, controlli responsive e regressione su desktop e mobile; modificare soltanto le funzionalità richieste e documentare i limiti del collaudo.
+
+4. REQUISITI CUMULATIVI DEL RILASCIO V57
+I requisiti riportati di seguito ricostruiscono le richieste del rilascio precedente. In caso di conflitto, prevalgono le scelte esplicitamente aggiornate nella V58.
+V57-01. Eliminare i contorni arancioni indesiderati durante la selezione di elementi dell’interfaccia, conservando focus accessibile.
+V57-02. Allineare il cambio tema ai controlli del giorno e dell’ora.
+V57-03. Eliminare le linee decorative azzurre sotto i campi di ricerca e digitazione durante il focus.
+V57-04. Uniformare le animazioni del titolo AulaFinder tra intestazione e footer.
+V57-05. Limitare l’animazione hover del logo a un lieve ingrandimento indicativo della cliccabilità.
+V57-06. Migliorare il contrasto cromatico delle pagine risultato e dei profili docenti con tonalità azzurre e ciano.
+V57-07. Ripristinare la posizione pertinente del tutorial quando si avanza alla tappa successiva.
+V57-08. Escludere preferiti e cronologia dalla demo del tutorial.
+V57-09. Consentire il ritorno alla Home durante la prima tappa del tutorial.
+V57-10. Applicare all’ambiente guidato le stesse migliorie di contrasto dei risultati docenti.
+V57-11. Impedire che l’utente esca indebitamente dalle funzioni consentite in una tappa.
+V57-12. Far proseguire automaticamente la prima tappa dopo un clic su «Cerca» o su un risultato.
+V57-13. Rimuovere la descrizione tecnica della demo autentica dal tutorial pubblico.
+V57-14. Estendere al tutorial le animazioni coerenti del marchio e le principali correzioni grafiche.
+V57-15. Guidare separatamente nelle sezioni Orari Classi, Aule e Professori.
+V57-16. Guidare separatamente nei pannelli Aule libere e Professori liberi.
+V57-17. Consentire nella demo i controlli generali di tema, giorno, ora e interazione con il marchio.
+V57-18. Correggere il raccordo del percorso quando partenza o arrivo coincide con la palestra.
+V57-19. Permettere a Finder di essere trascinato e fissato durante la sua tappa del tutorial.
+V57-20. Mostrare domande suggerite di Finder come frasi cicliche a comparsa.
+V57-21. Impedire dal tutorial Piantine la navigazione non guidata verso Orari e Navigatore, mantenendo un ritorno possibile.
+V57-22. Consentire sempre di spostare Finder affinché non copra la zona interessata.
+V57-23. Riposizionare le azioni «Portami qui» e «Vedi orario» vicino all’aula selezionata.
+V57-24. Rimuovere dal tutorial pubblico il riferimento alla sezione Admin non inclusa.
+V57-25. Semplificare e migliorare la presentazione introduttiva della guida.
+V57-26. Inserire la visita alle Versioni fra le tappe del tutorial.
+V57-27. Riscrivere le risposte delle FAQ in modo comprensibile e diretto.
+V57-28. Ampliare il catalogo delle domande riconosciute da Finder, migliorandone l’interpretazione locale.
+V57-29. Fissare Finder a un punto della pagina, evitando che resti agganciato al viewport durante lo scorrimento.
+V57-30. Eliminare chiusure e riaperture inattese quando Finder cambia dimensione.
+V57-31. Aggiungere transizioni fluide per le dimensioni di Finder.
+V57-32. Spiegare le sigle dei docenti in ogni sezione pertinente, usando un esempio di cognome e nome.
+V57-33. Allineare il contorno evidenziato nel tutorial alle dimensioni effettive dei controlli.
+V57-34. Uniformare l’iconografia delle frecce nei menu di Finder.
+V57-35. Posizionare Versioni come ultima voce nel menu e Orari dopo Tutorial.
+V57-36. Illustrare nel tutorial Footer tema, cronologia, preferiti, marchio animato e ingrandimento logo.
+V57-37. Mantenere identica e selezionabile la piantina in fullscreen, con tutte le azioni delle aule.
+V57-38. Centrare i percorsi nei corridoi e raggiungere il centro delle aule, palestra inclusa.
+V57-39. Aumentare la luminanza della linea gialla del percorso del navigatore.
+V57-40. Centrare le frecce e rifinire i pulsanti del navigatore passo-passo.
+V57-41. Rimuovere il logo sovrapposto in alto a destra nelle anteprime delle Versioni.
+V57-42. Eliminare riferimenti tecnici ai file sorgente nelle descrizioni pubbliche delle versioni.
+V57-43. Eliminare messaggi ridondanti sulla provenienza delle anteprime storiche.
+V57-44. Migliorare la qualità delle anteprime e conservarne la coerenza con le versioni originali.
+V57-45. Consentire una visualizzazione scura simulata delle versioni storiche (requisito successivamente superato nella V58).
+V57-46. Allineare e ridisegnare l’icona di fullscreen nelle anteprime.
+V57-47. Rifinire i pulsanti di zoom e fullscreen delle anteprime, centrando le icone.
+V57-48. Aggiungere un’animazione luminosa alla selezione della versione attuale.
+V57-49. Eliminare la materia fra parentesi accanto al docente nelle tabelle quando è già indicata nell’intestazione.
+V57-50. Rifinire le animazioni dei ritratti dei creatori senza modificare i file avatar.
+V57-51. Non esporre in chiaro il codice Admin nel sorgente, dichiarando i limiti della protezione client-side.
+V57-52. Usare un simbolo rappresentativo per il pulsante Admin.
+V57-53. Ridisegnare la schermata di accesso Admin per computer, eliminando la tastiera virtuale.
+V57-54. Eliminare le frasi tecniche dalla schermata di accesso; usare i comandi «Entra» e «Esci».
+V57-55. Animare l’icona di visibilità della password e il simbolo di accesso riservato.
+V57-56. Mostrare messaggi distinti di accesso negato e consentito.
+V57-57. Allineare la parte interna dell’Admin alle nuove scelte grafiche.
+V57-58. Prevedere modifiche condivise e in tempo reale da Admin (necessità di backend non presente nel sito statico).
+V57-59. Ottimizzare il caricamento senza conversioni aggressive o perdita di risorse originali.
+V57-60. Eseguire un collaudo completo e documentare chiaramente i limiti delle verifiche desktop, mobile e accessibilità.
+
+5. STORICO EVOLUTIVO DEL PROGETTO (V1–V58)
+V1 – La prima AulaFinder
+  • Home responsive con ricerca di aule, classi e sigle dei professori.
+  • Orari lunedì–venerdì, dalla 1ª alla 6ª ora, integrati nei dati locali.
+  • Menu laterale, cronologia, logo ingrandibile; Piantina e Tutorial ancora da sviluppare.
+V2 – Ricerca e consultazione PDF
+  • Logo ritagliato e testi della sezione autori aggiornati.
+  • Scheda giornaliera dopo una ricerca e accesso all’orario completo.
+  • Collegamento agli orari PDF per il solo elemento cercato, dove disponibile.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V3 – Orari leggibili nel sito
+  • Orari consultabili direttamente nelle pagine senza aprire PDF.
+  • Icone SVG uniformate fra risultati ed elenchi.
+  • Mantenuta la ricerca per codice, classe e sigla docente.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V4 – Immagini e identità visiva
+  • Aggiornamento degli asset grafici conservando i contenuti e i dati.
+  • Logo originale con trasparenza preservata; la struttura della pagina resta riconoscibile.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css.
+V5 – Rifiniture dell’interfaccia
+  • Interventi su HTML, CSS e JavaScript riscontrati nel pacchetto originale.
+  • Resta operativa la ricerca e la consultazione degli orari integrati nel sito.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V6 – Cronologia controllabile
+  • Aggiunto il pulsante per cancellare la cronologia con conferma.
+  • Pulsante disabilitato quando non ci sono ricerche da cancellare.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css.
+V7 – Nuovo logo e rifiniture mobile
+  • Logo ufficiale ad alta risoluzione mantenendo il disegno originario.
+  • Verifiche sull’interfaccia mobile e piccoli interventi di accessibilità.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V8 – Sigle e nominativi: due varianti
+  • Conservate due varianti storiche: V8a e V8b.
+  • Materia affiancata alla sigla o al nome del docente, anche negli orari.
+  • Unificazione dei riferimenti allo stesso laboratorio di informatica.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, data.js.
+V9 – Docenti, materie e ordinamenti
+  • Aggiornamenti ai dati relativi alle sigle docente e alle materie.
+  • Palestra e orari con visualizzazione delle classi coinvolte.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, data.js.
+V10 – Orbita animata nel marchio
+  • Orbita luminosa attorno alla scritta Aula, con filamenti, sfera e bagliori.
+  • Mantenuti i dati scolastici e il logo originale.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css.
+V11 – Home e finestra del logo
+  • Pulsante Home nel menu e nell’intestazione mobile.
+  • Resa del logo ingrandito migliorata per i browser mobili.
+  • Nota: nell’archivio il codice principale è sostanzialmente identico alla V10.
+V12 – Le prime cinque piantine
+  • Sezione Piantina interattiva: sotterraneo, terra, primo, secondo e terzo piano.
+  • Filtri per piano e collegamenti dalle ricerche verso le mappe.
+  • Simboli e nomi degli ambienti consultabili sulle piantine.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, script.js, data.js, piantina.js, piantina.css.
+V13 – Focus automatico sulle aule
+  • «Vedi piantina» centra l’aula cercata nel punto visibile dello schermo.
+  • Su smartphone spostamento orizzontale della piantina quando necessario.
+  • Schede risultati e selezioni più scorrevoli.
+  • Componenti aggiornati rilevati dal confronto del codice: style.css, script.js, piantina.js, piantina.css.
+V14 – Rifiniture delle piantine
+  • Aggiornamento dell’interazione sulla piantina e della struttura HTML.
+  • La versione conserva i cinque piani già introdotti, con modifiche a JavaScript e CSS della mappa.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, script.js, piantina.css.
+V15 – Il footer del progetto
+  • Footer responsive ispirato alle bozze Excalidraw del team.
+  • Ritratti degli autori e informazioni sul progetto.
+  • Footer visibile in fondo alle pagine del sito.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, piantina.css, footer.js.
+V16 – Migliorie al footer e al layout
+  • Interventi puntuali all’HTML e al CSS rispetto alla V15.
+  • Conservati footer, ricerca, orari e piantine.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css.
+V17 – Interazioni e layout rifiniti
+  • Aggiornamento del codice della ricerca/interfaccia e dei fogli di stile.
+  • Resta il footer completo introdotto nella serie V15–V16.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V18 – Pulsante Torna su
+  • Pulsante per tornare all’inizio della pagina dopo lo scorrimento.
+  • Migliorate le interazioni del layout e del codice client.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V19 – Selettori meno invasivi
+  • Selezione di giorno e ora senza evidenziazioni rosso/arancione.
+  • Intervento circoscritto allo stile; gli orari rimangono invariati.
+  • Componenti aggiornati rilevati dal confronto del codice: style.css.
+V20 – AulaFinder diventa PWA
+  • Manifesto, service worker e icone per installazione su Android e iPhone.
+  • Cache locale per consultazione offline dei contenuti statici.
+  • Il sito resta utilizzabile anche dal browser.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, sw.js, pwa.js.
+V21 – Accessibilità e controlli
+  • Focus da tastiera reso coerente con la palette di AulaFinder.
+  • Altri ritocchi a struttura, piantine e cache PWA.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, piantina.css, sw.js.
+V22 – Metadati e navigazione accessibile
+  • Metadati per anteprime social e indicizzazione delle pagine.
+  • Collegamento per saltare direttamente al contenuto principale.
+  • Rifiniture HTML e CSS per l’accessibilità.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, piantina.css, sw.js.
+V23 – Ingresso T.07 e scale
+  • Ingresso di T.07 integrato nella piantina con simbolo selezionabile.
+  • Scale e ascensore vicini agli ambienti rappresentati sulla mappa.
+  • Miglioramenti alle interazioni da mouse e tastiera.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, piantina.js, piantina.css, sw.js.
+V24 – Nasce il Navigatore
+  • Ricerca del percorso tra due aule con piantine e cambi piano.
+  • Selezione di partenza e arrivo tramite campi o direttamente dalla mappa.
+  • Gestione di scale e ascensore; itinerari schematici, non per emergenze.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, navigator.js, sw.js.
+V25 – Navigatore e orari più chiari
+  • Sottomenu Orari con categorie semplificate.
+  • Presentazione dei Professori liberi in base a giorno e ora.
+  • Affinamenti della selezione e dei simboli del Navigatore.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, piantina.js, navigator.js, sw.js.
+V26 – Dashboard Orari
+  • Orari riorganizzati in un’unica pagina con categorie e filtri.
+  • Ritocchi limitati alla dashboard senza modificare i dati originari.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, sw.js.
+V27 – Ricerca intelligente e preferiti
+  • Ricerca con normalizzazione di codici e sigle e suggerimenti.
+  • Preferiti e cronologia gestibili dall’interfaccia.
+  • Navigatore collegato più strettamente ai risultati della ricerca.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, piantina.css, navigator.js, sw.js.
+V28 – Ricerca dedicata negli Orari
+  • Ricerca rapida per classi, aule e professori con tolleranza alle digitazioni.
+  • Stella dei preferiti nei risultati, gestione della cronologia.
+  • Percorso mostrato solo dopo il comando di calcolo.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, navigator.js, sw.js.
+V29 – Suggerimenti specifici del piano
+  • Suggerimenti del Navigatore separati per piano, evitando confusione tra codici simili.
+  • Supporto a stanze con forma SVG irregolare come il laboratorio 2.14.
+  • Animazione della finestra logo e controllo del tema rifiniti.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, navigator.js, sw.js.
+V30 – Percorsi all’interno dei corridoi
+  • Correzione delle misure SVG quando la piantina sorgente è nascosta.
+  • Calcolo vincolato ai corridoi disegnati, evitando segmenti inventati.
+  • Ricerca Orari e menu mobile migliorati.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, navigator.js, sw.js.
+V31 – Disponibilità a tutta larghezza
+  • Layout delle disponibilità a tutta larghezza, senza riepilogo laterale duplicato.
+  • Adeguamenti CSS, HTML e JavaScript rispetto alla V30.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js.
+V32 – Collegamenti tra piani leggibili
+  • Marcatore del cambio piano visibile sia all’entrata sia all’uscita.
+  • Navigatore e legenda più coerenti anche nei percorsi in discesa.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, navigator.js, sw.js.
+V33 – Preferiti e simboli essenziali
+  • Stella dei preferiti alleggerita, senza sfondo ridondante.
+  • Ritocchi ai marcatori e alla legenda del percorso.
+  • Componenti aggiornati rilevati dal confronto del codice: style.css, navigator.js, sw.js.
+V34 – La Palestra da due piani
+  • Palestra raggiungibile attraverso i collegamenti del piano terra e del sotterraneo.
+  • Percorsi ottimizzati per ridurre passaggi ravvicinati ai muri.
+  • Ritocchi alle ore mostrate e al menu mobile.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, navigator.js, sw.js, loading.js.
+V35 – Video di apertura
+  • Filmato originale all’avvio del sito con immagine di fallback.
+  • Adattamento grafico al formato smartphone.
+  • Cache PWA aggiornata.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, style.css, script.js, sw.js.
+V36 – Piantine ruotate e percorsi più fluidi
+  • Piantine ruotate di 180° con testo e simboli leggibili.
+  • Tracciati più ortogonali e con meno svolte.
+  • Menu Orari mobile con freccia indipendente.
+V37 – Riallineamento delle stanze
+  • Riallineamento di box, testi e icone dopo la rotazione delle piantine.
+  • Corretto il posizionamento dei simboli nei locali più grandi, come la Palestra.
+  • Intervento circoscritto alla resa grafica delle mappe.
+V38 – Overlay delle piantine rivisto
+  • Rifacimento della gestione delle etichette e delle icone nelle piantine.
+  • Contenuti centrati nei riquadri e mantenuta la rotazione.
+  • Questa versione è documentata nel rapporto originale VERIFICHE_V38.md.
+V39 – Ritorno alla geometria originale
+  • Ripristinati i disegni SVG delle piantine senza riscrivere le stanze.
+  • Rotazione completa di 180° e contro-rotazione dei singoli ambienti.
+  • Niente overlay ricostruiti che spostano le scritte.
+V40 – Rifiniture dei comandi
+  • Aggiornamento del colore dei tre comandi dell’intestazione.
+  • Intervento CSS e cache, senza cambiare la logica degli orari.
+  • Componenti aggiornati rilevati dal confronto del codice: style.css, sw.js.
+V41 – Pulsanti bianchi in tema chiaro
+  • In modalità chiara, menu, Home mobile e tema allineati al bianco dei selettori.
+  • Tema scuro conservato senza modifiche cromatiche.
+V42 – Allineamenti dell’intestazione
+  • Correzioni all’HTML dell’header e al comportamento della freccia Orari mobile.
+  • Aggiornata la cache per la pubblicazione PWA.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, sw.js.
+V43 – Ritocchi all’intestazione
+  • Interventi mirati alla struttura HTML e alla cache della PWA.
+  • Nel pacchetto non sono presenti note separate sufficienti per una descrizione più specifica.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, sw.js.
+V44 – Icona vettoriale del menu
+  • Simbolo del menu mobile convertito in un’icona SVG.
+  • Ritocco circoscritto all’HTML e alla cache.
+  • Componenti aggiornati rilevati dal confronto del codice: index.html, sw.js.
+V45 – Finder e disponibilità avanzate
+  • Finder locale con risposte dagli orari e microfono dove supportato.
+  • Professori liberi: distinzione tra ore buche e ore senza lezione.
+  • Piantine, ricerca, menu mobile e metadati del sito rifiniti.
+V46 – Marchio e navigatore animati
+  • Sottotitolo del marchio aggiornato con accento menta.
+  • Orbita animata nel titolo AulaFinder e percorsi con gradiente.
+  • Simboli della partenza, del cambio piano e dell’arrivo uniformati.
+V47 – Il primo tutorial interattivo
+  • Tutorial a sei tappe con FAQ e navigazione da tastiera.
+  • Il pin della destinazione viene spostato sul rettangolo dell’aula.
+  • Microanimazioni e bagliori del marchio migliorati.
+V48 – Le versioni diventano consultabili
+  • Nuova sezione Versioni con schede apribili e ricerca.
+  • Tutorial in sette tappe e icone nei titoli.
+  • Finder trascinabile, orb video e contrasto dei messaggi.
+  • Archivio e Caldaie selezionabili dal Navigatore e popup mobile non invasivi.
+V49 – Il salto di qualità
+  • Tutorial completamente autonomo: ricerca, orari, disponibilità, percorso, Finder e mappe interattivi all’interno della guida.
+  • Piantine originali a schermo intero orizzontale su smartphone, senza riposizionare le scritte.
+  • Finder più naturale per zaino, lezioni, aule e aiuto sul sito; finestra spostabile e controlli migliorati.
+  • Animazioni e contrasti affinati, apertura logo con ritorno animato e marchi luminosi su mobile.
+  • Navigatore più leggibile con gradienti animati, marcatori corretti e partenza dalla Palestra.
+  • Cronologia verificata V1–V49 con anteprime delle Home originali.
+  • Verifiche tecniche, note di rilascio e documentazione per GitHub aggiornate.
+  • PWA aggiornata, documentazione GitHub, verifiche desktop/mobile e note sulle funzioni dipendenti dal browser.
+V50 – Orizzonti nuovi
+  • Tema mobile inizialmente sincronizzato con il dispositivo e navigazione intelligente senza salti involontari.
+  • Avvio visivamente uniforme, suoni originali dedicati e animazioni del marchio stabili, su desktop e smartphone.
+  • Finder con pulsante orb luminoso, apertura e chiusura verso il pulsante, senza comando di riduzione ridondante.
+  • Piantine in fullscreen realmente scorrevoli e zoomabili e anteprime storiche apribili a schermo intero.
+  • Navigatore con estremi nel centro delle aule e collegamenti controllati alle corsie, oltre alle informazioni settimanali dei docenti.
+  • Versioni, tutorial, FAQ e scorciatoie Home rifiniti con contrasto e microinterazioni.
+  • Verifiche automatiche V50 e report delle limitazioni documentate.
+V51 – Esperienza completa
+  • Finder con orb originale, apertura silenziosa, finestra ridimensionabile, suggerimenti contestuali e visualizzazione dell'ascolto vocale.
+  • Tutorial con AulaFinder vero incorporato, sette tappe guidate e interazioni reali.
+  • Console Admin locale con accesso, modifica orari, controlli di conflitto, esportazione e importazione.
+  • Ricerca, Versioni, Orari, navigatore, layout e accessibilità migliorati.
+  • Correzione 4AS, mercoledì 4ª ora: Informatica nel laboratorio 1.07; aggiornati tutti gli indici coerenti.
+  • Nessun suono o animazione acqua; archivio storico V1–V50 conservato.
+V52 – Esperienza rifinita
+  • Design aurico coerente in Home, menu, Orari e footer, con hover a dissolvenza e focus accessibile.
+  • Tutorial unificato: sette passaggi nella demo reale, navigazione guidata e FAQ riallineate.
+  • Navigatore: instradamento più regolare al centro dei corridoi e marcatori centrati nelle aule.
+  • Finder: animazioni più fluide, orb in ciclo continuo e blocco posizione sul dispositivo.
+  • Piantine a schermo intero più centrate, con tipografia e colori originali ripristinati.
+  • Versioni: ricerca con corrispondenze in anteprima, 52 rilasci e miniature complete.
+  • Admin: panoramica locale delle classi, aule, docenti e modifiche; preparazione GitHub Pages.
+V53 – Essenziale e accessibile
+  • Interfaccia più essenziale: ridotti gradienti, illuminazioni e animazioni superflue.
+  • Navigatore ortogonale su corridoi verificati dalla piantina, con pin al centro dell'aula.
+  • Comandi rapidi compatti, tema accanto a Home su mobile e selezione attiva degli Orari corretta.
+  • Piantine con azioni in testata e tutorial del sito reale vincolato alla tappa.
+  • Verifiche responsive, accessibilità e risorse multimediali originali conservate.
+V54 – Tutorial e piantine più intuitivi
+  • Tutorial con schede dei passaggi leggibili e zoom mirato sulla funzione mostrata, anche da smartphone.
+  • Fullscreen delle piantine con zoom a due dita e azioni Portami qui / Vedi orario accanto al nome dell’aula selezionata.
+  • Stato delle Versioni corretto e calcolato automaticamente, senza etichette obsolete.
+  • Mantenuti i dati, le immagini e le funzioni della V53.
+V55 – Tutorial a ritaglio e guida interattiva
+  • Il tutorial mostra la parte interessata del sito alle dimensioni reali, anche su smartphone, senza zoom artificiale.
+  • I controlli da usare vengono evidenziati in sequenza finché l’utente non interagisce, compreso Finder.
+  • Nella tappa Footer lo scorrimento è libero e la visualizzazione torna dolcemente al footer dopo una breve pausa.
+  • Tutte le sezioni e i dati della V54 restano invariati.
+V56 – Tutorial guidato e percorso ben visibile
+  • Il tutorial evidenzia il controllo da usare oscurando leggermente il resto della demo e mostra istruzioni più evidenti.
+  • Le frecce consentono di avanzare e tornare nei sottopassaggi, senza il vecchio pulsante Rimetti a fuoco.
+  • Nella sezione Disponibilità si passa da Aule libere a Professori liberi senza dover scegliere giorno e ora.
+  • Eliminati i rettangoli colorati durante la ricerca, mantenendo un indicatore discreto per la navigazione da tastiera.
+  • Ripristinato il gradiente statico nell’header e reso più contrastato soltanto il colore del tracciato del Navigatore.
+  • Conservati percorsi, Finder, piantine, orari e tutte le altre funzionalità della V55.
+V57 – Guida completa e interfaccia rifinita
+  • Tutorial in otto tappe, Finder rifinito, grafica e accessibilità migliorate.
+V58 – Rifiniture di interfaccia e controllo qualità
+  • Correzione di header, tema e focus; eliminazione dei tooltip invasivi.
+  • Palestra raggiungibile visivamente fino al centro della stanza; fullscreen piantine con selezione coerente.
+  • Finder riposizionabile con ancoraggio relativo alla sezione e cambio dimensione senza scomparire.
+  • Versioni: riquadro di testa cliccabile, ricerca e anteprime senza modalità scura.
+  • Tutorial semplificato, accesso Admin e interazioni footer aggiornati.
+  • Registro formale dei requisiti e delle verifiche allegato alla distribuzione.
+
+6. SCHERMATE DI RIFERIMENTO V58
+Figura 1. Animazione del titolo e tooltip del marchio – riferimento: Screenshot 2026-11-28 113912.png
+Figura 2. Tooltip sul logo ingrandibile – riferimento: Screenshot 2026-11-28 114205.png
+Figura 3. Allineamento del tema con i selettori Giorno e Ora – riferimento: Screenshot 2026-11-28 114220.png
+Figura 4. Contorno di focus nel campo di ricerca – riferimento: Screenshot 2026-11-28 114255.png
+Figura 5. Controlli della finestra Finder – riferimento: Screenshot 2026-11-28 115117.png
+Figura 6. Raccordo del percorso Palestra → T.08 – riferimento: Screenshot 2026-11-28 123103.png
+Figura 7. Riquadro versione attuale e lista Versioni – riferimento: Screenshot 2026-11-28 123956.png
+
+7. PIANO DI COLLAUDO
+• Caricamento e integrità del pacchetto: aprire index.html in ambiente controllato, verificare risorse locali e assenza di errori di sintassi JavaScript.
+• Viewport: 320, 390, 768 e 1280 px, per entrambi i temi e per i componenti principali, con controllo dello scorrimento orizzontale.
+• Ricerca: classi, aule e docenti; controllo del contenuto di dettaglio e dei campi di inserimento.
+• Tutorial: successione delle otto tappe, sottopassaggi, focus corretto, possibilità di tornare indietro e blocco delle navigazioni non previste.
+• Navigatore: percorsi campione sulla stessa piantina e tra piani; in particolare Palestra ↔ T.08 e 1.01 → 1.07; verifica visiva dei corridoi e dei pin.
+• Piantine: selezione delle aule, apertura del fullscreen, conservazione del colore, comandi contestuali, zoom e interazione da touch.
+• Finder: ricerca e qualità delle risposte, movimento e fissaggio, cambio sezione, massimizzazione/riduzione, accessibilità dei comandi.
+• Admin: contrasto e leggibilità del login, messaggi di errore, modifica e persistenza locale dei dati, con esplicitazione dei limiti di sincronizzazione.
+• Versioni: coerenza della voce attuale, apertura delle schede, navigazione alle anteprime, integrità delle miniature storiche.
+• Pubblicazione GitHub Pages: verificare con collegamento HTTPS reale caricamento di media, service worker, permessi del microfono e console del browser.
+
+8. ESITI E LIMITI DELLE VERIFICHE DISPONIBILI
+I controlli eseguiti durante la preparazione del pacchetto possono individuare regressioni sintattiche e grafiche su Chromium. Non sostituiscono prove fisiche del percorso, collaudi con tecnologie assistive reali, test integrati sul dominio pubblico né validazione completa dei dati scolastici. I risultati numerici documentati nel file VERIFICHE_V58.md devono essere distinti dai controlli non eseguiti.
+
+9. REGOLE DI AGGIORNAMENTO DOCUMENTALE
+A ogni nuova versione aggiungere il numero progressivo, la data, l’elenco completo dei nuovi requisiti, il rapporto con i requisiti precedenti, le principali modifiche implementate, le verifiche effettuate e i limiti residui. Conservare il contenuto storico senza alterarne retroattivamente il significato.

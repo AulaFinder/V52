@@ -37,7 +37,7 @@
   const current=window.AULAFINDER_DATA.classes[cls.value]?.days?.[day.value]?.[Number(hour.value)-1];
   subject.value=current?.subject||'';teacher.value=current?.teacher||API.baseTeacherCodes[0];room.value=current?.room||Object.keys(API.base.rooms)[0];
   const edit=API.getEdits().some(e=>e.classId===cls.value&&e.day===day.value&&e.hour===Number(hour.value));
-  setMessage(edit?'Questa lezione contiene una modifica locale salvata.':'Lezione letta dagli orari attualmente caricati.');
+  setMessage(edit?'Questa lezione contiene una modifica locale salvata.':'');
  }
  for(const field of [cls,day,hour])field.addEventListener('change',loadLesson);
  function reload(){try{sessionStorage.setItem('aulafinder.admin.return.v51','1');}catch(_){}location.reload();}

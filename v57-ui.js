@@ -24,6 +24,7 @@
    intents.push(`Dove si trova ${room}?`,`Chi usa l’aula ${room} oggi?`,`L’aula ${room} è occupata alla seconda ora?`);
   }
   const seen=new Set(),phrases=intents.filter(q=>{if(seen.has(q))return false;seen.add(q);return true;});
+  window.AulaFinderPromptExamples=phrases.slice();
   let i=0,changing=false;
   const box=document.createElement('div');box.className='af57-prompt-rotator';
   const tip=document.createElement('span');tip.className='af57-prompt-caption';tip.textContent='Prova a chiedere a Finder';
@@ -48,22 +49,7 @@
     e.preventDefault();e.stopImmediatePropagation();
    }
   },true);
-  // La posizione dell'orb è modificabile in tutorial come nel sito principale.
-  const launch=document.getElementById('finderLaunch'),controls=document.querySelector('#finderPanel .finder-window-controls');
-  if(launch&&controls&&!document.getElementById('af52FinderPin')){
-   const pin=document.createElement('button');pin.type='button';pin.id='af52FinderPin';pin.className='finder-window-btn af52-finder-pin';pin.textContent='⌖';
-   pin.setAttribute('aria-label','Fissa Finder qui sulla pagina');pin.title='Fissa Finder in questo punto della pagina';
-   pin.setAttribute('aria-pressed','false');let fixed=false;
-   pin.addEventListener('click',()=>{
-    const r=launch.getBoundingClientRect();fixed=!fixed;
-    document.documentElement.classList.toggle('af52-orb-pinned',fixed);
-    if(fixed){launch.style.left=scrollX+r.left+'px';launch.style.top=scrollY+r.top+'px';launch.style.right='auto';launch.style.bottom='auto';}
-    else{launch.style.left='auto';launch.style.top='auto';launch.style.right=Math.max(8,innerWidth-r.right)+'px';launch.style.bottom=Math.max(8,innerHeight-r.bottom)+'px';}
-    pin.setAttribute('aria-pressed',String(fixed));pin.setAttribute('aria-label',fixed?'Sblocca Finder':'Fissa Finder qui sulla pagina');
-   });
-   launch.addEventListener('pointerdown',e=>{if(fixed)e.stopImmediatePropagation();},true);
-   controls.prepend(pin);
-  }
+  // Finder usa la stessa puntina SVG della pagina normale (v52-ui.js).
  }
  // L'accesso Admin è solo locale: non esporre una promessa di sicurezza server.
  // La Home storica non possiede necessariamente un vero tema scuro: il filtro è etichettato.

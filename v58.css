@@ -1,0 +1,130 @@
+/* AulaFinder V58 - correzioni di interfaccia e guida. Dati e risorse originali conservati. */
+:root{--af58-focus:#8296a0;--af58-control:#143e4c;--af58-gradient:linear-gradient(112deg,#105267,#1d8b89 50%,#3a6796)}
+html[data-theme="dark"]{--af58-focus:#b5c9d5;--af58-control:#e4fffd}
+
+/* Header: il selettore del tema condivide esattamente il fondo di Giorno e Ora. */
+.site-header{position:relative}
+.site-header .header-controls{display:flex;align-items:flex-end!important;gap:12px;margin-left:auto}
+.site-header .header-controls #themeToggle{position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;align-self:flex-end!important;flex:0 0 46px!important;width:46px!important;height:46px!important;margin:0 0 0 12px!important;transform:none!important;display:grid;place-items:center;}
+.site-header .header-controls .header-control select{height:46px!important}
+.site-header .brand-title .brand-aula-orbit,.site-header .brand-title:hover .brand-aula-orbit,.site-header .brand-title:focus-visible .brand-aula-orbit{position:absolute!important;top:50%!important;left:-31%!important;width:157%!important;height:240%!important;transform:translateY(-50%)!important;translate:none!important;filter:drop-shadow(0 0 2px #63fff3b5)!important;}
+.site-header .brand-title:hover .brand-aula-letters,.site-header .brand-title:hover .brand-finder{transform:none!important;filter:none!important;text-shadow:0 0 3px #ffffff90!important}
+.site-header .brand-title{isolation:isolate}
+.site-header .brand-aula-letters{z-index:3!important}
+.site-header .brand-aula-orbit{z-index:2!important}
+/* Il marchio conserva la sua orbita, senza salti sotto il testo su hover. */
+#logoButton,#logoButton:hover,#logoButton:focus,#logoButton:focus-visible,#logoButton.af50-logo-arriving{outline:none!important;box-shadow:none!important;filter:none!important;border-color:#84ced4!important}
+#logoButton::before,#logoButton::after{display:none!important;content:none!important}
+#logoButton img,#logoButton:hover img{transform:none!important;filter:none!important}
+#logoButton:hover{transform:scale(1.055)!important}
+.logo-dialog :focus:not(:focus-visible){outline:none!important}
+/* Focus accessibile neutro su pulsanti; niente bordi arancio persistenti. */
+body :is(button,a,summary,[role="button"]):focus-visible{outline:2px solid var(--af58-focus)!important;outline-offset:3px!important;}
+body :is(button,a,summary,[role="button"]):focus:not(:focus-visible){outline:none!important;}
+body :is(input,textarea,select):focus,body :is(input,textarea,select):focus-visible{outline:none!important;box-shadow:none!important;text-decoration:none!important;filter:none!important}
+body :is(.search-form,.schedule-quick-field,.orari-filter-row,.navigator-field,.versioni-search-label,.versioni-toolbar,.finder-form):focus-within{box-shadow:none!important;outline:none!important;filter:none!important}
+#homePage #searchForm #searchInput:focus-visible,#orariPage #scheduleQuickSearch:focus-visible,
+#navigatorPage #navFrom:focus-visible,#navigatorPage #navTo:focus-visible,
+#versioniPage #versioniSearch:focus-visible,#finderPanel #finderQuestion:focus-visible{box-shadow:none!important;outline:0!important;border:0!important;border-bottom:0!important;text-decoration:none!important;background-color:transparent!important;}
+/* Per la navigazione da tastiera il cursore e il cambiamento tenue della superficie restano distinguibili. */
+body input:focus-visible{caret-color:#147d80}
+
+/* Creatori: gradiente discreto, cerchio animato progressivamente e ritratti intatti. */
+#siteFooter .team-area{background:var(--af58-gradient)!important;border:1px solid #61adb5;border-radius:20px;padding:8px 14px;box-shadow:inset 0 0 20px #061b2b18}
+#siteFooter .team-member{isolation:isolate;border-color:#8bcecb!important;background:#143f52;transform:none;}
+#siteFooter .team-member:hover,#siteFooter .team-member.is-selected,#siteFooter .team-member:focus-visible{transform:scale(1.055)!important;border-color:#b9f4e4!important;box-shadow:0 0 13px #8dfce374!important}
+#siteFooter .af58-member-ring{position:absolute;inset:-8%;width:116%;height:116%;overflow:visible;pointer-events:none;color:#b8ffe6;transform:rotate(-90deg);filter:drop-shadow(0 0 4px #91ffeac0)}
+#siteFooter .af58-member-ring circle{stroke-dasharray:290;stroke-dashoffset:290;transition:stroke-dashoffset .85s cubic-bezier(.15,.83,.21,1)}
+#siteFooter .team-member:is(:hover,.is-selected,:focus-visible) .af58-member-ring circle{stroke-dashoffset:0}
+
+/* Admin: pittogramma originale SVG, visibile sia nel login sia nel footer. */
+#adminPage .af51-admin-lock::before{content:none!important;display:none!important}
+#adminPage .af51-admin-lock{width:72px;height:72px;font-size:initial!important;filter:none!important;animation:af57-secure-pulse 4s ease-in-out infinite}
+.af58-admin-emblem{display:block;width:60px;height:60px;overflow:visible}
+#siteFooter .footer-admin-button{gap:9px;justify-content:center;min-height:44px;padding:8px 15px;border-radius:12px}
+#siteFooter .footer-admin-button .af58-admin-button-icon{display:inline-flex!important;align-items:center;justify-content:center;width:25px;height:25px}
+#siteFooter .footer-admin-button .af58-admin-emblem{width:25px;height:25px}
+#siteFooter .footer-admin-button span:last-child{text-align:center;line-height:1;font-weight:850}
+#adminPage #af51AdminShowPassword{color:#d2f9f8!important;background:#1a4552!important;border:1px solid #94ccc8!important}
+#adminPage #af51AdminShowPassword svg{stroke:#d2f9f8!important;opacity:1!important}
+#adminPage #af51AdminShowPassword[aria-pressed="true"]{background:#2c7581!important}
+#adminPage #af57EyeIcon.is-open{transform:scale(1.08)!important}
+
+/* Piantine: azioni vicine all'aula senza coprire i comandi della testata. */
+#piantinaPage .plan-body>.room-actions{position:absolute!important;z-index:28!important;display:flex!important;flex-direction:column!important;gap:6px!important;padding:9px!important;width:max-content!important;max-width:min(210px,calc(100% - 14px))!important;background:#f1fffa!important;border:1px solid #379caa!important;border-radius:13px!important;box-shadow:0 12px 30px #001c2e55!important;}
+#piantinaPage .plan-body>.room-actions .room-actions-title{font-size:12px!important}
+#piantinaPage .plan-body>.room-actions button{background:#def4ef!important;color:#163f4b!important;white-space:nowrap!important}
+html[data-theme="dark"] #piantinaPage .plan-body>.room-actions{background:#123d4c!important;color:#e5fff9!important;border-color:#79dcd3!important}
+html[data-theme="dark"] #piantinaPage .plan-body>.room-actions button{background:#205967!important;color:#fff!important}
+/* Niente titolo supplementare invasivo nel visualizzatore. */
+#af49MapViewer .af49-map-viewer-note{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap!important}
+#af49MapViewer .sel-clone{pointer-events:none!important}
+#af49MapViewer .af49-map-viewer-bar{flex-wrap:wrap;gap:8px}
+#af49MapViewer .af54-map-selection{gap:8px;align-items:center;flex-wrap:wrap}
+#af49MapViewer .af49-viewer-buttons button{display:inline-grid!important;place-items:center!important;text-align:center!important}
+
+/* Versioni: il riquadro di testa è un vero pulsante, e ogni scheda ha lo stesso effetto. */
+#versioniPage #af58LatestVersion{font:inherit;text-align:center;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;transition:transform .25s ease,filter .25s ease,box-shadow .25s ease;}
+#versioniPage #af58LatestVersion:hover,#versioniPage #af58LatestVersion:focus-visible{transform:translateY(-3px) scale(1.035);filter:brightness(1.17);box-shadow:0 0 0 2px #c2fff5,0 0 27px #4ccaff95;}
+#versioniList .af58-version-entry>summary{transition:background .22s ease,color .22s ease,box-shadow .22s ease,filter .22s ease;}
+#versioniList .af58-version-entry>summary:hover,#versioniList .af58-version-entry>summary:focus-visible{background:linear-gradient(105deg,#0d465a,#126e77 52%,#326c9f)!important;color:#fff!important;box-shadow:0 0 14px #51d9dda8,inset 0 0 0 1px #8ffbeb!important}
+#versioniList .af58-version-entry>summary:hover :is(span,strong),#versioniList .af58-version-entry>summary:focus-visible :is(span,strong){color:#fff!important}
+#versioniList .af58-version-entry.af58-version-flash>summary{animation:af58-version-glow .9s ease-out}
+@keyframes af58-version-glow{0%{box-shadow:0 0 0 0 #faffff;filter:brightness(1.6)}100%{box-shadow:0 0 0 6px transparent;filter:brightness(1)}}
+#versioniList .af57-preview-tools{display:none!important}
+#versioniPage #versioniCount:empty{display:none!important}
+
+/* Finder: la finestra non deve scomparire mentre viene massimizzata o ridotta. */
+#finderPanel:not([hidden]){animation:none!important;transform:none;}
+#finderPanel.is-maximized:not([hidden]){opacity:1!important;visibility:visible!important}
+#finderPanel .af58-prompt-all-toggle{display:block;width:100%;margin:7px 0 0;min-height:38px;border:1px solid #81b9b8;background:transparent;color:inherit;border-radius:9px;font-weight:800;font-size:12px;cursor:pointer}
+#finderPanel .af58-prompt-all-list{max-height:160px;overflow-y:auto;overscroll-behavior:contain;display:grid;gap:5px;margin:6px 0 0;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));}
+#finderPanel .af58-prompt-all-list[hidden]{display:none!important}
+#finderPanel .af58-prompt-all-list button{border:1px solid #8ebebd;background:#f0fbf9;border-radius:7px;padding:6px;color:#16404d;font-size:11px;text-align:left;}
+html[data-theme="dark"] #finderPanel .af58-prompt-all-list button{background:#194553;color:#edfdfb}
+.af52-orb-pinned #finderLaunch{position:absolute!important;transform:none!important;transition:none!important}
+
+/* Tutorial V58: il fotogramma usa i componenti originali ma espone solo la funzione della tappa.
+   Non rimpiccioliamo mai l'intero sito; i pulsanti mantengono le dimensioni originali. */
+html.af58-tour-slice body{background:#e8f4f3!important}
+html.af58-tour-slice .app-shell{max-width:none!important;min-height:0!important;box-shadow:none!important;border:0!important}
+html.af58-tour-slice #sidebar,html.af58-tour-slice #sidebarBackdrop,html.af58-tour-slice #menuButton,html.af58-tour-slice #mobileHomeButton,html.af58-tour-slice #backToTop{display:none!important}
+html.af58-tour-slice .site-header{padding:9px 16px!important;min-height:65px!important;gap:8px!important;flex-wrap:wrap}
+html.af58-tour-slice .site-header .brand{display:none!important}
+html.af58-tour-slice[data-af52-demo-step="7"] .site-header .brand{display:flex!important}
+html.af58-tour-slice .header-controls{flex:1 1 270px;justify-content:center;margin-left:0!important;gap:8px!important}
+html.af58-tour-slice .header-control select{min-width:0!important;width:100%;height:40px!important}
+html.af58-tour-slice #themeToggle{height:40px!important;width:40px!important;flex-basis:40px!important;margin:0 0 0 4px!important}
+html.af58-tour-slice .workspace{min-height:0!important}
+html.af58-tour-slice .main-content{padding:12px!important;margin:0!important;max-width:100%!important;width:100%!important;}
+html.af58-tour-slice #siteFooter{display:none!important}
+html.af58-tour-slice[data-af52-demo-step="7"] #siteFooter{display:block!important}
+html.af58-tour-slice[data-af52-demo-step="7"] .main-content,html.af58-tour-slice[data-af52-demo-step="7"] .workspace{display:none!important}
+html.af58-tour-slice[data-af52-demo-step="4"] #homePage .school-image,html.af58-tour-slice[data-af52-demo-step="4"] #homePage .home-search-area,html.af58-tour-slice[data-af52-demo-step="4"] #homePage .home-quick-actions{display:none!important}
+html.af58-tour-slice[data-af52-demo-step="0"] #homePage .school-image{display:none!important}
+html.af58-tour-slice #homePage{max-width:none!important}
+html.af58-tour-slice #mainContent>.page{max-width:100%!important}
+html.af58-tour-slice #finderPanel{z-index:2147482000!important}
+html.af58-tour-slice .af56-tour-veil{background:rgba(8,24,38,.16)!important}
+html.af58-tour-slice .af56-tour-ring{border-radius:8px!important}
+#tutorialPage .af51-live-frame{height:min(67dvh,740px)!important}
+#tutorialPage #af55GuideHint{line-height:1.55!important}
+
+@media(max-width:680px){
+ .site-header .header-controls #themeToggle{position:absolute!important;top:12px!important;right:104px!important;bottom:auto!important;margin:0!important;width:41px!important;height:41px!important;flex-basis:41px!important;}
+ .site-header .header-controls .header-control select{height:40px!important}
+ .site-header .header-controls{align-items:flex-end!important;width:100%;justify-content:space-between;margin:0!important;}
+ html.af58-tour-slice .site-header .header-controls #themeToggle{position:static!important;height:40px!important;width:40px!important;margin-left:2px!important;}
+ html.af58-tour-slice .site-header .header-controls{flex-wrap:nowrap!important;align-items:flex-end!important;}
+ html.af58-tour-slice .main-content{padding:8px!important}
+ #siteFooter .team-area{padding:6px 7px}
+ #piantinaPage .plan-body>.room-actions{max-width:min(175px,calc(100% - 12px))!important;padding:6px!important}
+}
+@media (max-width:355px){.site-header .header-controls #themeToggle{right:91px!important}}
+@media(prefers-reduced-motion:reduce){#siteFooter .af58-member-ring circle,#versioniPage #af58LatestVersion,#versioniList .af58-version-entry>summary{animation:none!important;transition:none!important}#siteFooter .af58-member-ring circle{stroke-dashoffset:0}}
+/* Correzione collaudo mobile: il cambio tema è accanto a Home, mai sopra al selettore Ora. */
+@media (max-width:680px){
+ .site-header .header-controls #themeToggle{position:absolute!important;top:13px!important;right:64px!important;bottom:auto!important;left:auto!important;width:41px!important;height:41px!important;margin:0!important;z-index:10}
+ html.af58-tour-slice .site-header .header-controls #themeToggle{position:static!important;z-index:auto}
+}
+@media (max-width:680px){.site-header .header-controls{position:static!important}html.af58-tour-slice .site-header .header-controls{position:relative!important}}

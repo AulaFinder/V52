@@ -195,6 +195,7 @@
   // Conserviamo il suo stato anche quando si cambia pagina.
   function setScheduleSubnavExpanded(expanded){
     $('#scheduleSubnav').hidden = !expanded;
+    if(expanded)document.querySelector('.side-link[data-page="orari"]')?.classList.add('is-active');
     $('.side-link[data-page="orari"]').setAttribute('aria-expanded',String(expanded));
     const toggle=$('#scheduleSubnavToggle');
     if(toggle){toggle.setAttribute('aria-expanded',String(expanded));toggle.setAttribute('aria-label',expanded?'Nascondi i tipi di orario':'Mostra i tipi di orario');}
@@ -366,7 +367,7 @@
     if(v){
       if(kind==='rooms'){
         title=v.lessons?`${v.subject} · ${v.lessons.map(e=>e.class).join(', ')}`:`${v.class} · ${v.subject}`;
-        small=v.lessons?v.lessons.map(e=>`${e.class}: ${prof(e.teacher,e.subject)}`).join(' · '):prof(v.teacher,v.subject);
+        small=v.lessons?v.lessons.map(e=>`${e.class}: ${prof(e.teacher,e.subject).replace(/\s*\([^)]*\)\s*$/, '')}`).join(' · '):prof(v.teacher,v.subject).replace(/\s*\([^)]*\)\s*$/, '');
         location='';
       }
       if(kind==='classes'){title=v.subject;small=`${prof(v.teacher,v.subject)}`;location=roomName(v.room);}
@@ -503,7 +504,7 @@
     let subject='—', detail='', location='';
     if(slot){
       subject=slot.subject;
-      if(kind==='rooms')detail=slot.lessons?slot.lessons.map(e=>`${e.class} · ${prof(e.teacher,e.subject)}`).join(' | '):`${slot.class} · ${prof(slot.teacher,slot.subject)}`;
+      if(kind==='rooms')detail=slot.lessons?slot.lessons.map(e=>`${e.class} · ${prof(e.teacher,e.subject).replace(/\s*\([^)]*\)\s*$/, '')}`).join(' | '):`${slot.class} · ${prof(slot.teacher,slot.subject).replace(/\s*\([^)]*\)\s*$/, '')}`;
       if(kind==='classes'){ detail=prof(slot.teacher,slot.subject).replace(/\s*\([^)]*\)\s*$/, '');location=slot.room||''; }
       if(kind==='teachers'){ detail=`Classe ${slot.class}`;location=slot.room||''; }
     }

@@ -500,13 +500,15 @@
       // Centro del locale → accesso reale → asse del corridoio. La palestra
       // usa due porte su lati diversi: si avvicina alla porta dall'INTERNO,
       // evitando il precedente zig-zag fuori dalle pareti.
-      const elbow=floor==='sotto'
-        ? point(entry.x,center.y)
-        : point(center.x,entry.y);
-      const path=[center,elbow,entry,point(entry.x,hall.y),hall]
-        .filter((p,i,a)=>i===0||!close(p,a[i-1]));
-      return path.filter((p,i,a)=>i===0||i===a.length-1||
-        Math.abs((p.x-a[i-1].x)*(a[i+1].y-p.y)-(p.y-a[i-1].y)*(a[i+1].x-p.x))>.05);
+      // Tracciato ortogonale unico: centro palestra -> porta -> centro corsia.
+      // Manteniamo il raccordo sul lato interno, non sul bordo inferiore della palestra.
+      // I punti coincidenti e quelli collineari vengono rimossi per evitare la spezzata sospesa.
+      const middle=floor==='sotto'
+        ? [point(entry.x,center.y),entry,point(entry.x,hall.y)]
+        : [point(center.x,entry.y),entry,point(entry.x,hall.y)];
+      const path=[center,...middle,hall].filter((pt,i,arr)=>i===0||!close(pt,arr[i-1]));
+      return path.filter((pt,i,arr)=>i===0||i===arr.length-1||
+        Math.abs((pt.x-arr[i-1].x)*(arr[i+1].y-pt.y)-(pt.y-arr[i-1].y)*(arr[i+1].x-pt.x))>.05);
     }
     const corridor=geometryCorridors.get(floor);
     const rect=loc.rect;
@@ -563,6 +565,27 @@
         layer.append(svgNode('path',{d,class:'nav-route-polyline'}));
       }
       const a=hallway[0],b=hallway.at(-1);
+      // V58: i locali sono disegnati sopra il tracciato principale. Nei
+      // raccordi della palestra questo nascondeva l'ultimo tratto, lasciando
+      // la linea apparentemente ferma sulla parete. Ridisegniamo SOLO il
+      // raccordo dentro la stanza, sopra il suo riempimento e sotto i pin.
+      const gymOverlaySegments=[];
+      if(start?.id==='Palestra'&&beginning.length>1)gymOverlaySegments.push(beginning);
+      if(end?.id==='Palestra'&&ending.length>1)gymOverlaySegments.push(ending);
+      if(gymOverlaySegments.length){
+        const detail=svgNode('g',{class:'nav-route-gym-overlay','aria-hidden':'true'});
+        gymOverlaySegments.forEach(segment=>{
+          const detailPath='M '+segment.map((p,i)=>(i?'L ':'')+fmt(p.x)+' '+fmt(p.y)).join(' ');
+          detail.append(svgNode('path',{d:detailPath,class:'nav-route-shadow'}));
+          detail.append(svgNode('path',{d:detailPath,class:'nav-route-polyline'}));
+        });
+        // Inserimento successivo dopo le stanze, non prima: è la differenza
+        // tra una linea che ARRIVA al centro e una linea nascosta dall'aula.
+        requestAnimationFrame(()=>{
+          const target=map.querySelector('.plan-rotated')||map;
+          if(map.isConnected)target.appendChild(detail);
+        });
+      }
       const firstRoom=map.querySelector('g.room');
       if(firstRoom)firstRoom.parentNode.insertBefore(layer,firstRoom);else (map.querySelector('.plan-rotated')||map).appendChild(layer);
 

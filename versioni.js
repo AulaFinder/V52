@@ -10,6 +10,16 @@
  'Anteprime dello storico pulite, senza etichette tecniche e con confronto visivo fra tema originale e simulazione scura.',
  'Admin con accesso più discreto, controllo locale degli orari e interventi sulla cache senza conversioni dei file multimediali.'
 ],source:'AulaFinder V57',documented:true,preview:'assets/versioni-home/V57.png',changedFiles:['index.html','v57.css','v57-ui.js','v57-tutorial.js','finder.js','navigator.js','versioni.js','admin-ui.js']});
+ versions.push({number:58,version:'V58',title:'Esperienza guidata e interfaccia perfezionata',details:[
+  'Intestazione: tema allineato a Giorno e Ora, animazione orbitale stabile e logo senza tooltip invasivi.',
+  'Footer: ritratti originali preservati, contorno animato e sfondo con gradiente aurico.',
+  'Tutorial: otto funzioni presentate in aree dedicate, senza la navigazione completa del sito; passaggi guidati più leggibili.',
+  'Finder: fissaggio riprogettato sulle coordinate relative della sezione e transizioni della finestra più stabili.',
+  'Piantine: azioni contestuali vicine all’aula selezionata; fullscreen con stessi colori e funzioni.',
+  'Navigatore: corretta la connessione ortogonale del percorso della palestra, mantenendo gli assi dei corridoi.',
+  'Versioni: rimosso il filtro simulato scuro, schede uniformi e accesso diretto all’ultima versione dalla testata.',
+  'Admin: pittogramma SVG originale, nuovo contrasto dell’occhio e migliorie agli stati e ai testi.'
+ ],documented:true,source:'Aggiornamento V58 e registro requisiti',preview:'assets/versioni-home/V58.png',changedFiles:['index.html','v58.css','v58-ui.js','v57-tutorial.js','finder.js','navigator.js','piantina.js','v49-ui.js','versioni.js','sw.js','admin-ui.js']});
  const CURRENT_VERSION=Math.max(...versions.map(v=>v.number));
  const list=document.getElementById('versioniList');
  const search=document.getElementById('versioniSearch');
@@ -88,7 +98,7 @@
   const matched=versions.map(v=>({v,s:score(v,q)})).filter(x=>x.s>=0).sort((a,b)=>q?b.s-a.s||b.v.number-a.v.number:b.v.number-a.v.number);
   const fragment=document.createDocumentFragment();
   for(const {v} of matched){
-   const item=make('details','versioni-entry'+(v.number===CURRENT_VERSION?' versioni-entry--current':''));
+   const item=make('details','versioni-entry af58-version-entry'+(v.number===CURRENT_VERSION?' versioni-entry--current':''));item.dataset.version=String(v.number);
    const header=make('summary');
    header.append(make('span','versioni-number',v.version),make('span','versioni-name',v.title),make('span','versioni-status',v.number===CURRENT_VERSION?'Versione attuale':v.number===CURRENT_VERSION-1?'Rilascio precedente':'Archivio storico'),make('span','versioni-chevron','⌄'));
    const content=make('div','versioni-content');
@@ -110,13 +120,6 @@
    
    const large=make('button','af50-version-fullscreen');large.type='button';large.setAttribute('aria-label','Apri a schermo intero la Home '+v.version);large.append(img);
    panel.append(large);
-   const themeTools=make('div','af57-preview-tools');
-   const original=make('button','af57-preview-choice','Tema originale');original.type='button';original.setAttribute('aria-pressed','true');
-   const simulation=make('button','af57-preview-choice','Simula scuro');simulation.type='button';simulation.title='Filtro dimostrativo: non è una schermata autentica del vecchio rilascio';simulation.setAttribute('aria-pressed','false');
-   original.addEventListener('click',()=>{panel.classList.remove('af57-preview-dark');original.setAttribute('aria-pressed','true');simulation.setAttribute('aria-pressed','false');});
-   simulation.addEventListener('click',()=>{panel.classList.add('af57-preview-dark');original.setAttribute('aria-pressed','false');simulation.setAttribute('aria-pressed','true');});
-   const note=make('small','af57-preview-disclaimer','La modalità scura è una simulazione: la schermata originale resta invariata.');
-   themeTools.append(original,simulation,note);panel.append(themeTools);
    if(v.number===8){
     const alt=make('img');alt.loading='lazy';alt.decoding='async';alt.alt='Seconda variante storica della Home V8a';alt.dataset.src='assets/versioni-home/V8a.webp';
     const altLarge=make('button','af50-version-fullscreen');altLarge.type='button';altLarge.setAttribute('aria-label','Apri a schermo intero la seconda Home V8a');altLarge.append(alt);panel.append(make('div','af49-version-note','La V8 aveva due varianti, entrambe conservate nell’archivio.'),altLarge);
@@ -133,7 +136,7 @@
    item.append(header,content);fragment.append(item);
   }
   list.replaceChildren(fragment);
-  count.textContent=matched.length+' version'+(matched.length===1?'e':'i')+' su '+versions.length;
+  count.textContent=q?(matched.length ? matched.length+' risultati' : 'Nessun risultato'):'';
   if(!matched.length)list.append(make('p','versioni-no-results','Nessuna versione trovata. Prova un numero o una parola diversa.'));
  }
  search.addEventListener('input',render);

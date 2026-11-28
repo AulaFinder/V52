@@ -1124,5 +1124,18 @@
     "details": [
       "Tutorial in otto tappe, Finder rifinito, grafica e accessibilità migliorate."
     ]
+  },
+  {
+    "number": 58,
+    "version": "V58",
+    "title": "Esperienza guidata e interfaccia perfezionata",
+    "details": [
+      "Header e cambio tema allineati; migliorati titolo, logo, focus, accesso Admin e sezione creatori.",
+      "Finder mantiene la posizione durante il fissaggio e le transizioni di dimensione; suggerimenti ciclici con elenco opzionale.",
+      "Piantine con azioni contestuali, fullscreen selezionabile e percorso giallo fino al centro della palestra.",
+      "Versioni: riquadro attuale cliccabile, schede illuminate e niente simulazione del tema scuro.",
+      "Riorganizzazione visiva del tutorial e documentazione formale delle specifiche."
+    ],
+    "preview": "assets/versioni-home/V58.png"
   }
 ]

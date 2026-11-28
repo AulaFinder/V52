@@ -1,3 +1,12 @@
+## V58 – Rifiniture interfaccia, Finder, piantine e documentazione (28 novembre 2026)
+
+- Header, tema, logo e focus corretti su desktop e mobile.
+- Finder: fissaggio senza salto, cambio sezione e massimizzazione stabile; riconoscimento di domande più naturale.
+- Piantine: selezione fullscreen coerente, azioni vicine all'aula e raccordo palestra visibile fino al centro.
+- Versioni: archivio aggiornato a V58, nuova anteprima, eliminazione tema scuro nelle anteprime.
+- Tutorial: isolata visivamente la funzione di ciascuna tappa.
+- Documento completo dei requisiti e delle verifiche in Word e testo semplice.
+
 ## V57 · 2026-11-28
 - Tutorial a otto tappe, Finder e piantine aggiornati; accessibilità e layout rivisti; archivio V57.
 - Conservate le risorse originali. Admin: interfaccia migliorata, modifiche solo locali.

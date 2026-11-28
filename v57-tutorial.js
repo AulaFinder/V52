@@ -25,12 +25,15 @@
    {selector:'#piantinaPage .plan-card:not([hidden]) svg g.room',text:'Tocca un’aula: trovi orario, navigazione e ingrandimento anche nel fullscreen.'}],
   [{selector:'#versioniSearch',text:'Cerca una versione (esempio V40) o una funzione come Finder.'},
    {selector:'#versioniList summary',text:'Apri una versione per leggere novità e visualizzare la sua Home.'}],
-  [{selector:'#siteFooter .team-member',text:'Scopri gli autori, i contatti e le piccole funzioni: tema, logo animato, preferiti, cronologia e versioni.'}]
+  [{selector:'#siteFooter .team-member',text:'Seleziona un ritratto per conoscere gli autori e le animazioni dei loro profili.'},
+   {selector:'#themeToggle',text:'Usa il pulsante sole/luna per scegliere il tema chiaro o scuro; trovi Giorno e Ora accanto.'},
+   {selector:'.site-header .brand-title',text:'Prova il titolo AulaFinder animato: l’orbita resta allineata al marchio.'},
+   {selector:'#siteFooter .footer-brand',text:'Il logo si può ingrandire dalla testata. Preferiti e Cronologia sono strumenti del menu principale: nel tutorial sono soltanto spiegati per evitare modifiche ai tuoi dati.'}]
  ];
  const max=STEPS.length;
  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(nested){
-  document.documentElement.classList.add('af57-demo','af55-inside-tour');
+  document.documentElement.classList.add('af57-demo','af55-inside-tour','af58-tour-slice');
   let step=0,phase=0,active=null,paintPending=false,footerTimer,footerFrame,internalScroll=false;
   const veils=Array.from({length:4},()=>{const v=document.createElement('div');v.className='af56-tour-veil';v.setAttribute('aria-hidden','true');document.body.append(v);return v;});
   const ring=document.createElement('div');ring.className='af56-tour-ring';ring.setAttribute('aria-hidden','true');document.body.append(ring);
@@ -64,7 +67,7 @@
     if(chosen?.dataset.schedule!==category)document.querySelector(`#orariPage [data-schedule="${category}"]`)?.click();
    }
    active=selectTarget();if(active){active.classList.add('af55-guide-target');active.dataset.af55Hint=current.text;if(step!==7)reveal(active);}
-   if(step===7){window.scrollTo({top:Math.max(0,document.documentElement.scrollHeight-innerHeight),behavior:'instant'});}
+   if(step===7){reveal(active);}
    requestPaint();setTimeout(requestPaint,100);post(current.text);
   }
   function advance(){if(phase<STEPS[step].length-1){phase++;setTimeout(activate,90);}else{post('Ben fatto! Puoi passare alla tappa successiva.',true);}}
@@ -74,7 +77,7 @@
   }
   function footerBottom(){return Math.max(0,document.documentElement.scrollHeight-innerHeight);}
   function scheduleFooterReturn(){if(step!==7)return;clearTimeout(footerTimer);footerTimer=setTimeout(()=>{
-   if(step!==7||internalScroll)return;cancelAnimationFrame(footerFrame);
+   if(step!==7||phase===1||phase===2||internalScroll)return;cancelAnimationFrame(footerFrame);
    const start=scrollY,dest=footerBottom();if(Math.abs(start-dest)<2)return;
    if(reduced()){window.scrollTo(0,dest);return;}
    const begin=performance.now();internalScroll=true;const tick=now=>{const t=Math.min(1,(now-begin)/1100),ease=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
@@ -132,7 +135,7 @@
   'Puoi trascinare Finder e la sua finestra, ridimensionarla e fissare l’orb nella posizione scelta.',
   'Scegli il piano, seleziona un’aula e prova l’ingrandimento. Non puoi uscire dalla guida andando ad altre sezioni.',
   'Cerca una versione, aprila ed esplora la sua anteprima storica.',
-  'Scopri gli autori e le piccole funzioni: cambi tema, marchio animato, preferiti, cronologia e Versioni. Queste ultime si provano nel sito completo.'
+  'Scopri l’animazione del marchio e l’ingrandimento del logo. Usa l’interruttore chiaro/scuro e conosci gli autori. Nel sito completo, il menu raccoglie Preferiti e Cronologia delle ricerche; qui sono spiegati senza modificare i tuoi dati.'
  ];
  const guide=document.getElementById('af52LiveGuide'),holder=frame.closest('.af51-live-frame');
  holder?.classList.add('af55-natural-crop');

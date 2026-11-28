@@ -43,6 +43,7 @@
     anim.finished.then(()=>{
       if(panelMotion!==anim)return;
       if(!open&&!desiredOpen)panel.hidden=true;
+      // Keep the final native transform; cancel the animation only after the state is stable.
       anim.cancel();panelMotion=null;
     }).catch(()=>{});
   }
@@ -72,7 +73,7 @@
     launch.style.right=clamp(right,8,Math.max(8,innerWidth-launch.offsetWidth-8))+'px';
     launch.style.bottom=clamp(bottom,8,Math.max(8,innerHeight-launch.offsetHeight-8))+'px';
   }
-  function restorePosition(){try{const saved=JSON.parse(localStorage.getItem(posKey)||'null');if(saved&&Number.isFinite(saved.right)&&Number.isFinite(saved.bottom))applyPosition(saved.right,saved.bottom);}catch(_){}}
+  function restorePosition(){if(document.documentElement.classList.contains('af52-orb-pinned'))return;try{const saved=JSON.parse(localStorage.getItem(posKey)||'null');if(saved&&Number.isFinite(saved.right)&&Number.isFinite(saved.bottom))applyPosition(saved.right,saved.bottom);}catch(_){}}
   function updatePanelPosition(){
     if(panel.hidden||panel.classList.contains('is-maximized'))return;
     if(typeof panelCustom!=='undefined'&&panelCustom&&panelSaved){movePanel(panelSaved.x,panelSaved.y);return;}
@@ -86,7 +87,7 @@
   launch.addEventListener('pointerdown',event=>{
     if(event.button!==0)return;
     const r=launch.getBoundingClientRect();
-    drag={pointerId:event.pointerId,x:event.clientX,y:event.clientY,right:innerWidth-r.right,bottom:innerHeight-r.bottom,moved:false};
+    drag={pointerId:event.pointerId,x:event.clientX,y:event.clientY,right:innerWidth-r.right,bottom:innerHeight-r.bottom,left:scrollX+r.left,top:scrollY+r.top,moved:false};
     try{launch.setPointerCapture(event.pointerId);}catch(_){}
   });
   launch.addEventListener('pointermove',event=>{
@@ -95,14 +96,18 @@
     if(Math.hypot(dx,dy)>7)drag.moved=true;
     if(!drag.moved)return;
     launch.classList.add('is-dragging');
-    applyPosition(drag.right-dx,drag.bottom-dy);
+    if(document.documentElement.classList.contains('af52-orb-pinned')){
+      launch.style.left=(drag.left+dx)+'px';launch.style.top=(drag.top+dy)+'px';
+      launch.style.right='auto';launch.style.bottom='auto';
+    }else applyPosition(drag.right-dx,drag.bottom-dy);
     updatePanelPosition();
   });
   function finishDrag(event){
     if(!drag||drag.pointerId!==event.pointerId)return;
     if(drag.moved){
       suppressNextClick=true;
-      try{localStorage.setItem(posKey,JSON.stringify({right:parseFloat(launch.style.right),bottom:parseFloat(launch.style.bottom)}));}catch(_){}
+      if(document.documentElement.classList.contains('af52-orb-pinned'))window.dispatchEvent(new Event('af58-finder-pinned-moved'));
+      else try{localStorage.setItem(posKey,JSON.stringify({right:parseFloat(launch.style.right),bottom:parseFloat(launch.style.bottom)}));}catch(_){}
     }
     drag=null;launch.classList.remove('is-dragging');
   }
@@ -114,14 +119,14 @@
     updatePanelPosition();
   });
   window.addEventListener('resize',()=>{
-    if(launch.style.right){applyPosition(parseFloat(launch.style.right),parseFloat(launch.style.bottom));}
+    if(!document.documentElement.classList.contains('af52-orb-pinned')&&launch.style.right){applyPosition(parseFloat(launch.style.right),parseFloat(launch.style.bottom));}
     updatePanelPosition();
   });
   requestAnimationFrame(restorePosition);
   close.addEventListener('click',()=>setOpen(false));
   document.addEventListener('keydown',e=>{if(e.key==='Escape' && desiredOpen)setOpen(false);});
   document.addEventListener('click',e=>{
-    if(desiredOpen && !panel.contains(e.target) && !launch.contains(e.target))setOpen(false);
+    if(desiredOpen && !panel.contains(e.target) && !launch.contains(e.target) && !e.target.closest?.('#af49MapViewer'))setOpen(false);
   });
 
   // Finestra mobile: spostamento trascinando la testata e posizione persistente.
@@ -207,7 +212,11 @@
     if(panelSize)applySize(panelSize.width,panelSize.height);
   });
   let resizingAnimation=null;
-  $('finderExpand')?.addEventListener('click',()=>{
+  $('finderExpand')?.addEventListener('click',event=>{
+    event.stopPropagation();
+    if(panel.hidden)return;
+    // Do not restart the entry/exit animation while maximizing.
+    desiredOpen=true;launch.setAttribute('aria-expanded','true');
     // FLIP: la finestra si espande dalla propria posizione, senza uscire e rientrare.
     panelMotion?.cancel();panelMotion=null;resizingAnimation?.cancel();
     const before=panel.getBoundingClientRect();
@@ -216,9 +225,15 @@
     if(!expanded){if(panelCustom&&panelSaved)movePanel(panelSaved.x,panelSaved.y);else updatePanelPosition();}
     const after=panel.getBoundingClientRect();
     if(!prefersReduced()&&before.width&&after.width){
-      const x=before.left-after.left,y=before.top-after.top,sx=before.width/after.width,sy=before.height/after.height;
-      resizingAnimation=panel.animate([{transform:`translate(${x}px,${y}px) scale(${sx},${sy})`,borderRadius:'24px',opacity:.93},{transform:'translate(0,0) scale(1)',borderRadius:expanded?'16px':'24px',opacity:1}],{duration:380,easing:'cubic-bezier(.22,.85,.25,1)'});
-      resizingAnimation.finished.finally(()=>{resizingAnimation=null;}).catch(()=>{});
+      // V58: l'animazione FLIP precedente trasformava l'intero pannello
+      // fuori dal viewport per alcuni fotogrammi. Manteniamo il pannello
+      // sempre nella posizione finale ed animiamo soltanto il suo ritaglio.
+      resizingAnimation=panel.animate([
+        {clipPath:'inset(3% 3% 3% 3% round 22px)',opacity:.95},
+        {clipPath:expanded?'inset(0 round 16px)':'inset(0 round 22px)',opacity:1}
+      ],{duration:310,easing:'cubic-bezier(.2,.82,.22,1)'});
+      const running=resizingAnimation;
+      running.finished.then(()=>{if(resizingAnimation===running)resizingAnimation=null;}).catch(()=>{});
     }
   });
   // Riavvia il filmato leggero soltanto quando Finder è visibile; evita un timer continuo.
@@ -337,9 +352,9 @@
   function schoolDay(raw){
     const s=normalizedText(raw);
     const base=nowRome().dayIndex;
-    if(/dopodomani|dopo domani/.test(s))return {day:days[base+2]||null,label:'dopodomani'};
-    if(/domani/.test(s))return {day:days[base+1]||null,label:'domani'};
-    if(/oggi|stasera|stamattina/.test(s))return {day:days[base]||null,label:'oggi'};
+    if(/dopodomani|dopo domani/.test(s))return {day:base<3?days[base+2]:null,label:'dopodomani'};
+    if(/domani/.test(s))return {day:base<4?days[base+1]:null,label:'domani'};
+    if(/oggi|stasera|stamattina/.test(s))return {day:base<5?days[base]:null,label:'oggi'};
     const found=days.find(d=>s.includes(lower(d)));
     if(found)return {day:found,label:found};
     if(/prossim[oa] giorno|prossim[oa] settimana|giorno dopo/.test(s))return {day:days[(base+1)%5],label:'prossimo giorno scolastico'};
@@ -374,9 +389,13 @@
     const carry=/cartella|zaino|portare a scuola|cosa port|preparare le cose|materiale|libri da portare/.test(q);
     const study=/materie|lezion|orari|orario|lezione|cosa ho|che ho|programma|prossim.*aula|che aula|dove.*prossima aula|ore ho/.test(q);
     const follow=/^(e |invece |anche |per |martedi|mercoledi|giovedi|venerdi|lunedi|domani|dopodomani)/.test(q);
-    const intent=carry?'bag':/aule? liber|stanza libera|aule? disponibil/.test(q)?'freeRooms':/professor[ie] liber|docent[ie] liber|ore buche/.test(q)?'freeTeachers':study?'schedule':null;
+    // Le domande in linguaggio naturale spesso includono 'sono', 'adesso',
+    // 'alla terza ora' tra l'entità e l'aggettivo: non pretendiamo parole adiacenti.
+    const freeRoomQuery=/\b(?:aul[ae]|stanz[ae]|laboratori?)\b.{0,42}\b(?:liber[iae]?|disponibil[ie]?|vuot[ae])\b/.test(q);
+    const freeTeacherQuery=/\b(?:professor[ie]|docent[ie]|insegnanti)\b.{0,42}\b(?:liber[iae]?|disponibil[ie]?|buc[ah]e?)\b|ore buche/.test(q);
+    const intent=carry?'bag':freeRoomQuery?'freeRooms':freeTeacherQuery?'freeTeachers':study?'schedule':null;
     const effective=intent||(follow&&mentionedDay?dialogue.lastIntent:null);
-    const day=mentionedDay?.day|| (carry?days[(nowRome().dayIndex+1)%5]:(dialogue.lastDay||$('daySelect').value));
+    const day=mentionedDay ? mentionedDay.day : (carry?days[nowRome().dayIndex<4?nowRome().dayIndex+1:0]:(dialogue.lastDay||$('daySelect').value));
     const dayLabel=mentionedDay?.label||day;
 
     if(/chi sei|cosa sai fare|come funziona finder|sei un'ai|sei un'intelligenza artificiale|sei vero/.test(q)){

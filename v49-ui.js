@@ -19,7 +19,7 @@
  const roomName=viewer.querySelector('#af54MapRoomName');
  const navigate=viewer.querySelector('#af54MapNavigate');
  const schedule=viewer.querySelector('#af54MapSchedule');
- function clearSelection(){selectedRoom='';selection.hidden=true;stage.querySelectorAll('.af49-room-highlight').forEach(el=>el.classList.remove('af49-room-highlight'));}
+ function clearSelection(){selectedRoom='';selection.hidden=true;stage.querySelectorAll('.af49-room-highlight').forEach(el=>el.classList.remove('af49-room-highlight'));stage.querySelectorAll('.af58-viewer-selection').forEach(el=>el.remove());}
  function selectRoom(g){
   const name=(g.dataset.t||'').split('·')[0].trim();
   const actions=window.AFPiantina?.getRoomActions?.(name);
@@ -28,8 +28,16 @@
   selectedRoom=actions.room;
   roomName.textContent=selectedRoom;
   selection.hidden=false;schedule.hidden=!actions.hasSchedule;
-  g.classList.add('af49-room-highlight');
-  viewer.querySelector('#af49ViewerNote').textContent='Selezionata: '+selectedRoom+' · Azioni disponibili in alto';
+  // La classe della stanza originale resta invariata: la selezione si vede nel clone come nella mappa principale.
+  // Stessa selezione SVG della mappa normale, comprese dimensioni e colorazione.
+  const cx=Number(g.dataset.cx),cy=Number(g.dataset.cy),scale=Number(g.dataset.s)||1;
+  if(Number.isFinite(cx)&&Number.isFinite(cy)){
+    const clone=g.cloneNode(true);clone.classList.remove('room','af49-room-highlight');clone.classList.add('sel-clone','af58-viewer-selection');
+    clone.removeAttribute('tabindex');clone.setAttribute('aria-hidden','true');
+    clone.setAttribute('transform',`translate(${cx} ${cy}) scale(${scale}) rotate(180) translate(${-cx} ${-cy})`);
+    (stage.querySelector('svg.plan .top')||stage.querySelector('svg.plan')).append(clone);
+  }
+  viewer.querySelector('#af49ViewerNote').textContent='Aula '+selectedRoom+' selezionata';
  }
  function executeSelection(kind){
   const room=selectedRoom;if(!room)return;
@@ -48,10 +56,14 @@
  function showFloor(card){
   const svg=card.querySelector('svg.plan');if(!svg)return;
   opener=document.activeElement;
+  const selectedOriginal=card.querySelector('.sel-clone,[data-af-map-selected]');
+  const selectedCode=selectedOriginal?.dataset?.t?.split('·')[0]?.trim()||'';
   stage.replaceChildren();selection.hidden=true;selectedRoom='';
   const copy=svg.cloneNode(true);copy.classList.add('af49-viewer-plan');copy.removeAttribute('id');
+  copy.querySelectorAll('.sel-clone').forEach(el=>el.remove());
   copy.querySelectorAll('g.room').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label','Seleziona aula '+(g.dataset.t||''));});
   stage.append(copy);
+  if(selectedCode){const found=[...copy.querySelectorAll('g.room')].find(g=>(g.dataset.t||'').split('·')[0].trim()===selectedCode);if(found)selectRoom(found);}
   viewer.querySelector('#af49ViewerTitle').textContent=card.querySelector('.plan-banner h2')?.textContent||'Piantina';
   viewer.dataset.theme=document.documentElement.dataset.theme||'light';
   viewer.hidden=false;document.body.classList.add('af49-map-fullscreen-open');
@@ -64,7 +76,7 @@
    scene.scrollTop=Math.max(0,(scene.scrollHeight-scene.clientHeight)/2);
   }));
   viewer.querySelector('#af49ViewerClose').focus({preventScroll:true});
-  viewer.querySelector('#af49ViewerNote').textContent="Piantina originale · trascina per esplorare, due dita per zoomare, o usa +/−.";
+  if(!selectedRoom)viewer.querySelector('#af49ViewerNote').textContent="Seleziona un'aula. Trascina per esplorare e usa due dita per ingrandire.";
   // Fullscreen API opzionale: l'overlay funziona anche su Safari senza supporto alla API.
   if(viewer.requestFullscreen){
    try {

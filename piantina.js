@@ -25,7 +25,18 @@ function showActions(g){
   actionsPanel=box;actionRoom=code;
   var banner=holder.closest('.plan-card').querySelector('.plan-banner');
   if(!banner)return;
-  banner.appendChild(box);
+  // A fianco della stanza selezionata, con posizionamento che non esce dalla mappa.
+  holder.appendChild(box);
+  requestAnimationFrame(function(){
+    if(!box.isConnected)return;
+    var room=g.getBoundingClientRect(),area=holder.getBoundingClientRect();
+    var left=room.right-area.left+10+holder.scrollLeft;
+    var top=room.top-area.top+holder.scrollTop;
+    var maxLeft=holder.scrollWidth-box.offsetWidth-8;
+    if(left>maxLeft)left=room.left-area.left-box.offsetWidth-10+holder.scrollLeft;
+    box.style.left=Math.max(8,Math.min(maxLeft,left))+'px';
+    box.style.top=Math.max(8,Math.min(holder.scrollHeight-box.offsetHeight-8,top))+'px';
+  });
 
 }
 
