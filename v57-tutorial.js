@@ -20,15 +20,16 @@
    {selector:'#navigatorForm .navigator-go',text:'Mostra il percorso tra le aule lungo i corridoi.'}],
   [{selector:'#finderLaunch',text:'Trascina l’orb dove preferisci, poi toccalo per aprire Finder.'},
    {selector:'#finderQuestion',text:'Sposta la finestra se copre qualcosa, scegli una classe e scrivi la tua domanda.'},
-   {selector:'#finderForm .finder-send',text:'Premi Invio: Finder risponde usando i dati scolastici disponibili.'}],
+   {selector:'#finderForm .finder-send',text:'Premi Invio: Finder risponde usando i dati scolastici disponibili.'},
+   {selector:'#af52FinderPin',text:'Fissa Finder dove preferisci: il pulsante con la puntina conserva una posizione relativa alla sezione corrente.'}],
   [{selector:'#piantinaPage .floor-options input[value="terra"]',text:'Scegli un piano da esplorare.'},
    {selector:'#piantinaPage .plan-card:not([hidden]) svg g.room',text:'Tocca un’aula: trovi orario, navigazione e ingrandimento anche nel fullscreen.'}],
   [{selector:'#versioniSearch',text:'Cerca una versione (esempio V40) o una funzione come Finder.'},
    {selector:'#versioniList summary',text:'Apri una versione per leggere novità e visualizzare la sua Home.'}],
-  [{selector:'#siteFooter .team-member',text:'Seleziona un ritratto per conoscere gli autori e le animazioni dei loro profili.'},
-   {selector:'#themeToggle',text:'Usa il pulsante sole/luna per scegliere il tema chiaro o scuro; trovi Giorno e Ora accanto.'},
-   {selector:'.site-header .brand-title',text:'Prova il titolo AulaFinder animato: l’orbita resta allineata al marchio.'},
-   {selector:'#siteFooter .footer-brand',text:'Il logo si può ingrandire dalla testata. Preferiti e Cronologia sono strumenti del menu principale: nel tutorial sono soltanto spiegati per evitare modifiche ai tuoi dati.'}]
+  [{selector:'.site-header #logoButton',text:'Il logo in alto nella testata si illumina al passaggio del mouse: cliccalo per ingrandirlo.'},
+   {selector:'.site-header .brand-title',text:'La scritta AulaFinder ha una piccola animazione orbitale; puoi osservarla nella testata e nel footer.'},
+   {selector:'#themeToggle',text:'Il pulsante sole/luna cambia tra tema chiaro e scuro. Il sito segue inizialmente la preferenza del dispositivo.'},
+   {selector:'#siteFooter .team-member',text:'Tocca un ritratto per conoscere i creatori. Nel menu laterale puoi usare Preferiti per salvare risultati e Cronologia per ritrovare le ricerche recenti.'}]
  ];
  const max=STEPS.length;
  const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -77,7 +78,7 @@
   }
   function footerBottom(){return Math.max(0,document.documentElement.scrollHeight-innerHeight);}
   function scheduleFooterReturn(){if(step!==7)return;clearTimeout(footerTimer);footerTimer=setTimeout(()=>{
-   if(step!==7||phase===1||phase===2||internalScroll)return;cancelAnimationFrame(footerFrame);
+   if(step!==7||phase<3||internalScroll)return;cancelAnimationFrame(footerFrame);
    const start=scrollY,dest=footerBottom();if(Math.abs(start-dest)<2)return;
    if(reduced()){window.scrollTo(0,dest);return;}
    const begin=performance.now();internalScroll=true;const tick=now=>{const t=Math.min(1,(now-begin)/1100),ease=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
@@ -135,7 +136,7 @@
   'Puoi trascinare Finder e la sua finestra, ridimensionarla e fissare l’orb nella posizione scelta.',
   'Scegli il piano, seleziona un’aula e prova l’ingrandimento. Non puoi uscire dalla guida andando ad altre sezioni.',
   'Cerca una versione, aprila ed esplora la sua anteprima storica.',
-  'Scopri l’animazione del marchio e l’ingrandimento del logo. Usa l’interruttore chiaro/scuro e conosci gli autori. Nel sito completo, il menu raccoglie Preferiti e Cronologia delle ricerche; qui sono spiegati senza modificare i tuoi dati.'
+  'Prova il logo ingrandibile e il titolo animato nella testata, cambia tema e conosci i creatori nel footer. Preferiti e Cronologia sono disponibili nel menu del sito completo.'
  ];
  const guide=document.getElementById('af52LiveGuide'),holder=frame.closest('.af51-live-frame');
  holder?.classList.add('af55-natural-crop');

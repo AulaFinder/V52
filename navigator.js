@@ -503,12 +503,13 @@
       // Tracciato ortogonale unico: centro palestra -> porta -> centro corsia.
       // Manteniamo il raccordo sul lato interno, non sul bordo inferiore della palestra.
       // I punti coincidenti e quelli collineari vengono rimossi per evitare la spezzata sospesa.
-      const middle=floor==='sotto'
-        ? [point(entry.x,center.y),entry,point(entry.x,hall.y)]
-        : [point(center.x,entry.y),entry,point(entry.x,hall.y)];
+      const middle=[point(hall.x,center.y),point(hall.x,entry.y)];
+      // All connections are horizontal or vertical, even if the historical
+      // door coordinates differ by fractions of a SVG unit from the corridor.
       const path=[center,...middle,hall].filter((pt,i,arr)=>i===0||!close(pt,arr[i-1]));
       return path.filter((pt,i,arr)=>i===0||i===arr.length-1||
         Math.abs((pt.x-arr[i-1].x)*(arr[i+1].y-pt.y)-(pt.y-arr[i-1].y)*(arr[i+1].x-pt.x))>.05);
+
     }
     const corridor=geometryCorridors.get(floor);
     const rect=loc.rect;
@@ -581,10 +582,9 @@
         });
         // Inserimento successivo dopo le stanze, non prima: è la differenza
         // tra una linea che ARRIVA al centro e una linea nascosta dall'aula.
-        requestAnimationFrame(()=>{
-          const target=map.querySelector('.plan-rotated')||map;
-          if(map.isConnected)target.appendChild(detail);
-        });
+        // Set the detail immediately above rooms; marker overlay is inserted afterwards.
+        const target=map.querySelector('.plan-rotated')||map;
+        target.appendChild(detail);
       }
       const firstRoom=map.querySelector('g.room');
       if(firstRoom)firstRoom.parentNode.insertBefore(layer,firstRoom);else (map.querySelector('.plan-rotated')||map).appendChild(layer);

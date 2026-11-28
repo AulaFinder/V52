@@ -10,20 +10,47 @@
  const makeOption=(val,label)=>{const el=document.createElement('option');el.value=val;el.textContent=label;return el;};
  const setMessage=(message,problem=false)=>{status.textContent=message;status.dataset.error=String(problem);};
  let authenticated=false;
- function unlock(){authenticated=true;login.hidden=true;console.hidden=false;hint.textContent='Accesso consentito';loadLesson();}
+ function unlock(){authenticated=true;login.hidden=true;console.hidden=false;hint.textContent='';hint.classList.remove('af59-access-flash');loadLesson();}
  function lock(){authenticated=false;pass.value='';console.hidden=true;login.hidden=false;hint.textContent='';hint.classList.remove('af57-access-ok','af57-access-denied');}
  // Il client pubblicato non può conservare un segreto: il digest evita solo la stringa in chiaro.
  const salt='b3dff8de3dea1821ea233bfa5a6c64d6',expected='46e4d2a84e048229e8a8262db53f68532078d677f9c8127f45cceb977d2df693';
- const feedback=(message,ok)=>{hint.textContent=message;hint.classList.toggle('af57-access-ok',ok===true);hint.classList.toggle('af57-access-denied',ok===false);};
+ const feedback=(message,ok)=>{
+   hint.textContent=message;hint.classList.toggle('af57-access-ok',ok===true);
+   hint.classList.toggle('af57-access-denied',ok===false);
+   hint.classList.remove('af59-access-flash');if(ok===true){void hint.offsetWidth;hint.classList.add('af59-access-flash');}
+ };
+ // Limitazione dissuasiva PER DISPOSITIVO, non autenticazione server: l'utente
+ // può azzerare il browser e gli asset pubblici contengono sempre il digest.
+ const lockKey='aulafinder.admin.attempts.v59';
+ const LOCK_MS=5*60*1000;let attempts={fail:0,until:0};
+ try{const saved=JSON.parse(localStorage.getItem(lockKey)||'null');if(saved&&Number.isFinite(saved.fail)&&Number.isFinite(saved.until))attempts=saved;}catch(_){}
+ const saveAttempts=()=>{try{localStorage.setItem(lockKey,JSON.stringify(attempts));}catch(_){}};
+ const isLocked=()=>Date.now()<attempts.until;
+ let unlockTimeout=null;
+ const submitButton=$('af51AdminAuth').querySelector('[type=submit]');
+ function refreshLock(){
+   const blocked=isLocked();submitButton.disabled=blocked;pass.disabled=blocked;
+   if(blocked){feedback('Accesso temporaneamente bloccato.',false);clearTimeout(unlockTimeout);
+     unlockTimeout=setTimeout(refreshLock,Math.max(100,attempts.until-Date.now()+30));}
+   else if(attempts.until){attempts={fail:0,until:0};saveAttempts();
+     if(hint.textContent.includes('bloccato'))hint.textContent='';}
+ }
+ refreshLock();
  const eye=$('af51AdminShowPassword'),eyeIcon=$('af57EyeIcon');
  eye.addEventListener('click',()=>{const show=pass.type==='password';pass.type=show?'text':'password';eye.setAttribute('aria-pressed',String(show));eye.setAttribute('aria-label',show?'Nascondi password':'Mostra password');if(eyeIcon)eyeIcon.classList.toggle('is-open',show);pass.focus({preventScroll:true});});
  $('af51AdminAuth').addEventListener('submit',async e=>{
   e.preventDefault();
+  if(isLocked()){refreshLock();return;}
   const bytes=new TextEncoder().encode(salt+pass.value);
   let verified=false;
   try{const result=await crypto.subtle.digest('SHA-256',bytes);const value=Array.from(new Uint8Array(result),v=>v.toString(16).padStart(2,'0')).join('');verified=value===expected;}catch(_ ){feedback('Impossibile verificare il codice su questo browser.',false);return;}
-  if(verified){feedback('Accesso consentito',true);setTimeout(unlock,620);}
-  else{feedback('Accesso negato',false);pass.select();login.classList.remove('af51-admin-shake');void login.offsetWidth;login.classList.add('af51-admin-shake');}
+  if(verified){attempts={fail:0,until:0};saveAttempts();feedback('Accesso consentito',true);setTimeout(unlock,980);}
+  else{
+    attempts.fail++;if(attempts.fail>=5){attempts.fail=5;attempts.until=Date.now()+LOCK_MS;}
+    saveAttempts();
+    if(isLocked())refreshLock();else feedback('Accesso negato',false);
+    if(!isLocked())pass.select();login.classList.remove('af51-admin-shake');void login.offsetWidth;login.classList.add('af51-admin-shake');
+  }
  });
  $('af51AdminLock').addEventListener('click',lock);
  const classIds=Object.keys(API.base.classes).sort((a,b)=>a.localeCompare(b,'it',{numeric:true}));
@@ -73,5 +100,5 @@
    sessionStorage.removeItem('aulafinder.admin.return.v51');
    addEventListener('load',()=>{document.querySelector('[data-page="admin"]')?.click();hint.textContent='Dati salvati. Inserisci la password per continuare.';},{once:true});
  }}catch(_){}
- if(!API.loadResult.ok)hint.textContent='Attenzione: modifiche locali non valide. '+API.loadResult.error;
+ if(!API.loadResult.ok)hint.textContent='Le modifiche locali non sono disponibili su questo dispositivo o in questa sessione.';
 })();

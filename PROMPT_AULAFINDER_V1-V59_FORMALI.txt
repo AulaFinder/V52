@@ -1,0 +1,218 @@
+AULAFINDER | RACCOLTA DEI PROMPT DI SVILUPPO
+Requisiti formulati e riorganizzati in linguaggio formale | Dall’avvio del progetto alla V58
+Data di redazione: 28 novembre 2026
+
+NOTA EDITORIALE: Questa è una riformulazione formale e sintetica dei prompt di sviluppo, non una trascrizione letterale e non un elenco delle modifiche effettivamente realizzate.
+Per le versioni V1–V44 le richieste sono raggruppate per fase sulla base delle informazioni disponibili; la versione più recente prevale quando i requisiti si sono evoluti.
+
+1. SCOPO E CRITERI DEL DOCUMENTO
+Introduzione
+
+01. Il presente elaborato raccoglie le richieste di sviluppo formulate progressivamente per AulaFinder. I messaggi originali sono rielaborati in forma scolastica e professionale, mantenendo gli obiettivi e le principali condizioni indicate dal committente.
+02. Il documento presenta richieste e indicazioni progettuali, non risultati già ottenuti, registri di modifiche o attestazioni di collaudo. Le microcorrezioni ripetute vengono accorpate in requisiti funzionali più chiari; quando una versione successiva modifica una richiesta precedente, prevale la prescrizione più recente.
+03. Le fasi iniziali V1–V44 sono riepilogate per temi sulla base delle specifiche iniziali conservate e delle informazioni disponibili sul percorso progettuale: non costituiscono trascrizioni letterali di tutti i prompt di quel periodo. I prompt dalla V45 alla V58 sono invece riportati con maggiore dettaglio, pur senza riprodurne ogni singola frase.
+
+2. IDEAZIONE E PRIME FASI (V1–V11)
+Richieste iniziali
+
+01. Realizzare un sito web dedicato all’orientamento scolastico e alla consultazione degli orari, utilizzando HTML, CSS e JavaScript, con layout responsive conforme ai wireframe forniti per computer e smartphone.
+02. Definire l’identità visiva AulaFinder mediante un logo originale con le lettere A e F e richiami alla lente di ricerca; adottare un linguaggio grafico riconoscibile, basato su tonalità ciano, azzurro e gradiente, evitando un aspetto generico.
+03. Impostare una Home che consenta di cercare aule, classi e docenti tramite nome, sigla o codice; il sistema deve utilizzare il giorno e l’ora selezionati per mostrare risultati pertinenti.
+04. Prevedere un calendario scolastico dal lunedì al venerdì, dalla prima alla sesta ora, con risultati consultabili e accesso alle informazioni dell’orario completo quando disponibili.
+05. Strutturare il menu con sezioni principali, area Orari e Cronologia; consentire il ritorno alla Home e l’ingrandimento del logo. In una prima fase Tutorial e Piantine possono essere predisposti come sezioni da sviluppare.
+06. Migliorare nel tempo presentazione dei risultati, leggibilità delle tabelle, ricerca dei docenti, gestione delle sigle, icone, cronologia e disposizione dei controlli, preservando la coerenza dei dati scolastici.
+
+3. ESPANSIONE DELLE FUNZIONI (V12–V29)
+Richieste accorpate
+
+01. Introdurre piantine interattive dei diversi piani dell’edificio, con aule identificabili e collegamenti dalle ricerche; quando un ambiente viene selezionato, la mappa deve rendere immediatamente riconoscibile e raggiungibile la sua posizione.
+02. Permettere la consultazione delle piantine anche da smartphone tramite scorrimento, centratura e adattamento delle dimensioni, senza nascondere le aule o renderne difficoltosa la selezione.
+03. Realizzare un footer coerente con l’identità visiva del progetto, contenente le informazioni sul gruppo di lavoro e i ritratti dei creatori, mantenendo un comportamento responsive.
+04. Sviluppare il Navigatore per cercare un percorso tra ambienti scolastici, includendo scale, ascensori e passaggi fra piani; il tracciato deve essere comprensibile e seguire gli spazi realmente percorribili.
+05. Riorganizzare Orari in sezioni dedicate a classi, aule, docenti e disponibilità. Introdurre, ove richiesto, preferiti, cronologia consultabile ed eliminabile e suggerimenti di ricerca pertinenti.
+06. Curare l’accessibilità da tastiera, il contrasto, i metadati e l’adattabilità ai diversi schermi; prevedere l’uso tramite browser e, successivamente, l’installazione come applicazione web progressiva.
+
+4. CONSOLIDAMENTO DELL’INTERFACCIA (V30–V44)
+Richieste accorpate
+
+01. Rendere i percorsi interni sempre più fedeli alle piantine, evitando attraversamenti delle aule e deviazioni inutili; prestare particolare attenzione alla palestra, ai piani differenti e alle transizioni tramite scale.
+02. Conservare la geometria corretta delle mappe e i dati originari, correggendo soltanto le incongruenze segnalate senza alterare arbitrariamente la disposizione degli ambienti.
+03. Migliorare l’orientamento delle piantine, la centratura degli elementi e i comandi su dispositivi piccoli; mantenere uniformità di icone, stati di selezione e legenda.
+04. Integrare e rifinire animazioni e contenuti visivi, compresa l’introduzione del video iniziale, mantenendo un’interfaccia utilizzabile, prestazioni adeguate e proporzioni corrette su desktop e mobile.
+
+5. PROMPT V45 — FUNZIONI AVANZATE E IDENTITÀ DEL PRODOTTO
+16 novembre 2026
+
+01. Correggere la coerenza grafica e funzionale di piantine, legende e Navigatore, senza modificare i dati e la geometria degli ambienti.
+02. Migliorare il posizionamento degli elementi mobili, la selezione delle aule particolari e la gestione dei preferiti; garantire una visualizzazione ordinata anche su schermi piccoli.
+03. Adottare il sottotitolo «Il tuo navigatore scolastico» e rendere più coerente l’identità del sito.
+04. Potenziare il pannello dei Professori liberi distinguendo le ore di disponibilità e le ore complessive, con un comando di selezione appropriato.
+05. Avviare una sezione Admin e sviluppare Finder come assistente per il sito, prevedendo ricerca, dettatura vocale e funzionalità evolutive basate sui dati; completare le informazioni utili all’indicizzazione.
+
+6. PROMPT V46 — ANIMAZIONI DI MARCHIO E LEGGIBILITÀ DEL PERCORSO
+16 novembre 2026
+
+01. Rifinire le animazioni del titolo AulaFinder e del sottotitolo, prevedendo effetti al passaggio del puntatore coerenti con il gradiente caratteristico.
+02. Eliminare le spiegazioni superflue sulla pronuncia del nome Finder.
+03. Uniformare i simboli delle scale, della partenza e dell’arrivo fra legenda e piantine; mantenere ben distinguibile il percorso giallo.
+04. Semplificare l’icona di arrivo e applicare l’orientamento concordato, evitando elementi ridondanti.
+05. Dopo la selezione dei campi di partenza e arrivo del Navigatore, riportare l’utente in una posizione della pagina utile a visualizzare il tragitto.
+
+7. PROMPT V47 — PRECISAZIONE DELLE DESTINAZIONI E TUTORIAL
+16 novembre 2026
+
+01. Far terminare il percorso del Navigatore esattamente al centro dell’aula di destinazione, senza modificare inutilmente la logica generale già presente.
+02. Raffinare le animazioni del marchio e del titolo, mantenendo l’orbita e migliorando la gerarchia visiva; ridurre la luminosità eccessiva della parola «Aula».
+03. Sviluppare un tutorial coerente con il sito, che accompagni l’utente nell’uso delle principali funzioni senza perdere l’identità grafica originale.
+
+8. PROMPT V48 — TUTORIAL REALE, FINDER E ARCHIVIO VERSIONI
+16–17 novembre 2026
+
+01. Eliminare i contorni azzurri indesiderati nelle ricerche, correggere la legenda del Navigatore e ripristinare il funzionamento dei percorsi verso locali particolari, fra cui Archivio e Caldaie.
+02. Assicurare che le finestre contestuali delle mappe non coprano l’aula selezionata su mobile; centrare correttamente gli ambienti e aumentare il contrasto dei messaggi di Finder.
+03. Costruire il Tutorial usando le vere sezioni e funzioni del sito: intestazione semplice, icone coerenti, passaggi guidati, sezione Footer e ritorno al Tutorial dopo le prove.
+04. Inserire FAQ comprensibili, anche sul significato e sulla riservatezza delle sigle dei docenti.
+05. Rendere Finder spostabile, usare l’icona fornita e l’orb animato in ciclo continuo, al posto di simboli provvisori.
+06. Aggiungere una sezione Versioni consultabile, con elenco storico, icona dedicata, schede espandibili e informazioni sulle release; preservare la base del progetto, i dati e gli algoritmi esistenti.
+
+9. PROMPT V49 — REVISIONE GENERALE DELL’ESPERIENZA
+17–18 novembre 2026
+
+01. Rivedere la versione precedente in modo organico, migliorando Home, menu, Orari e componenti mobile senza sacrificare il contenuto o le funzioni già disponibili.
+02. Adattare piantine e percorsi al formato orizzontale quando necessario, migliorando centratura e consultazione degli ambienti.
+03. Rendere Finder più vicino a un assistente digitale: interfaccia amichevole, messaggi pertinenti, funzioni vocali, finestra trascinabile e animazioni del logo continue e fluide.
+04. Rendere il Tutorial completamente interno al sito, con sezioni vere e piantine fedeli; evitare demo separate scollegate dall’esperienza reale.
+05. Ampliare Versioni con ricerca intelligente, cronologia completa, anteprime delle Home e descrizioni appropriate; curare palette, animazioni, accessibilità e controlli PC/mobile.
+06. Conservare la base del progetto e accompagnare il rilascio con verifiche e resoconto; non introdurre contenuti non richiesti nei rilasci storici.
+
+10. PROMPT V50 — AFFINAMENTO PROGRESSIVO
+18 novembre 2026
+
+01. Utilizzare la V49 come punto di partenza e applicare le ulteriori richieste grafiche e funzionali indicate nei materiali visivi condivisi, preservando l’impianto precedente.
+02. Per questa specifica iterazione, prevedere un suono di ingresso e un segnale sonoro collegato all’interazione con Finder; la richiesta verrà successivamente revocata nella V51.
+03. Conservare gli interventi di miglioramento dell’interfaccia, delle animazioni, dell’assistente e della navigazione previsti nel percorso evolutivo, senza attribuire a questa versione specifiche non ricostruibili dai materiali disponibili.
+
+11. PROMPT V51 — FINDER, ADMIN E TUTORIAL INTEGRATO
+18 novembre 2026
+
+01. Partire obbligatoriamente dalla V50, senza perdere le funzionalità già implementate e senza modificare elementi non richiesti.
+02. Rendere Finder ridimensionabile, trascinabile e utilizzabile su mobile senza apertura automatica della tastiera; rimuovere contorni superflui e suoni, usare l’orb originale con animazione continua e migliorare i suggerimenti contestuali e il feedback vocale.
+03. Integrare nel Tutorial il sito reale e non una simulazione separata; rendere la sezione Admin effettivamente utilizzabile con accesso riservato e strumenti per la gestione dei dati locali.
+04. Affinare il Navigatore affinché partenza e arrivo coincidano con il centro delle aule; migliorare legenda, disponibilità di aule e docenti, Orari, piantine e archivio Versioni.
+05. Correggere il dato della classe 4AS relativo a Informatica, quarta ora del mercoledì, attribuendo la lezione al laboratorio 1.07.
+06. Eliminare completamente l’effetto acqua precedentemente proposto e mantenere una grafica performante e accessibile, verificando il comportamento su computer e smartphone.
+
+12. PROMPT V52 — RINNOVAMENTO VISIVO E INTERAZIONI
+18–19 novembre 2026
+
+01. Estendere con misura l’effetto di dissolvenza e il gradiente dell’aside a parti coerenti del sito; uniformare la schermata iniziale e ottimizzare la fluidità su desktop e mobile.
+02. Rifinire la Home: eliminare cornici indesiderate su logo, selettori e campi; rallentare l’ingrandimento del logo; uniformare grafica e animazioni di Aule libere e Professori liberi.
+03. Garantire la coerenza delle piantine tra vista ordinaria e fullscreen, compreso il colore di «Ingresso» e la centratura delle mappe.
+04. Trasformare il Tutorial in una sola dimostrazione reale con passaggi guidati, evitando la duplicazione delle interfacce e la libera esplorazione delle altre funzioni; correggere l’allineamento dei riquadri e delle FAQ.
+05. Migliorare il Navigatore eliminando cornici di selezione, rendendo il tracciato più centrato nei corridoi e allineando i simboli di partenza e arrivo alle aule.
+06. Rendere la ricerca nelle Versioni capace di evidenziare i termini anche all’interno delle descrizioni; ripristinare i loghi mancanti nelle anteprime, rimuovere note tecniche e aggiornare l’archivio a ogni versione.
+07. Correggere i contrasti dei menu Orari, la freccia di espansione dell’aside e i contorni ciano ricorrenti; applicare nel footer interazioni coerenti con la navigazione laterale.
+08. Rifinire le transizioni di Finder e permettere di fissarne la posizione scelta dall’utente; spostare Admin nella parte inferiore destra e svilupparne utilità e presentazione.
+09. Preparare i file per GitHub Pages; in seguito ai problemi emersi nel caricamento, privilegiare le risorse originali ed evitare sostituzioni o compressioni che ne compromettano la visualizzazione.
+
+13. PROMPT V53 — SEMPLIFICAZIONE E ACCESSIBILITÀ
+22 novembre 2026
+
+01. Rimuovere l’eccesso di gradienti, illuminazioni legate al puntatore e animazioni superflue, adottando un aspetto più essenziale, contrastato e meno affaticante.
+02. Eliminare i contorni gialli delle ricerche e allineare su mobile il cambio tema al comando Home.
+03. Correggere il Navigatore affinché i percorsi siano ortogonali, seguano i corridoi e utilizzino il minor numero ragionevole di svolte a 90°, fino al centro dell’aula e al puntatore rosso.
+04. Collocare nella testata dell’aula selezionata i comandi delle Piantine per raggiungerla o consultarne l’orario.
+05. Evidenziare nei menu Orari soltanto la sezione effettivamente attiva.
+06. Rendere il Tutorial fedele alla grafica reale di Aule libere e Professori liberi, mantenendo le proporzioni della demo e limitando la navigazione esterna al passaggio.
+07. Ridisegnare nella Home i pulsanti di disponibilità in modo più compatto, con conteggi e orari affiancati; eseguire verifiche responsive, accessibilità e prestazioni, senza modificare i contenuti scolastici.
+
+14. PROMPT V54 — TUTORIAL MIRATO E PIANTINE FULLSCREEN
+23 novembre 2026
+
+01. Adattare i riquadri del Tutorial alla lunghezza effettiva dei testi, evitando fuoriuscite e sovrapposizioni.
+02. Rendere più leggibile la dimostrazione attraverso un ingrandimento o inquadramento mirato alla funzione del singolo passaggio.
+03. Correggere gli indicatori dell’archivio Versioni in modo che la release effettivamente più recente sia l’unica segnata come attuale.
+04. Permettere nelle Piantine fullscreen lo zoom con due dita e conservare in alto, accanto al nome dell’aula selezionata, i comandi «Portami qui» e «Vedi orario».
+
+15. PROMPT V55 — GUIDA PER RITAGLIO E INTERAZIONI ASSISTITE
+24 novembre 2026
+
+01. Sostituire lo zoom automatico confuso del Tutorial con un’inquadratura ritagliata della parte di sito utile al passaggio corrente, conservando dimensioni leggibili.
+02. Evidenziare i comandi da utilizzare finché l’utente non esegue l’azione richiesta, procedendo per piccoli passaggi all’interno della stessa tappa.
+03. Per la tappa Footer, permettere uno scorrimento temporaneo verso l’alto e riportare poi dolcemente la vista in basso, così da comunicare l’area di interesse.
+04. Limitare le modifiche al Tutorial, conservando il comportamento soddisfacente delle altre sezioni.
+
+16. PROMPT V56 — FOCUS DELLA GUIDA E VISIBILITÀ DEI PERCORSI
+24–27 novembre 2026
+
+01. Eliminare dal Tutorial degli Orari la necessità di scegliere manualmente giorno e ora prima di esplorare la disponibilità.
+02. Rendere le consegne del Tutorial più evidenti e sottolineare visivamente il comando da cliccare, oscurando solo leggermente il resto della schermata.
+03. Sostituire «Rimetti a fuoco» con frecce avanti/indietro per navigare nei sottopassaggi di ciascuna sezione.
+04. Rimuovere i contorni colorati, compresi quelli generati da regole CSS precedenti, nei campi di ricerca.
+05. Mantenere invariato il Navigatore tranne il colore del tracciato, che deve risultare nettamente distinguibile dai corridoi.
+06. Ripristinare il gradiente nell’header e svolgere una verifica completa su PC e mobile, correggendo eventuali conflitti di stile.
+
+17. PROMPT V57 — GUIDA, FINDER, VERSIONI E ACCESSO ADMIN
+28 novembre 2026
+
+01. Eliminare contorni arancioni e linee azzurre indesiderate negli elementi selezionati; uniformare lo switch dei temi, le animazioni della scritta AulaFinder e l’ingrandimento discreto del logo.
+02. Migliorare contrasto e leggibilità dei risultati di ricerca, dei profili docenti e delle stesse schermate all’interno del Tutorial, mantenendo le tonalità ciano e azzurro.
+03. Riorganizzare il Tutorial in sottopassaggi realmente guidati: posizionamento corretto a ogni avanzamento, blocco delle sezioni estranee, ricerca con ritorno alla Home e avanzamento dopo la selezione di un risultato.
+04. Non mostrare preferiti o cronologia nella demo e non inserire frasi tecniche relative al funzionamento interno o all’accesso Admin.
+05. Guidare separatamente la consultazione di Classi, Aule e Professori e la visualizzazione di Aule libere e Professori liberi; consentire soltanto le interazioni generali previste, come giorno, ora e tema.
+06. Prevedere una tappa sulle Versioni e illustrare nel passaggio finale anche preferiti, cronologia, interazione con il marchio, ingrandimento del logo e cambio tema.
+07. Spiegare il significato delle sigle dei docenti usando esempi comprensibili e formulare FAQ dirette e accessibili.
+08. Potenziare Finder con molte domande pertinenti, suggerimenti che appaiono ciclicamente, icone coerenti, finestra liberamente spostabile e fissabile e transizioni prive di chiusure impreviste.
+09. Garantire che le piantine fullscreen mantengano colori, selezione e azioni dell’aula; collocare i comandi contestuali in una posizione che non copra la mappa.
+10. Correggere i collegamenti del Navigatore, soprattutto per la palestra, mantenendo la linea al centro dei corridoi fino al centro dell’ambiente e rendendo il tracciato giallo più luminoso.
+11. Riorganizzare il menu, collocando Orari dopo Tutorial e Versioni come ultima voce; migliorare anteprime e comandi di zoom delle Versioni, eliminando note tecniche ed evidenziando la release attuale.
+12. Evitare nelle tabelle la ripetizione del nome della materia già presente nell’intestazione; migliorare le animazioni degli avatar senza sostituire i ritratti.
+13. Ridisegnare l’accesso Admin in modo più riservato, con simboli e animazioni originali, feedback di accesso chiaro e possibilità di gestione delle informazioni; valutare un’architettura sicura per modifiche condivise anziché affidarsi soltanto a un codice nel browser.
+14. Ottimizzare il sito senza compromettere immagini o video originali, ordinare il codice e verificare accessibilità, usabilità, prestazioni e regressioni su desktop e mobile.
+
+18. PROMPT V58 — RIFINITURA CONCLUSIVA E DOCUMENTAZIONE
+28 novembre 2026
+
+01. Allineare il cambio tema ai controlli Giorno/Ora su desktop e Home su mobile; stabilizzare il titolo AulaFinder e rimuovere orbite spostate, bordi arancioni e tooltip che coprono il marchio.
+02. Realizzare un simbolo personalizzato per Admin e un’interazione luminosa progressiva attorno ai ritratti dei creatori, utilizzando come sfondo il gradiente identificativo.
+03. Aggiornare la nota sugli orari con una formulazione che escluda aggiornamenti dell’ultimo momento, per evitare informazioni ambigue.
+04. Ripensare il Tutorial affinché in ogni passaggio sia visibile soprattutto la porzione del sito necessaria, limitando la complessità della demo e mantenendo i comandi funzionali pertinenti.
+05. Correggere Finder durante il Tutorial e nel sito: icona di fissaggio visibile, posizione stabile al clic, adattamento ai cambi di sezione e massimizzazione/riduzione senza scomparire.
+06. Completare il Tutorial finale con le funzioni del cambio tema, dei preferiti, della cronologia, del titolo animato e del logo ingrandibile.
+07. Rendere più visibile e comprensibile il comando per mostrare la password Admin; semplificare le frasi tecniche presenti nella sezione e centrare il pulsante di accesso.
+08. Eliminare nelle schede Aule la ripetizione della materia già indicata nel titolo; mantenere selezionata la voce Orari anche quando si espande il menu secondario.
+09. Nelle Piantine normali, mostrare vicino all’aula selezionata i comandi per consultare l’orario e raggiungere l’ambiente; nel fullscreen conservare identica grafica, selezione, colore e funzioni.
+10. Mantenere i percorsi al centro dei corridoi e farli terminare esattamente nel centro degli ambienti, con particolare attenzione alla palestra.
+11. Nelle Versioni, eliminare la simulazione scura e il contatore ridondante, uniformare l’evidenziazione delle schede, rendere cliccabile il riquadro superiore della versione attuale e verificare la fedeltà delle anteprime e la qualità delle descrizioni.
+12. Verificare e correggere le risposte di Finder rispetto ai dati caricati; conservare come principale il suggerimento ciclico e offrire l’elenco delle domande come funzione opzionale.
+13. Conservare il funzionamento delle altre sezioni, verificare gli adattamenti su PC e mobile e predisporre un documento scolastico che raccolga in forma ordinata le richieste progettuali.
+
+19. PROMPT V59 — STABILIZZAZIONE FINALE E VERIFICHE DEI PERCORSI
+28 NOVEMBRE 2026
+
+01. Eliminare i contorni arancioni residui dopo la chiusura del logo ingrandito e il riquadro interno della ricerca vuota; sincronizzare sul logo un lieve ingrandimento con un’illuminazione perimetrale discreta, mantenendo i controlli accessibili.
+02. Riportare il riquadro dei creatori del sito alla veste grafica precedente, applicando il gradiente soltanto all’interno dei ritratti circolari originali; creare un’animazione del bordo che percorra la circonferenza correttamente, senza spostare i nomi associati.
+03. Correggere e verificare sistematicamente il Navigatore, in particolare gli itinerari P.03–Palestra e T.08–Palestra, affinché il percorso risulti continuo, ortogonale, centrato nei corridoi e collegato al centro dell’ambiente di destinazione.
+04. Rendere affidabile il fissaggio di Finder: la posizione scelta deve restare stabile a ogni clic e durante lo scorrimento, adattandosi in modo proporzionale al cambio di sezione; migliorare la fluidità delle animazioni di apertura, riduzione e massimizzazione.
+05. Rivedere i suggerimenti e le risposte di Finder utilizzando poche domande generali, utili e adattabili a classi, aule, docenti e disponibilità. Conservare sia le frasi cicliche sia l’elenco consultabile, verificando ogni risposta sui dati degli orari.
+06. Gestire correttamente le informazioni sulle materie e sui materiali scolastici: proporre la cartelletta di Disegno nei casi pertinenti alle classi dalla prima alla quarta, senza attribuirla automaticamente alle quinte che seguono soltanto Storia dell’arte.
+07. Riprogettare il Tutorial come una guida per funzioni del sito originale, mostrando in ciascuna tappa soltanto i componenti autentici pertinenti e senza introdurre una nuova interfaccia. Finder deve comparire esclusivamente nel suo passaggio, conservando la Home reale come contesto.
+08. Correggere la tappa finale del Tutorial affinché evidenzi il logo ingrandibile dell’header, non il logo del footer, e descriva cambio tema, Preferiti, Cronologia e animazioni del marchio. Evitare domande frequenti ridondanti rispetto alle informazioni di contatto già mostrate.
+09. Migliorare l’accesso Admin con un’icona leggibile e coerente su PC e mobile, conferma verde animata e blocco locale dopo cinque tentativi errati per cinque minuti, mostrando soltanto l’avviso di blocco senza indicarne la durata.
+10. Eliminare nell’Admin mobile i contenitori vuoti privi di funzione, mantenendo il contenuto chiaro e proporzionato; conservare i ritratti dei creatori completi e ben ritagliati su qualsiasi schermo.
+11. Applicare automaticamente il tema chiaro o scuro secondo le preferenze del dispositivo, lasciando possibile una scelta manuale; uniformare nel tema chiaro la grafica delle sezioni Preferiti e Cronologia.
+12. Mantenere selezionata la voce Orari quando viene aperto il relativo sottomenu e aumentare lo spazio fra le frecce dei campi a tendina e i rispettivi bordi.
+13. Curare la precisione delle descrizioni delle Versioni e verificare la fedeltà delle anteprime storiche, senza aggiungere arbitrariamente loghi o dettagli che non appartengono ai rilasci di origine.
+14. Salvaguardare tutte le altre funzionalità, i dati scolastici e i file multimediali originali, evitando conversioni o compressioni che ne compromettano la pubblicazione su GitHub Pages.
+15. Eseguire verifiche del sito su desktop e mobile, dei percorsi, dell’accessibilità, del comportamento dei temi, delle animazioni e delle regressioni; documentare con precisione risultati, limiti e prove che richiedono un ambiente online reale.
+
+20. REQUISITI RICORRENTI TRASVERSALI
+Indicazioni valide per l’intero ciclo
+
+01. Ogni nuova versione deve partire dal rilascio precedente approvato e conservarne funzioni, dati e risorse, salvo modifiche espressamente richieste.
+02. La grafica deve mantenere un’identità visiva unitaria, accessibile e responsive; gli effetti visivi vanno utilizzati solo quando migliorano la comprensione.
+03. Le informazioni scolastiche devono rimanere coerenti fra ricerca, tabelle, piantine, disponibilità e Navigatore.
+04. I controlli touch, mouse e tastiera devono rimanere utilizzabili; le funzioni essenziali non devono dipendere esclusivamente da hover o animazioni.
+05. Le prestazioni devono essere migliorate con interventi prudenti e reversibili, senza convertire indiscriminatamente immagini e video.
+06. Per ogni rilascio devono essere eseguiti verifiche statiche e controlli funzionali su più dimensioni di schermo; i limiti dei test devono essere dichiarati con precisione.
+07. La documentazione dei prompt deve essere aggiornata ai rilasci successivi, aggiungendo le nuove richieste e segnalando quando esse sostituiscono indicazioni precedenti.

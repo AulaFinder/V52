@@ -257,7 +257,7 @@
   const questions=[
     ['Per la scuola',['Sono distrutto, aiutami a preparare lo zaino per domani','Che materie ho domani?','Che lezioni ho oggi?','Quali materie ho venerdì?','Cosa ho alla prossima ora?','Che aula ho dopo?','Mostrami l’orario di lunedì','Quante lezioni ho mercoledì?']],
     ['Aule e docenti',['Quali aule sono libere?','Ci sono aule disponibili alla terza ora?','Quali professori sono liberi?','Quali docenti hanno un’ora buca?','Dove si trova S.07?','Dov’è l’Archivio?','A che piano si trova la Palestra?','Come trovo la T.08?']],
-    ['Come usare AulaFinder',['Come funziona il navigatore?','Come posso aprire una piantina a schermo intero?','Come aggiungo un preferito?','Come cambio il tema scuro?','Come cerco un professore?','Dove vedo le versioni precedenti?','Come uso il tutorial?','Come posso contattarvi?','A cosa serve Finder?','Non mi funziona il microfono, cosa faccio?']]
+    ['Come usare AulaFinder',['Come funziona il navigatore?','Come posso aprire una piantina a schermo intero?','Come aggiungo un preferito?','Come cambio il tema scuro?','Come cerco un professore?','Dove vedo le versioni precedenti?','Come uso il tutorial?','Come capisco se un’aula è libera?' ,'A cosa serve Finder?','Non mi funziona il microfono, cosa faccio?']]
   ];
   const promptBox=$('finderPrompts');
   if(promptBox){
@@ -352,8 +352,8 @@
   function schoolDay(raw){
     const s=normalizedText(raw);
     const base=nowRome().dayIndex;
-    if(/dopodomani|dopo domani/.test(s))return {day:base<3?days[base+2]:null,label:'dopodomani'};
-    if(/domani/.test(s))return {day:base<4?days[base+1]:null,label:'domani'};
+    if(/dopodomani|dopo domani/.test(s))return {day:(base+2)%7<5?days[(base+2)%7]:null,label:'dopodomani'};
+    if(/domani/.test(s))return {day:(base+1)%7<5?days[(base+1)%7]:null,label:'domani'};
     if(/oggi|stasera|stamattina/.test(s))return {day:base<5?days[base]:null,label:'oggi'};
     const found=days.find(d=>s.includes(lower(d)));
     if(found)return {day:found,label:found};
@@ -397,7 +397,13 @@
     const effective=intent||(follow&&mentionedDay?dialogue.lastIntent:null);
     const day=mentionedDay ? mentionedDay.day : (carry?days[nowRome().dayIndex<4?nowRome().dayIndex+1:0]:(dialogue.lastDay||$('daySelect').value));
     const dayLabel=mentionedDay?.label||day;
+    if(mentionedDay&&!mentionedDay.day)return 'Per quel giorno non sono disponibili lezioni: AulaFinder contiene gli orari da lunedì a venerdì.';
 
+    if(/come seleziono.*classe|selezionare.*classe.*finder/.test(q))return 'Apri Finder e scegli la tua classe nel menu «La tua classe». Le risposte su materie e orari useranno quella classe.';
+    if(/come.*(?:trovo|trovare).*(?:un.aula|aula).*(?:piantin|mapp)|come.*piantin.*aula/.test(q))return siteHelp.mappe;
+    if(/come.*(?:consult|vedo|apro).*(?:orario).*(?:professor|docent)|come.*orario.*professor/.test(q))return 'Apri Orari → Professori e cerca la sigla del docente. La sigla usa le prime due lettere del cognome e le prime due del nome, per esempio Rossi Mario: RO MA.';
+    if(/come.*(?:consult|vedo|apro).*cronologia/.test(q))return 'Nel menu laterale apri Cronologia per ritrovare le ricerche recenti. È salvata sul dispositivo, non sul server.';
+    if(/come.*(?:capisco|verifico).*(?:aula.*libera)/.test(q))return 'Apri Orari → Aule libere. Seleziona Giorno e Ora per leggere le aule senza una lezione prevista, secondo gli orari caricati: non è un dato in tempo reale.';
     if(/chi sei|cosa sai fare|come funziona finder|sei un'ai|sei un'intelligenza artificiale|sei vero/.test(q)){
       return 'Sono Finder, l’assistente locale di AulaFinder. Posso capire tante domande scritte normalmente e consultare gli orari della scuola, ma non sono un chatbot con accesso a Internet e non invento informazioni. Prova: «Sono stanco e devo preparare lo zaino per domani».';
     }
@@ -462,7 +468,10 @@
       dialogue.lastIntent=effective;dialogue.lastDay=day;
       if(carry||effective==='bag'){
         const subjects=subjectsFor(item,day);
-        return prefix+`Per ${dayLabel} (${day}), la classe ${id} ha queste materie:\n${subjects.map(s=>'• '+s).join('\n')||'Nessuna materia indicata.'}\n\nPrima di chiudere lo zaino, controlla sul registro i compiti e il materiale specifico. Quelli non sono disponibili in AulaFinder.`;
+        const year=Number(String(id).charAt(0));
+        const drawing=year>=1&&year<=4&&subjects.some(s=>/disegno/i.test(s));
+        const extra=drawing?'\n• Porta anche la cartelletta di Disegno.':'';
+        return prefix+`Per ${dayLabel} (${day}), la classe ${id} ha queste materie:\n${subjects.map(v=>'• '+v).join('\n')||'Nessuna materia indicata.'}${extra}\n\nControlla sul registro compiti e materiale specifico: AulaFinder non li contiene.`;
       }
       if(/solo materie|quali materie|che materie/.test(q))return prefix+`Materie di ${day} per ${id}: ${subjectsFor(item,day).join(', ')||'nessuna lezione'}.`;
       if(/prossim|ora dopo|adesso|ora corrente/.test(q)){

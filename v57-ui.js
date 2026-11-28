@@ -8,21 +8,28 @@
  if(host&&details){
   const days=['lunedì','martedì','mercoledì','giovedì','venerdì'];
   const intents=[
-   'Che materie ho oggi?','Che materie ho domani?','Che lezioni ho dopodomani?','Cosa devo mettere nello zaino domani?',
-   'Che lezione ho alla prossima ora?','In quale aula sarò alla prossima ora?','Mostrami il mio orario completo',
-   'Quali aule sono libere?','Quante aule sono libere?','Ci sono aule disponibili alla terza ora?',
-   'Quali docenti sono liberi?','Quali professori hanno un’ora buca?','Quante ore fa il prof BA AN?',
-   'Dove si trova la Palestra?','Dove si trova S.07?','Dove si trova T.08?','Dove si trova 1.07?',
-   'Come si usa il navigatore?','Come faccio a vedere una piantina?','Come ingrandisco una piantina?',
-   'Come cerco un docente usando la sigla?','Come cambio il tema?','Come salvo un preferito?',
-   'Dove si trova la cronologia?','Come apro il tutorial?','Come visualizzo le vecchie versioni?',
-   'Come funziona Finder?','Posso usare Finder senza microfono?','Come posso contattare gli autori?',
-   'Qual è la differenza tra aula libera e ora buca?','Come posso consultare l’orario di un professore?'
+    'Come funziona Finder?',
+    'Come seleziono la mia classe in Finder?',
+    'Che materie ho oggi?',
+    'Che materie ho domani?',
+    'Cosa devo mettere nello zaino domani?',
+    'Che lezione ho alla prossima ora?',
+    'Mostrami l’orario della mia classe',
+    'Quali aule sono libere?',
+    'Quante aule sono libere?',
+    'Quali professori sono liberi?',
+    'Quali professori hanno un’ora buca?',
+    'Come trovo un’aula nella piantina?',
+    'Come funziona il navigatore?',
+    'Come cerco un docente usando la sigla?',
+    'Come consulto l’orario di un professore?',
+    'Come aggiungo un preferito?',
+    'Come consulto la cronologia?',
+    'Come cambio il tema chiaro o scuro?',
+    'Come si usa il tutorial?',
+    'Dove vedo le versioni precedenti?',
+    'Finder funziona senza microfono?'
   ];
-  for(const d of days){intents.push(`Che materie ho ${d}?`,`Quante lezioni ho ${d}?`,`Mostrami l’orario di ${d}`,`Quali aule sono libere ${d}?`,`Quali professori sono liberi ${d}?`);}
-  for(const room of ['S.01','S.07','T.01','T.08','1.01','1.07','2.01','2.14','3.01']){
-   intents.push(`Dove si trova ${room}?`,`Chi usa l’aula ${room} oggi?`,`L’aula ${room} è occupata alla seconda ora?`);
-  }
   const seen=new Set(),phrases=intents.filter(q=>{if(seen.has(q))return false;seen.add(q);return true;});
   window.AulaFinderPromptExamples=phrases.slice();
   let i=0,changing=false;

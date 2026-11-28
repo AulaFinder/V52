@@ -1,0 +1,150 @@
+/* AulaFinder V59 · Stabilizzazione mirata, asset originali invariati.
+   Si applica dopo i fogli precedenti, evitando di cambiare i dati scolastici. */
+:root { --af59-gradient:linear-gradient(112deg,#105267,#1d8b89 50%,#3a6796); }
+
+/* Il logo resta un pulsante anche dopo l'animazione di ritorno. Mai cornici arancioni. */
+#logoButton, #logoButton:hover, #logoButton:active,
+#logoButton:focus, #logoButton:focus-visible, #logoButton.af50-logo-arriving,
+#logoDialog, #logoDialog::backdrop, #logoDialog img {
+  outline:0!important;outline-offset:0!important;box-shadow:none!important;
+}
+#logoButton {border-color:transparent!important;transition:transform .28s ease,filter .28s ease!important;}
+#logoButton:hover {transform:scale(1.045)!important;filter:drop-shadow(0 0 7px #62ffedaa)!important;}
+#logoButton:hover img {filter:drop-shadow(0 0 2px #c5fff2)!important;}
+#logoButton:focus:not(:focus-visible),#logoButton:focus-visible {border-color:transparent!important;}
+#logoButton.af50-logo-arriving {animation:none!important;}
+/* Tutti i campi hanno il cursore visibile ma nessun secondo rettangolo interno. */
+#searchInput,#searchInput:focus,#searchInput:focus-visible,
+#scheduleQuickSearch:focus,#navFrom:focus,#navTo:focus,
+#finderQuestion:focus,#versioniSearch:focus,#adminPage input:focus {
+  outline:none!important;outline-offset:0!important;box-shadow:none!important;
+  text-decoration:none!important;background-image:none!important;
+}
+#homePage #searchForm:has(#searchInput:focus),#homePage #searchForm:focus-within,
+#searchInput:focus-visible,#searchInput:focus,
+#homePage #searchForm input:is(:focus,:focus-visible) {
+  outline:0!important;box-shadow:none!important;border-color:transparent!important;
+}
+#homePage #searchForm .search-voice-button:is(:focus,:focus-visible),
+#homePage #searchForm .search-submit:is(:focus,:focus-visible){outline:2px solid #a7d6d6!important;outline-offset:2px!important;}
+/* Manteniamo il focus accessibile sugli altri pulsanti, senza colore giallo/arancio. */
+body :is(button,a,summary,[role="button"]):focus-visible:not(#logoButton) {outline-color:#a6d9dc!important;}
+html:not(.af57-demo) #finderPanel :is(input,textarea,select):focus-visible,
+html:not(.af57-demo) #adminPage :is(input,textarea,select):focus-visible {outline:none!important;box-shadow:none!important;}
+
+/* Footer: contenitore neutro come prima; il gradiente rimane DENTRO ogni avatar. */
+#siteFooter .team-area {background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;}
+#siteFooter .team-list {padding-top:27px!important;padding-bottom:24px!important;}
+#siteFooter .team-member {
+  position:relative;overflow:visible!important;
+  background:var(--af59-gradient)!important;
+  border:3px solid #a4d5dc!important;
+  transform:none!important;
+  box-shadow:0 0 0 2px #0e3445,0 5px 16px #011b2c88!important;
+  transition:box-shadow .3s ease,border-color .3s ease!important;
+}
+/* Sfumatura interna: gli avatar e i volti non vengono modificati. */
+#siteFooter .team-member::after {
+  content:"";position:absolute;inset:2px;border-radius:50%;pointer-events:none;z-index:2;
+  box-shadow:inset 0 0 0 4px #73f5e54d,inset 0 0 14px #36caca61;
+  background:linear-gradient(135deg,#0de4d116,transparent 50%,#558ce537);
+}
+#siteFooter .team-member img {
+  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;
+  border-radius:50%!important;transform:scale(1.015)!important;clip-path:circle(50% at 50% 50%);
+  filter:none!important;mix-blend-mode:normal!important;
+}
+#siteFooter .team-member:hover,#siteFooter .team-member.is-selected,#siteFooter .team-member:focus-visible {
+  transform:none!important;border-color:#c1fff4!important;
+  box-shadow:0 0 0 2px #71e9e9,0 0 19px #7ff6ee78!important;
+}
+#siteFooter .team-member .team-name {
+  left:50%!important;bottom:calc(100% + 13px)!important;top:auto!important;
+  transform:translateX(-50%)!important;z-index:7!important;
+  transition:opacity .2s ease,visibility .2s!important;
+}
+/* Il cerchio SVG parte esattamente dalle ore 12 e segue il bordo del tasto. */
+#siteFooter .af58-member-ring {
+  position:absolute!important;inset:-5px!important;width:calc(100% + 10px)!important;
+  height:calc(100% + 10px)!important;display:block!important;overflow:visible!important;
+  pointer-events:none;z-index:4!important;color:#c5fff4;transform:rotate(-90deg)!important;
+  filter:drop-shadow(0 0 3px #8ceeeccc)!important;
+}
+#siteFooter .af58-member-ring circle {stroke-dasharray:295.31!important;stroke-dashoffset:295.31!important;
+  stroke-linecap:round!important;transition:stroke-dashoffset .85s cubic-bezier(.15,.83,.21,1)!important;}
+#siteFooter .team-member:is(:hover,.is-selected,:focus-visible) .af58-member-ring circle {stroke-dashoffset:0!important;}
+
+/* Finder: nessuno snap dovuto alle animazioni CSS storiche; pannello sempre visibile. */
+#af52FinderPin svg {display:block;width:18px;height:18px;stroke:currentColor;fill:none;}
+.af52-orb-pinned #finderLaunch {position:absolute!important;transition:none!important;animation:none!important;transform:none!important;}
+#finderPanel.is-maximized {inset:10px!important;position:fixed!important;
+  width:calc(100vw - 20px)!important;height:calc(100dvh - 20px)!important;
+  max-width:none!important;max-height:none!important;margin:0!important;}
+#finderPanel:not([hidden]) {opacity:1!important;visibility:visible!important;}
+#finderPanel .finder-window-controls button {display:grid!important;place-items:center!important;}
+
+/* Admin: il risultato vuoto non occupa spazio su mobile. Accesso confermato verde. */
+#adminPage #af51AdminStatus:empty {display:none!important;}
+#adminPage #af51AdminLoginStatus.af57-access-ok {
+  color:#90f9af!important;-webkit-text-fill-color:#90f9af!important;
+  background:none!important;text-shadow:0 0 8px #61d9a64a;
+}
+#adminPage #af51AdminLoginStatus.af59-access-flash {animation:af59-admit .3s ease-in-out 2 alternate!important;}
+@keyframes af59-admit {from{opacity:.35;filter:brightness(.7)}to{opacity:1;filter:brightness(1.25)}}
+#adminPage #af51AdminAuth button:disabled {opacity:.55;cursor:not-allowed;}
+#siteFooter .footer-admin-button .af58-admin-emblem,#siteFooter .footer-admin-button svg {
+  display:block!important;opacity:1!important;color:#b9f8ef!important;stroke:#b9f8ef!important;
+  visibility:visible!important;min-width:25px;min-height:25px;
+}
+
+/* Contrasto del pittogramma del pulsante Admin (stesso simbolo su PC e mobile). */
+#siteFooter .footer-admin-button .af58-admin-emblem rect {
+  fill:#174759!important; stroke:#b7fff2!important; stroke-width:4!important;
+}
+#siteFooter .footer-admin-button .af58-admin-emblem circle {fill:#b7fff2!important;}
+#siteFooter .footer-admin-button .af58-admin-emblem path {
+  stroke:#b7fff2!important;
+}
+/* Tema chiaro: Preferiti e Cronologia con la stessa superficie. */
+html:not([data-theme="dark"]) .favorites-block,
+html:not([data-theme="dark"]) .history-block {
+  background:rgba(232,250,247,.82)!important;border-color:#b9dcd8!important;color:#183d4b!important;
+}
+/* Orari resta selezionato anche mentre la sottotendina è aperta. */
+.side-orari-heading:has(#scheduleSubnavToggle[aria-expanded="true"]) .side-link[data-page="orari"],
+.side-orari-heading:has(+ #scheduleSubnav:not([hidden])) .side-link[data-page="orari"] {
+  background:var(--nav-active-bg,#205865)!important;color:var(--nav-active-color,#effffd)!important;
+}
+/* Più spazio interno per le frecce dei selettori. */
+#daySelect,#hourSelect,#adminPage select,#finderClass,#navTravelMode {
+  padding-right:34px!important;background-position:right 13px center!important;
+}
+
+/* Tutorial V59: si usano SOLTANTO le sezioni autentiche della demo del sito.
+   Nessuna interfaccia alternativa e nessuno sfondo nero nella tappa Finder. */
+html.af58-tour-slice body{background:var(--page-bg,#0c3040)!important;}
+html.af58-tour-slice[data-af52-demo-step="4"] .site-header .brand,
+html.af58-tour-slice[data-af52-demo-step="7"] .site-header .brand{display:flex!important;}
+html.af58-tour-slice[data-af52-demo-step="4"] #homePage .school-image{display:block!important;}
+html.af58-tour-slice[data-af52-demo-step="4"] #homePage .home-search-area {display:block!important;}
+html.af58-tour-slice[data-af52-demo-step="4"] #homePage .home-quick-actions {display:flex!important;}
+html.af58-tour-slice:not([data-af52-demo-step="4"]) #finderLaunch,
+html.af58-tour-slice:not([data-af52-demo-step="4"]) #finderPanel {display:none!important;}
+html.af58-tour-slice[data-af52-demo-step="4"] #finderLaunch {display:grid!important;}
+html.af58-tour-slice[data-af52-demo-step="4"] #homePage {padding-bottom:92px!important;}
+html.af58-tour-slice[data-af52-demo-step="7"] .site-header .brand {display:flex!important;}
+html.af58-tour-slice[data-af52-demo-step="7"] #siteFooter {display:block!important;}
+html.af58-tour-slice #siteFooter .team-area{background:transparent!important;}
+#tutorialPage .af51-live-frame {height:min(73dvh,780px)!important;}
+#tutorialPage .af55-guide-toolbar {position:relative;z-index:2;}
+
+@media(max-width:680px) {
+  #siteFooter .team-list {padding-top:10px!important;padding-bottom:9px!important;}
+  #siteFooter .team-member img {transform:scale(1.02)!important;}
+  #adminPage #af51AdminStatus:empty,#adminPage .af51-admin-status:empty{display:none!important;}
+  #tutorialPage .af51-live-frame{height:min(69dvh,690px)!important;}
+}
+@media (prefers-reduced-motion:reduce) {
+ #logoButton,#siteFooter .team-member,#siteFooter .af58-member-ring circle,
+ #adminPage #af51AdminLoginStatus.af59-access-flash {animation:none!important;transition:none!important;}
+}

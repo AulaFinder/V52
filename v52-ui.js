@@ -34,11 +34,8 @@
    }
    if(activeStep!==4 && $('finderPanel') && !$('finderPanel').hidden){$('finderClose')?.click();}
    // V55: Finder parte chiuso; l'orb viene evidenziato e aperto dall'utente.
-   if(activeStep===7){
-    requestAnimationFrame(()=>document.querySelector('#siteFooter')?.scrollIntoView({block:'start',behavior:'instant'}));
-   }else{
-    requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));
-   }
+   // In "Altre funzioni" la prima interazione riguarda il logo nell'HEADER.
+   requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));
   }
   window.addEventListener('message',event=>{
    if(event.origin!==location.origin||event.source!==window.parent)return;
@@ -56,54 +53,61 @@
   pin.type='button';pin.id='af52FinderPin';pin.className='finder-window-btn af52-finder-pin';
   pin.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m16 3 5 5-4 1-3 3-2 5-2-2-5 5-1-1 5-5-2-2 5-2 3-3z"/></svg>';
   const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-  const keyV58=nested?'aulafinder.finder.pinned.v58.demo':'aulafinder.finder.pinned.v58';
-  const docKeyV58=nested?'aulafinder.finder.anchor.v58.demo':'aulafinder.finder.anchor.v58';
-  let pinned=false,anchor=null;
-  try {pinned=localStorage.getItem(keyV58)==='true';anchor=JSON.parse(localStorage.getItem(docKeyV58)||'null');}catch(_){}
-  function area(){return document.querySelector('#mainContent>.page:not([hidden])')||document.getElementById('mainContent');}
-  // La porzione della sezione è estesa almeno all'area visibile: fissare
-  // un orb in fondo allo schermo non può spostarlo improvvisamente in alto.
-  function region(){
-    const r=area()?.getBoundingClientRect();if(!r)return null;
-    return {left:r.left,top:r.top,width:Math.max(r.width,innerWidth-8-r.left),height:Math.max(r.height,innerHeight-8-r.top)};
+  const pinKey=nested?'aulafinder.finder.pinned.v59.demo':'aulafinder.finder.pinned.v59';
+  const anchorKey=nested?'aulafinder.finder.anchor.v59.demo':'aulafinder.finder.anchor.v59';
+  let pinned=false,anchor=null,lastPage='';
+  try {pinned=localStorage.getItem(pinKey)==='true';anchor=JSON.parse(localStorage.getItem(anchorKey)||'null');}catch(_){}
+  if(nested){pinned=false;anchor=null;}
+  const currentPage=()=>document.querySelector('#mainContent > .page:not([hidden])')||document.getElementById('mainContent');
+  const region=()=>{
+    const page=currentPage();if(!page)return null;
+    const rect=page.getBoundingClientRect();
+    return {id:page.id,x:rect.left+scrollX,y:rect.top+scrollY,
+      width:Math.max(rect.width,launch.offsetWidth+20),
+      height:Math.max(launch.offsetHeight+20,Math.min(rect.height,Math.max(innerHeight*.74,580)))};
+  };
+  function capture(){
+    const r=launch.getBoundingClientRect(),p=region();if(!p)return {rx:.8,ry:.5};
+    return {rx:clamp((r.left+scrollX-p.x)/Math.max(1,p.width-r.width),0,1),
+      ry:clamp((r.top+scrollY-p.y)/Math.max(1,p.height-r.height),0,1)};
   }
-  function ratios(){
-    const r=launch.getBoundingClientRect(),a=region();
-    if(!a)return {rx:.8,ry:.5};
-    return {rx:clamp((r.left-a.left)/Math.max(1,a.width-r.width),0,1),ry:clamp((r.top-a.top)/Math.max(1,a.height-r.height),0,1)};
+  function positionAbsolute(x,y){
+    launch.style.left=Math.round(x)+'px';launch.style.top=Math.round(y)+'px';
+    launch.style.right='auto';launch.style.bottom='auto';
   }
   function place(){
     if(!pinned||!anchor)return;
-    const a=region();if(!a)return;
-    const w=launch.offsetWidth,h=launch.offsetHeight;
-    const x=scrollX+a.left+anchor.rx*Math.max(0,a.width-w);
-    const y=scrollY+a.top+anchor.ry*Math.max(0,a.height-h);
-    launch.style.left=Math.max(0,x)+'px';launch.style.top=Math.max(0,y)+'px';
-    launch.style.right='auto';launch.style.bottom='auto';
+    const p=region();if(!p)return;
+    positionAbsolute(p.x+anchor.rx*Math.max(0,p.width-launch.offsetWidth),
+      p.y+anchor.ry*Math.max(0,p.height-launch.offsetHeight));
   }
-  function save(){try{localStorage.setItem(keyV58,String(pinned));if(anchor)localStorage.setItem(docKeyV58,JSON.stringify(anchor));}catch(_){}}
-  function renderPin(){
+  function save(){try{localStorage.setItem(pinKey,String(pinned));if(anchor)localStorage.setItem(anchorKey,JSON.stringify(anchor));}catch(_){}}
+  function paint(){
     document.documentElement.classList.toggle('af52-orb-pinned',pinned);
     pin.setAttribute('aria-pressed',String(pinned));
-    pin.setAttribute('aria-label',pinned?'Sblocca posizione Finder':'Fissa Finder in questo punto della sezione');
+    pin.setAttribute('aria-label',pinned?'Libera Finder':'Fissa Finder in questo punto della pagina');
     launch.removeAttribute('title');pin.removeAttribute('title');
   }
   pin.addEventListener('click',event=>{
     event.stopPropagation();
     const r=launch.getBoundingClientRect();
-    if(!pinned){anchor=ratios();pinned=true;renderPin();place();}
-    else{pinned=false;renderPin();launch.style.left='auto';launch.style.top='auto';
-      launch.style.right=Math.max(8,innerWidth-r.right)+'px';launch.style.bottom=Math.max(8,innerHeight-r.bottom)+'px';}
-    save();
+    if(!pinned){anchor=capture();pinned=true;paint();positionAbsolute(r.left+scrollX,r.top+scrollY);}
+    else{pinned=false;paint();launch.style.left='auto';launch.style.top='auto';
+      launch.style.right=clamp(innerWidth-r.right,8,Math.max(8,innerWidth-launch.offsetWidth-8))+'px';
+      launch.style.bottom=clamp(innerHeight-r.bottom,8,Math.max(8,innerHeight-launch.offsetHeight-8))+'px';}
+    lastPage=currentPage()?.id||'';save();
   });
-  // Posizione percentuale rispetto alla sezione corrente: il cambio pagina non lascia Finder fuori scena.
-  const main=document.getElementById('mainContent');
-  if(main)new MutationObserver(()=>{if(pinned)requestAnimationFrame(place);})
-    .observe(main,{attributes:true,attributeFilter:['hidden'],subtree:true});
-  window.addEventListener('resize',()=>{if(pinned)requestAnimationFrame(place);});
-  // Trascinamento dell'orb anche in stato fissato; aggiorna lo stesso ancoraggio.
-  window.addEventListener('af58-finder-pinned-moved',()=>{if(!pinned)return;anchor=ratios();save();place();});
-  controls.prepend(pin);renderPin();requestAnimationFrame(place);
+  // Reposition only when the actual site section changes, never during scrolling or random clicks.
+  const main=document.getElementById('mainContent');lastPage=currentPage()?.id||'';
+  if(main)new MutationObserver(()=>{
+    if(!pinned)return;
+    const page=currentPage()?.id||'';
+    if(page!==lastPage){lastPage=page;requestAnimationFrame(place);}
+  }).observe(main,{attributes:true,attributeFilter:['hidden'],subtree:true});
+  window.addEventListener('resize',()=>{if(pinned)requestAnimationFrame(place)});
+  window.addEventListener('af58-finder-pinned-moved',()=>{if(!pinned)return;anchor=capture();save();});
+  controls.prepend(pin);paint();if(pinned&&anchor)requestAnimationFrame(place);
+
  }
 
  // V53: niente inseguimento del puntatore; eliminati i listener di illuminazione.

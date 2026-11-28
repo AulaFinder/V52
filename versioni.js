@@ -20,6 +20,17 @@
   'Versioni: rimosso il filtro simulato scuro, schede uniformi e accesso diretto all’ultima versione dalla testata.',
   'Admin: pittogramma SVG originale, nuovo contrasto dell’occhio e migliorie agli stati e ai testi.'
  ],documented:true,source:'Aggiornamento V58 e registro requisiti',preview:'assets/versioni-home/V58.png',changedFiles:['index.html','v58.css','v58-ui.js','v57-tutorial.js','finder.js','navigator.js','piantina.js','v49-ui.js','versioni.js','sw.js','admin-ui.js']});
+ versions.push({number:59,version:'V59',title:'Stabilità, percorsi e guida fedele',details:[
+  'Logo della testata: eliminate le cornici indesiderate dopo l’ingrandimento; animazione hover con luce e ingrandimento sincronizzati.',
+  'Ricerca: rimosso il secondo contorno interno anche dopo una ricerca vuota; indicatori di tastiera sobri.',
+  'Navigatore: sistemato il raccordo ortogonale verso il centro della Palestra, inclusi percorsi da P.03 e da T.08.',
+  'Creatori: gradienti interni ai ritratti, contenitore esterno riportato al tema originale e animazione progressiva della circonferenza riallineata.',
+  'Finder: fissaggio con coordinate relative alla sezione, senza scorrimenti progressivi; domande cicliche essenziali, elenco consultabile e risposte riviste sugli orari.',
+  'Tutorial: sezioni vere del sito isolate per tappa; Finder visibile soltanto nella sua tappa, Home mantenuta per la dimostrazione e logo della testata correttamente evidenziato.',
+  'Admin: pittogramma del lucchetto più visibile, conferma verde animata e blocco locale dopo cinque tentativi errati senza indicazione della durata.',
+  'Mobile: eliminato un pannello di stato vuoto in Admin, migliorati i ritratti e allineati i colori di Preferiti e Cronologia nel tema chiaro.',
+  'Tema: predefinito secondo le impostazioni del dispositivo, mantenendo la scelta manuale dell’utente. Immagini e video originali invariati.'
+ ],documented:true,source:'Richieste di correzione V59, 28 novembre 2026',preview:'assets/versioni-home/V59.png',changedFiles:['index.html','v59.css','v59-ui.js','finder.js','v52-ui.js','v57-ui.js','v57-tutorial.js','navigator.js','admin-ui.js','versioni.js','sw.js']});
  const CURRENT_VERSION=Math.max(...versions.map(v=>v.number));
  const list=document.getElementById('versioniList');
  const search=document.getElementById('versioniSearch');

@@ -27,7 +27,7 @@
 
  // In Versioni la scheda evidenziata in testata è cliccabile e apre davvero l'anteprima.
  $('af58LatestVersion')?.addEventListener('click',()=>{
-  const entry=document.querySelector('#versioniList details[data-version="58"]');if(!entry)return;
+  const entry=document.querySelector('#versioniList details[data-version="59"]');if(!entry)return;
   entry.open=true;
   const preview=entry.querySelector('.af49-version-preview-button');
   if(preview&&preview.getAttribute('aria-expanded')!=='true')preview.click();
