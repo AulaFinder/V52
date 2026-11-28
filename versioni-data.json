@@ -1115,5 +1115,14 @@
       "versioni-data.json",
       "sw.js"
     ]
+  },
+  {
+    "number": 57,
+    "version": "V57",
+    "title": "Guida completa e interfaccia rifinita",
+    "preview": "assets/versioni-home/V57.png",
+    "details": [
+      "Tutorial in otto tappe, Finder rifinito, grafica e accessibilità migliorate."
+    ]
   }
 ]

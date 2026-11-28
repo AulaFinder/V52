@@ -8,7 +8,7 @@
  // One live guided site: expose only the current tutorial function in the embedded UI.
  if(nested){
   document.documentElement.classList.add('af52-in-demo');
-  const pages=['home','orari','orari','navigator','home','piantina','home'];
+  const pages=['home','orari','orari','navigator','home','piantina','versioni','home'];
   let activeStep=0;
   document.addEventListener('click',event=>{
    if(!event.isTrusted)return; // The guide itself may programmatically change sections.
@@ -18,11 +18,11 @@
    const allowedSchedule=el.matches('[data-schedule]')&&el.closest('#orariPage')&&
      ((activeStep===1&&['classes','rooms','teachers'].includes(el.dataset.schedule))||
       (activeStep===2&&['freeRooms','freeTeachers'].includes(el.dataset.schedule)));
-   if(allowedFinder||allowedSchedule||el.matches('#themeToggle'))return;
+   if(allowedFinder||allowedSchedule||el.matches('#themeToggle,#logoButton,.brand-title') || activeStep===0&&el.matches('[data-page="home"]'))return;
    event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
   },true);
   function selectStep(n){
-   activeStep=Math.max(0,Math.min(6,Number(n)||0));
+   activeStep=Math.max(0,Math.min(7,Number(n)||0));
    document.documentElement.dataset.af52DemoStep=String(activeStep);
    const page=pages[activeStep];
    // Try native app navigation; without replacing the app with a fake iframe document.
@@ -34,7 +34,7 @@
    }
    if(activeStep!==4 && $('finderPanel') && !$('finderPanel').hidden){$('finderClose')?.click();}
    // V55: Finder parte chiuso; l'orb viene evidenziato e aperto dall'utente.
-   if(activeStep===6){
+   if(activeStep===7){
     requestAnimationFrame(()=>document.querySelector('#siteFooter')?.scrollIntoView({block:'start',behavior:'instant'}));
    }else{
     requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));
@@ -42,7 +42,7 @@
   }
   window.addEventListener('message',event=>{
    if(event.origin!==location.origin||event.source!==window.parent)return;
-   if(event.data?.type==='aulafinder-v52-guide-step')selectStep(event.data.step);
+   if(event.data?.type==='aulafinder-v52-guide-step'||event.data?.type==='aulafinder-v57-guide-step')selectStep(event.data.step);
   });
   // Even on refresh, embedded mode never starts on a privileged Admin screen.
   requestAnimationFrame(()=>selectStep(0));
@@ -57,25 +57,39 @@
   pin.type='button';pin.id='af52FinderPin';pin.className='finder-window-btn af52-finder-pin';
   pin.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m16 3 5 5-4 1-3 3-2 5-2-2-5 5-1-1 5-5-2-2 5-2 3-3z"/></svg>';
   let pinned=false;
+  const docKey='aulafinder.finder.documentpin.v57';
   try{pinned=localStorage.getItem(key)==='true';}catch(_){}
+  function restoreDocPin(){
+   if(!pinned)return;
+   try{const pos=JSON.parse(localStorage.getItem(docKey)||'null');
+    if(pos&&Number.isFinite(pos.x)&&Number.isFinite(pos.y)){
+     launch.style.left=Math.max(0,pos.x)+'px';launch.style.top=Math.max(0,pos.y)+'px';launch.style.right='auto';launch.style.bottom='auto';
+    }
+   }catch(_){}
+  }
   function renderPin(){
    document.documentElement.classList.toggle('af52-orb-pinned',pinned);
    pin.setAttribute('aria-pressed',String(pinned));
-   pin.setAttribute('aria-label',pinned?'Sblocca la posizione di Finder':'Blocca Finder in questa posizione');
-   pin.title=pinned?'Posizione bloccata: sblocca per trascinare':'Blocca Finder dove lo hai spostato';
-   launch.title=pinned?'Finder bloccato in questa posizione: clicca per aprirlo':'Trascina Finder dove vuoi e usa la puntina per bloccarlo';
+   pin.setAttribute('aria-label',pinned?'Sblocca Finder dalla pagina':'Fissa Finder in questo punto della pagina');
+   pin.title=pinned?'Finder fissato alla pagina: non segue lo scorrimento':'Fissa Finder in questo punto del documento';
+   launch.title=pinned?'Finder fissato alla pagina':'Trascina Finder dove vuoi e fissalo con la puntina';
   }
   pin.addEventListener('click',()=>{
-   pinned=!pinned;
+   const rect=launch.getBoundingClientRect();pinned=!pinned;
+   if(pinned){
+    const pos={x:scrollX+rect.left,y:scrollY+rect.top};
+    launch.style.left=pos.x+'px';launch.style.top=pos.y+'px';launch.style.right='auto';launch.style.bottom='auto';
+    try{localStorage.setItem(docKey,JSON.stringify(pos));}catch(_){}
+   }else{
+    launch.style.left='auto';launch.style.top='auto';
+    launch.style.right=Math.max(8,innerWidth-rect.right)+'px';
+    launch.style.bottom=Math.max(8,innerHeight-rect.bottom)+'px';
+   }
    try{localStorage.setItem(key,String(pinned));}catch(_){}
    renderPin();
   });
-  launch.addEventListener('pointerdown',e=>{
-   if(!pinned)return;
-   // Prevent V51 drag gesture without blocking normal click to open the assistant.
-   e.stopImmediatePropagation();
-  },true);
-  controls.prepend(pin);renderPin();
+  launch.addEventListener('pointerdown',e=>{if(pinned)e.stopImmediatePropagation();},true);
+  controls.prepend(pin);renderPin();requestAnimationFrame(restoreDocPin);
  }
 
  // V53: niente inseguimento del puntatore; eliminati i listener di illuminazione.

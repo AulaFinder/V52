@@ -81,7 +81,7 @@
  const result=load();
  window.AulaFinderAdminData={base,loadResult:result,storage:STORAGE,normalize,build,baseTeacherCodes,
    getEdits:()=>{try{return normalize(JSON.parse(localStorage.getItem(STORAGE)||'[]'));}catch(_){return[];}},
-   commit(raw){const edits=normalize(raw);build(edits);localStorage.setItem(STORAGE,JSON.stringify(edits));return edits.length;},
+   commit(raw){const edits=normalize(raw);const next=build(edits);localStorage.setItem(STORAGE,JSON.stringify(edits));Object.assign(window.AULAFINDER_DATA,next);window.dispatchEvent(new CustomEvent('aulafinder:local-data-updated',{detail:{count:edits.length}}));return edits.length;},
    export(){return JSON.stringify({format:'AulaFinder-V51-overrides',version:1,exportedAt:new Date().toISOString(),overrides:this.getEdits()},null,2);}
  };
 })();

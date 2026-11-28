@@ -1,0 +1,175 @@
+/* AulaFinder V57 · correzioni additive, senza modifiche ai dati e alle immagini originali. */
+:root{--af57-outline:#506677;--af57-line:#d3dfe4;--af57-ink:#173442}
+html[data-theme="dark"]{--af57-outline:#b6d5dc;--af57-line:#476776;--af57-ink:#f2ffff}
+/* Solo la guida usa il giallo come richiamo. Ovunque altrove focus sobrio ma visibile. */
+body:not(.af57-guide-content) :is(button,a,summary,[role="button"],select,input,textarea):focus-visible{
+ outline:2px solid var(--af57-outline)!important;outline-offset:2px!important;
+}
+html:not(.af57-demo) #tutorialPage button:focus-visible{outline:2px solid var(--af57-outline)!important}
+/* Il focus delle ricerche è una variazione neutra del bordo, senza linee azzurre o box multipli. */
+#homePage #searchForm.search-form:focus-within,#orariPage .schedule-quick-field:focus-within,
+#navigatorPage .navigator-field:focus-within,#versioniPage .versioni-search-label:focus-within,
+#finderPanel .finder-form:focus-within{
+ outline:0!important;outline-offset:0!important;box-shadow:none!important;filter:none!important;
+ border-color:var(--af57-outline)!important;
+}
+#homePage #searchInput:is(:focus,:focus-visible),#orariPage #scheduleQuickSearch:is(:focus,:focus-visible),
+#navigatorPage :is(#navFrom,#navTo):is(:focus,:focus-visible),#versioniPage #versioniSearch:is(:focus,:focus-visible),
+#finderPanel #finderQuestion:is(:focus,:focus-visible),
+#adminPage input:is(:focus,:focus-visible){
+ outline:0!important;box-shadow:none!important;filter:none!important;text-decoration:none!important;
+ border-bottom-color:var(--af57-outline)!important;
+}
+#homePage #searchForm.search-form input#searchInput:focus-visible,
+#orariPage #scheduleQuickSearch:focus-visible,#navigatorPage #navFrom:focus-visible,
+#navigatorPage #navTo:focus-visible,#versioniPage #versioniSearch:focus-visible,
+#finderPanel #finderQuestion:focus-visible{box-shadow:none!important;outline:none!important;}
+/* Tema allineato alla riga dei controlli, senza position top residua su PC. */
+@media (min-width:681px){.site-header .header-controls #themeToggle{position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;align-self:center!important;transform:none;margin:0!important;}}
+@media(max-width:680px){.site-header #themeToggle{display:grid!important;place-items:center!important;}}
+/* Identica velocità/orbita nelle due scritte; solo il logo grafico cresce sul hover. */
+.site-header .brand-title .brand-aula-orbit,.site-footer .brand-title .brand-aula-orbit{
+ animation-duration:8s!important;animation-timing-function:linear!important;
+}
+.site-header .brand-title .brand-finder,.site-footer .brand-title .brand-finder,
+.site-header .brand-title .brand-aula-letters,.site-footer .brand-title .brand-aula-letters{
+ transition:color .25s ease!important;animation-duration:8s!important;
+}
+.site-header .brand-title:hover .brand-aula-letters,.site-header .brand-title:hover .brand-finder,
+.site-header .brand-title:hover .brand-aula-orbit{filter:none!important;text-shadow:none!important;transform:none!important;}
+#logoButton{transition:transform .28s ease!important;filter:none!important;box-shadow:none!important;outline-offset:2px;}
+#logoButton:hover{transform:scale(1.055)!important;filter:none!important;box-shadow:none!important;}
+#logoButton:hover img{filter:none!important;transform:none!important;box-shadow:none!important;}
+/* Profili e risultati: superfici ben distinguibili, in linea con l'identità ciano. */
+#resultsPage .content-card,#resultsPage .result-card,#resultsPage .detail-card,
+#orariPage .orari-info-card,#orariPage .orari-info,
+#resultsPage .result-details,#resultsPage .result-profile{
+ background:#f7fcfc!important;color:#163747!important;border-color:#95b9c3!important;
+}
+#resultsPage :is(h1,h2,h3,strong,.result-name,.result-label),#orariPage .orari-info :is(h2,h3,strong){color:#123d52!important}
+#resultsPage :is(p,small,dt,dd,.small-muted),#orariPage .orari-info :is(p,small,dt,dd){color:#305d6b!important}
+html[data-theme="dark"] #resultsPage :is(.content-card,.result-card,.detail-card,.result-details,.result-profile),
+html[data-theme="dark"] #orariPage :is(.orari-info,.orari-info-card){
+ background:#112d3b!important;border-color:#487b89!important;color:#f4fffe!important;
+}
+html[data-theme="dark"] #resultsPage :is(h1,h2,h3,strong,.result-name,.result-label),html[data-theme="dark"] #orariPage .orari-info :is(h2,h3,strong){color:#f1fffe!important}
+html[data-theme="dark"] #resultsPage :is(p,small,dt,dd,.small-muted),html[data-theme="dark"] #orariPage .orari-info :is(p,small,dt,dd){color:#c3e3ed!important}
+/* Tutorial: nessuno storico/stellina, nessun admin e nessuna visita fuori dalla demo. */
+.af57-demo .favorites-block,.af57-demo .history-block,.af57-demo #homeFavorites,
+.af57-demo .favorite-toggle,.af57-demo [data-fav-open],.af57-demo [data-fav-remove],
+.af57-demo .footer-admin-button,.af57-demo .af51-admin,.af57-demo #tutorialReturn,
+.af57-demo .af52-guide-caption{display:none!important}
+/* 8 schede senza testo sovrapposto anche a 320 px */
+#tutorialPage .af48-tour-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#tutorialPage .af48-tour-tab{overflow-wrap:anywhere;white-space:normal!important;min-height:62px!important;}
+@media(max-width:600px){#tutorialPage .af48-tour-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+/* La demo resta a dimensioni reali, nessuna scala arbitraria degli script storici. */
+#tutorialPage .af51-live-frame{height:min(67dvh,720px)!important;min-height:380px!important;overflow:hidden!important}
+#tutorialPage #af51LiveFrame{width:100%!important;min-width:0!important;max-width:100%!important;height:100%!important;
+ position:relative!important;left:auto!important;top:auto!important;transform:none!important;will-change:auto!important;}
+#tutorialPage .af54-guide-controls{display:none!important}
+#tutorialPage #af55GuideHint{font-size:clamp(15px,1.55vw,18px)!important;font-weight:850!important;line-height:1.38!important}
+.af57-demo .af56-tour-veil{background:rgba(5,25,38,.22)!important}
+.af57-demo .af56-tour-ring{border:3px solid #ffd75f!important;border-radius:8px!important;box-shadow:0 0 0 1px #244c5e,0 0 9px #f4d57d66!important}
+/* Piantine: azioni nel flusso della testata, mai sovrapposte alle opzioni. */
+#piantinaPage .plan-banner .room-actions{position:relative!important;inset:auto!important;margin:5px 0!important;
+ display:flex!important;align-items:center!important;justify-content:flex-end!important;
+ flex-direction:row!important;gap:7px!important;min-width:0!important;max-width:100%!important;
+ width:auto!important;padding:5px!important;border:1px solid var(--af57-line)!important;
+ box-shadow:none!important;background:transparent!important;flex-wrap:wrap!important;
+}
+#piantinaPage .plan-banner .room-actions button{white-space:normal!important;font-size:12px!important;font-weight:800!important;}
+@media(max-width:550px){#piantinaPage .plan-banner .room-actions{flex:1 1 100%!important;justify-content:stretch!important}
+#piantinaPage .plan-banner .room-actions button{flex:1 1 115px!important}}
+/* Fullscreen non sbianca l'aula selezionata: stesso colore e contrasto delle mappe. */
+#af49MapViewer svg.plan g.room.af49-room-highlight .box{fill:#26a7a9!important;stroke:#0e6f80!important;stroke-width:1.9px!important;filter:none!important}
+#af49MapViewer svg.plan g.room.af49-room-highlight .room-number,
+#af49MapViewer svg.plan g.room.af49-room-highlight .map-entrance-label{fill:#071f29!important}
+html[data-theme="dark"] #af49MapViewer svg.plan g.room.af49-room-highlight .box{fill:#26a7a9!important;stroke:#b6f2e7!important}
+/* Navigator: percorso giallo con bordo scuro su entrambi i temi e luminosità moderata. */
+#navigatorPage .navigator-map .nav-route-polyline{stroke:#ffe15c!important;stroke-width:3.7!important;filter:drop-shadow(0 0 2.2px #987018)!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+#navigatorPage .navigator-map .nav-route-shadow{display:none!important}
+#navigatorPage .nav-legend-line{background-color:#ffe15c!important;border:1px solid #a87d00!important;}
+#navStepPrev,#navStepNext,#navigatorPage .nav-step-button{display:inline-grid!important;place-items:center!important;min-width:44px;min-height:44px;line-height:1!important;align-items:center!important;justify-content:center!important;}
+/* Finder: aperture compatte e interfaccia pulita. */
+#finderPanel{transform-origin:center center;will-change:auto;}
+#finderPanel .finder-window-controls{gap:4px;}
+#finderPanel .finder-window-btn,#finderPanel .finder-close{display:inline-grid!important;place-items:center!important;min-width:36px;min-height:36px;}
+#finderPanel #finderPromptsWrap>summary{display:none!important}
+#finderPanel #finderPromptsWrap{display:block!important;list-style:none;border:0!important;}
+#finderPanel #finderPrompts{display:flex!important;align-items:center;justify-content:center;min-height:57px;}
+#finderPanel .af57-prompt-rotator{display:grid;grid-template-columns:1fr;gap:3px;width:100%;padding:5px 0}
+#finderPanel .af57-prompt-rotator button{width:100%;min-height:44px;display:grid;place-items:center;border:1px solid #7bbdbd;border-radius:13px;
+ background:#e9f7f5;color:#164855;font-weight:700;font-size:13px;line-height:1.4;padding:9px 13px;
+ transition:opacity .28s ease,transform .28s ease;white-space:normal;overflow-wrap:anywhere}
+#finderPanel .af57-prompt-rotator button.is-changing{opacity:0;transform:translateY(4px)}
+#finderPanel .af57-prompt-caption{font-size:11px;letter-spacing:.04em;text-align:center;color:#56757e;font-weight:700}
+html[data-theme="dark"] #finderPanel .af57-prompt-rotator button{background:#173f4e;color:#eefcfc;border-color:#608e9a}
+html[data-theme="dark"] #finderPanel .af57-prompt-caption{color:#bbdfe3}
+#finderPanel :is(#finderClass,#finderPromptsWrap) {border-radius:11px!important}
+#finderPanel #finderClass{background-position:right 13px center!important;}
+.af52-orb-pinned #finderLaunch{position:absolute!important;transform:none!important;}
+/* Versioni: eliminate etichette tecniche e badge invadenti, migliorati comandi. */
+#versioniList .af52-preview-badge,#versioniList .versioni-source{display:none!important}
+#versioniList .af49-version-preview-panel{overflow:hidden!important;border-radius:15px!important}
+#versioniList .af49-version-preview-panel img{display:block;width:100%;height:auto;object-fit:contain;image-rendering:auto;filter:none;}
+#versioniList .af57-preview-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:6px 0 0}
+#versioniList .af57-preview-choice{min-height:38px;border:1px solid #6cabb5;border-radius:9px;background:#e6f3f5;color:#214e60;padding:6px 11px;font-size:12px;font-weight:850;cursor:pointer}
+#versioniList .af57-preview-choice[aria-pressed="true"]{background:#235e75;color:white}
+#versioniList .af57-preview-disclaimer{flex:1 1 100%;font-size:11px;color:#52727a}
+#versioniList .af57-preview-dark .af50-version-fullscreen>img{filter:brightness(.5) saturate(.72) hue-rotate(10deg)!important}
+#af50Lightbox.af57-preview-dark #af50LightboxImage{filter:brightness(.5) saturate(.72) hue-rotate(10deg)}
+#versioniList .af50-version-fullscreen{position:relative;display:grid;place-items:center;overflow:hidden;border-radius:12px!important}
+#versioniList .af50-version-fullscreen::after{display:grid!important;place-items:center!important;min-width:31px;min-height:31px;line-height:1!important;}
+#af50Lightbox .af50-lightbox-actions button{display:inline-grid!important;place-items:center!important;line-height:1!important;min-width:42px;min-height:42px;border-radius:10px!important;}
+#versioniList .versioni-entry--current>summary{position:relative;isolation:isolate;overflow:hidden;}
+#versioniList .versioni-entry--current>summary::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(112deg,#10576b,#317d88,#5b78ae);opacity:0;transition:opacity .38s ease;}
+#versioniList .versioni-entry--current>summary:hover::before,#versioniList .versioni-entry--current>summary:focus-visible::before{opacity:1}
+#versioniList .versioni-entry--current>summary:hover :is(.versioni-name,.versioni-status,.versioni-chevron),
+#versioniList .versioni-entry--current>summary:focus-visible :is(.versioni-name,.versioni-status,.versioni-chevron){color:#fff!important}
+/* Footer autori, avatar intatti. */
+#siteFooter .team-member{transition:transform .23s ease,box-shadow .23s ease,background-color .23s ease!important}
+#siteFooter .team-member:hover{transform:translateY(-3px) scale(1.025)!important;box-shadow:0 8px 18px #020e1328!important}
+#siteFooter .team-member img{filter:none!important;object-fit:contain!important}
+/* Admin: riservato, nessuna tastiera finta, accesso visualmente discreto. */
+#adminPage .af51-admin-login{max-width:550px!important;padding:clamp(28px,4vw,47px)!important;
+ background:linear-gradient(150deg,#071d2b,#102f3f 65%,#263e59)!important;border-color:#426775!important;text-align:center;}
+#adminPage .af51-admin-keyboard{display:none!important}
+#adminPage .af51-admin-login>p:not(.af51-admin-eyebrow):not(#af51AdminLoginStatus){display:none!important}
+#adminPage .af51-admin-login h2{font-size:clamp(28px,3vw,40px)!important;letter-spacing:.01em;margin-bottom:16px}
+#adminPage .af51-admin-lock{font-size:0!important;width:54px;height:54px;display:grid;place-items:center;margin:auto;color:#b8ffff;
+ filter:drop-shadow(0 0 7px #65eee694);animation:af57-secure-pulse 4s ease-in-out infinite!important}
+#adminPage .af51-admin-lock::before{content:'🔒';font-size:34px}
+@keyframes af57-secure-pulse{0%,100%{opacity:.79;filter:drop-shadow(0 0 4px #54d6df)}50%{opacity:1;filter:drop-shadow(0 0 12px #9cfaff)}}
+#adminPage #af51AdminLoginStatus{font-size:14px;font-weight:850;min-height:23px;margin-top:12px}
+#adminPage #af51AdminLoginStatus.af57-access-denied{color:#ff858d!important}
+#adminPage #af51AdminLoginStatus.af57-access-ok{color:#a7ffec!important;background:linear-gradient(95deg,#9afcdb,#a6cdff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#adminPage #af51AdminShowPassword{display:grid!important;place-items:center;font-size:23px;transition:transform .2s ease,background .2s ease}
+#adminPage #af51AdminShowPassword[aria-pressed="true"]{transform:scale(1.07);background:#8ad6d8}
+#adminPage #af51AdminAuth label{color:#d8f4f4}
+#adminPage .af51-admin-console{max-width:1060px!important}
+#siteFooter .footer-admin-button{display:inline-flex!important;align-items:center;gap:7px;justify-content:center}
+#siteFooter .footer-admin-button span{font-size:18px}
+@media(max-width:680px){#adminPage .af51-admin-login{padding:24px 16px!important}}
+/* Tema ridotto e risparmio di animazioni. */
+@media(prefers-reduced-motion:reduce){.af57-prompt-rotator button,#siteFooter .team-member,#logoButton,#versioniList .versioni-entry--current>summary::before{transition:none!important;animation:none!important}}
+
+/* Lo stato di selezione deve rimanere identico dentro e fuori dal fullscreen. */
+.plan-fullscreen g.room.af49-room-highlight :is(rect.box,rect.entrance-box,path.box),
+.plan-fullscreen g.room.selected :is(rect.box,rect.entrance-box,path.box),
+.plan-fullscreen .af49-room-highlight :is(rect.box,rect.entrance-box,path.box),
+.af49-map-modal g.room.af49-room-highlight :is(rect.box,rect.entrance-box,path.box){
+  fill:#b4f2e7!important;stroke:#0b7285!important;stroke-width:1.75!important;
+}
+html[data-theme="dark"] .plan-fullscreen g.room.af49-room-highlight :is(rect.box,rect.entrance-box,path.box),
+html[data-theme="dark"] .af49-map-modal g.room.af49-room-highlight :is(rect.box,rect.entrance-box,path.box){fill:#246b75!important;stroke:#c2faff!important}
+
+/* Indicatore discreto di visibilità della password, con una sola transizione. */
+#af57EyeIcon{display:grid;place-items:center;min-width:24px;min-height:24px;transition:transform .23s ease,opacity .23s ease}
+#af57EyeIcon.is-open{transform:scale(1.13) rotate(-5deg)}
+@media (prefers-reduced-motion:reduce){#af57EyeIcon{transition:none!important}}
+
+#af57EyeIcon svg{display:block;color:#ceeff5}
+#af57EyeIcon .af57-eye-slash{opacity:1;transition:opacity .22s ease}
+#af57EyeIcon.is-open .af57-eye-slash{opacity:0}
+@media (prefers-reduced-motion:reduce){#af57EyeIcon .af57-eye-slash{transition:none!important}}

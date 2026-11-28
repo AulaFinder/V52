@@ -1,3 +1,6 @@
+## V57 · 28 novembre 2026
+Tutorial, Finder, Versioni, navigatore, piantine, grafica e accesso Admin locale. Consulta README_V57.md e VERIFICHE_V57.md.
+
 ### V56 - 24 novembre 2026
 - Tutorial con istruzioni rafforzate, leggero oscuramento del resto, frecce per i sottopassaggi e disponibilità senza richiesta di giorno/ora.
 - Colore del percorso Navigatore più contrastato, mantenendo il resto identico.

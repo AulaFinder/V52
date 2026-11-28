@@ -69,3 +69,40 @@ html[data-theme="dark"] #tutorialPage #af56PhaseCount{color:#d6f8ef;}
 .af55-inside-tour .af55-guide-target{animation:none!important;box-shadow:none!important;outline:none!important;filter:none!important;}
 .af55-inside-tour svg g.room.af55-guide-target{filter:drop-shadow(0 0 4px #dfa834)!important;}
 @media(prefers-reduced-motion:reduce){.af56-tour-ring,.af56-tour-veil{transition:none!important;}}
+
+/* V56 — correzione cascata di focus (27/11/2026).
+   Le precedenti regole :has(input:focus-visible) avevano specificità più alta,
+   e reintroducevano contorno/ombra gialli nonostante le regole sopra.
+   Manteniamo il focus accessibile come sola sottolineatura interna.
+*/
+#homePage #searchForm.search-form:focus-within,
+#homePage #searchForm.search-form:has(input#searchInput:focus-visible),
+#orariPage .schedule-quick-field:focus-within,
+#orariPage .orari-filter-row:focus-within,
+#navigatorPage .navigator-field:focus-within,
+#versioniPage .versioni-search-label:focus-within,
+#versioniPage .versioni-toolbar:focus-within,
+#finderPanel .finder-form:focus-within {
+  outline:0!important;
+  outline-offset:0!important;
+  box-shadow:none!important;
+  border-color:var(--line)!important;
+  filter:none!important;
+}
+#homePage #searchForm.search-form input#searchInput:focus-visible,
+#orariPage #scheduleQuickSearch:focus-visible,
+#navigatorPage #navFrom:focus-visible,
+#navigatorPage #navTo:focus-visible,
+#versioniPage #versioniSearch:focus-visible,
+#finderPanel #finderQuestion:focus-visible {
+  outline:none!important;
+  box-shadow:inset 0 -3px 0 #216277!important;
+}
+html[data-theme="dark"] #homePage #searchForm.search-form input#searchInput:focus-visible,
+html[data-theme="dark"] #orariPage #scheduleQuickSearch:focus-visible,
+html[data-theme="dark"] #navigatorPage #navFrom:focus-visible,
+html[data-theme="dark"] #navigatorPage #navTo:focus-visible,
+html[data-theme="dark"] #versioniPage #versioniSearch:focus-visible,
+html[data-theme="dark"] #finderPanel #finderQuestion:focus-visible {
+  box-shadow:inset 0 -3px 0 #9be5db!important;
+}

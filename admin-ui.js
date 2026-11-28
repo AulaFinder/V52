@@ -10,20 +10,21 @@
  const makeOption=(val,label)=>{const el=document.createElement('option');el.value=val;el.textContent=label;return el;};
  const setMessage=(message,problem=false)=>{status.textContent=message;status.dataset.error=String(problem);};
  let authenticated=false;
- function unlock(){authenticated=true;login.hidden=true;console.hidden=false;hint.textContent='Accesso effettuato';loadLesson();}
- function lock(){authenticated=false;pass.value='';console.hidden=true;login.hidden=false;hint.textContent='Console bloccata.';}
- const charButtons=$('af51AdminKeyboard');
- // Tastiera QWERTY tattile utilizzabile anche da screen reader.
- for(const row of ['QWERTYUIOP','ASDFGHJKL','ZXCVBNM']){
-  const line=document.createElement('div');line.className='af51-admin-key-row';
-  for(const char of row){const btn=document.createElement('button');btn.type='button';btn.textContent=char.toLowerCase();btn.setAttribute('aria-label','Lettera '+char.toLowerCase());btn.addEventListener('click',()=>{pass.value+=char.toLowerCase();pass.focus({preventScroll:true});});line.append(btn);}charButtons.append(line);
- }
- const line=document.createElement('div');line.className='af51-admin-key-row';
- for(const [title,callback] of [['Cancella lettera',()=>{pass.value=pass.value.slice(0,-1);pass.focus();}],['Pulisci',()=>{pass.value='';pass.focus();}],['Invio',()=>$('af51AdminAuth').requestSubmit()]]){
-  const btn=document.createElement('button');btn.type='button';btn.className='af51-admin-key-action';btn.textContent=title;btn.addEventListener('click',callback);line.append(btn);
- }charButtons.append(line);
- $('af51AdminShowPassword').addEventListener('click',()=>{const show=pass.type==='password';pass.type=show?'text':'password';$('af51AdminShowPassword').setAttribute('aria-pressed',String(show));pass.focus({preventScroll:true});});
- $('af51AdminAuth').addEventListener('submit',e=>{e.preventDefault();if(pass.value==='kiwi'){unlock();}else{hint.textContent='Password non corretta.';pass.select();login.classList.remove('af51-admin-shake');void login.offsetWidth;login.classList.add('af51-admin-shake');}});
+ function unlock(){authenticated=true;login.hidden=true;console.hidden=false;hint.textContent='Accesso consentito';loadLesson();}
+ function lock(){authenticated=false;pass.value='';console.hidden=true;login.hidden=false;hint.textContent='';hint.classList.remove('af57-access-ok','af57-access-denied');}
+ // Il client pubblicato non può conservare un segreto: il digest evita solo la stringa in chiaro.
+ const salt='b3dff8de3dea1821ea233bfa5a6c64d6',expected='46e4d2a84e048229e8a8262db53f68532078d677f9c8127f45cceb977d2df693';
+ const feedback=(message,ok)=>{hint.textContent=message;hint.classList.toggle('af57-access-ok',ok===true);hint.classList.toggle('af57-access-denied',ok===false);};
+ const eye=$('af51AdminShowPassword'),eyeIcon=$('af57EyeIcon');
+ eye.addEventListener('click',()=>{const show=pass.type==='password';pass.type=show?'text':'password';eye.setAttribute('aria-pressed',String(show));eye.setAttribute('aria-label',show?'Nascondi password':'Mostra password');if(eyeIcon)eyeIcon.classList.toggle('is-open',show);pass.focus({preventScroll:true});});
+ $('af51AdminAuth').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const bytes=new TextEncoder().encode(salt+pass.value);
+  let verified=false;
+  try{const result=await crypto.subtle.digest('SHA-256',bytes);const value=Array.from(new Uint8Array(result),v=>v.toString(16).padStart(2,'0')).join('');verified=value===expected;}catch(_ ){feedback('Impossibile verificare il codice su questo browser.',false);return;}
+  if(verified){feedback('Accesso consentito',true);setTimeout(unlock,620);}
+  else{feedback('Accesso negato',false);pass.select();login.classList.remove('af51-admin-shake');void login.offsetWidth;login.classList.add('af51-admin-shake');}
+ });
  $('af51AdminLock').addEventListener('click',lock);
  const classIds=Object.keys(API.base.classes).sort((a,b)=>a.localeCompare(b,'it',{numeric:true}));
  cls.replaceChildren(...classIds.map(v=>makeOption(v,v)));

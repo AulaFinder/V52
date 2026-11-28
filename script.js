@@ -149,6 +149,7 @@
   hourSelect.value = currentHour;
 
   function addHistory(kind, id) {
+    if(new URLSearchParams(location.search).has('af52guide'))return; // demo isolata dalla cronologia pubblica
     state.history=[{kind,id},...state.history.filter(e=>!(e.kind===kind&&e.id===id))].slice(0,8);
     try {localStorage.setItem('aulafinder.history',JSON.stringify(state.history));}catch(_){}
     renderHistory();
@@ -503,7 +504,7 @@
     if(slot){
       subject=slot.subject;
       if(kind==='rooms')detail=slot.lessons?slot.lessons.map(e=>`${e.class} · ${prof(e.teacher,e.subject)}`).join(' | '):`${slot.class} · ${prof(slot.teacher,slot.subject)}`;
-      if(kind==='classes'){ detail=prof(slot.teacher,slot.subject);location=slot.room||''; }
+      if(kind==='classes'){ detail=prof(slot.teacher,slot.subject).replace(/\s*\([^)]*\)\s*$/, '');location=slot.room||''; }
       if(kind==='teachers'){ detail=`Classe ${slot.class}`;location=slot.room||''; }
     }
     return `<div class="weekly-cell ${active?'is-current':''} ${slot?'':'is-empty'}">

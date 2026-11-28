@@ -1,8 +1,8 @@
 /* AulaFinder V52 rifatta · offline di supporto, aggiornamenti network-first. */
-const VERSION='v56-20261124-1';
+const VERSION='v57-20261128-1';
 const PREFIX='aulafinder-pwa-';
 const CACHE=PREFIX+VERSION;
-const CORE=['./','./index.html','./style.css','./piantina.css','./v48.css','./v49.css','./v50.css','./v51.css','./v52.css','./v53.css','./v54.css','./v55.css','./v56.css','./data.js','./script.js','./finder.js','./navigator.js','./versioni.js','./v52-ui.js','./v53-ui.js','./v56-tutorial.js'];
+const CORE=['./','./index.html','./style.css','./piantina.css','./v48.css','./v49.css','./v50.css','./v51.css','./v52.css','./v53.css','./v54.css','./v55.css','./v56.css','./v57.css','./data.js','./script.js','./finder.js','./navigator.js','./versioni.js','./v52-ui.js','./v53-ui.js','./v57-tutorial.js','./v57-ui.js'];
 self.addEventListener('install',event=>{
  event.waitUntil((async()=>{
   const cache=await caches.open(CACHE);

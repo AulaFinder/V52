@@ -80,14 +80,14 @@
  const lightScroll=lightbox.querySelector('.af50-lightbox-scroll'),lightImage=lightbox.querySelector('#af50LightboxImage');
  let zoom=1,lightOpener=null;
  function setLightZoom(value){zoom=Math.max(.7,Math.min(3.5,value));lightImage.style.width=Math.round(100*zoom)+'%';lightbox.querySelector('#af50LightboxPercent').textContent=Math.round(zoom*100)+'%';}
- function closeLightbox(){if(lightbox.hidden)return;lightbox.hidden=true;document.body.classList.remove('af50-modal-open');lightImage.removeAttribute('src');lightOpener?.focus?.({preventScroll:true});}
+ function closeLightbox(){if(lightbox.hidden)return;lightbox.hidden=true;lightbox.classList.remove('af57-preview-dark');document.body.classList.remove('af50-modal-open');lightImage.removeAttribute('src');lightOpener?.focus?.({preventScroll:true});}
  document.addEventListener('click',e=>{
   const btn=e.target.closest('.af50-version-fullscreen');if(!btn)return;
   const img=btn.querySelector('img');if(!img)return;
   const url=img.getAttribute('src')||img.dataset.src;if(!url)return;
   lightOpener=btn;lightImage.src=url;lightImage.alt=img.alt;
   lightbox.querySelector('#af50LightboxTitle').textContent=btn.getAttribute('aria-label')?.replace('Apri a schermo intero ','')||'Anteprima storica';
-  lightbox.hidden=false;document.body.classList.add('af50-modal-open');setLightZoom(1);lightScroll.scrollTo(0,0);
+  lightbox.classList.toggle('af57-preview-dark',!!btn.closest('.af57-preview-dark'));lightbox.hidden=false;document.body.classList.add('af50-modal-open');setLightZoom(1);lightScroll.scrollTo(0,0);
   lightbox.querySelector('#af50LightboxClose').focus({preventScroll:true});
  });
  lightbox.querySelector('#af50LightboxClose').addEventListener('click',closeLightbox);

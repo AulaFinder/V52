@@ -206,10 +206,20 @@
   window.addEventListener('resize',()=>{
     if(panelSize)applySize(panelSize.width,panelSize.height);
   });
+  let resizingAnimation=null;
   $('finderExpand')?.addEventListener('click',()=>{
+    // FLIP: la finestra si espande dalla propria posizione, senza uscire e rientrare.
+    panelMotion?.cancel();panelMotion=null;resizingAnimation?.cancel();
+    const before=panel.getBoundingClientRect();
     const expanded=panel.classList.toggle('is-maximized');$('finderExpand').setAttribute('aria-pressed',String(expanded));
-    $('finderExpand').innerHTML=expanded?'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6m12-6h-6v6"/></svg>':'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M3 15v6h6m12-6v6h-6"/></svg>'; 
+    $('finderExpand').innerHTML=expanded?'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6m12-6h-6v6"/></svg>':'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M3 15v6h6m12-6v6h-6"/></svg>';
     if(!expanded){if(panelCustom&&panelSaved)movePanel(panelSaved.x,panelSaved.y);else updatePanelPosition();}
+    const after=panel.getBoundingClientRect();
+    if(!prefersReduced()&&before.width&&after.width){
+      const x=before.left-after.left,y=before.top-after.top,sx=before.width/after.width,sy=before.height/after.height;
+      resizingAnimation=panel.animate([{transform:`translate(${x}px,${y}px) scale(${sx},${sy})`,borderRadius:'24px',opacity:.93},{transform:'translate(0,0) scale(1)',borderRadius:expanded?'16px':'24px',opacity:1}],{duration:380,easing:'cubic-bezier(.22,.85,.25,1)'});
+      resizingAnimation.finished.finally(()=>{resizingAnimation=null;}).catch(()=>{});
+    }
   });
   // Riavvia il filmato leggero soltanto quando Finder è visibile; evita un timer continuo.
   const orb=panel.querySelector('.finder-head-orb video');
@@ -350,7 +360,7 @@
     mappe:'Apri Piantina, scegli il piano e tocca l’aula. Puoi anche ingrandire la mappa a schermo intero con il pulsante in alto a destra.',
     navigatore:'Apri Navigatore, scegli partenza e destinazione digitando il nome dell’aula o selezionandola sulla piantina. Poi premi «Mostra percorso». Le indicazioni sono schematiche e non vanno usate per emergenze.',
     ricerca:'Nella Home digita un’aula, una classe o la sigla di un docente. Puoi scegliere un suggerimento, poi consultare il risultato e il relativo orario.',
-    tutorial:'Apri Tutorial per provare tutte le funzioni in sette tappe, rimanendo sempre nella guida.',
+    tutorial:'Apri Tutorial per provare tutte le funzioni in otto tappe, rimanendo sempre nella guida.',
     tema:'In alto c’è il pulsante con il sole o la luna. Ti permette di passare dal tema chiaro a quello scuro.',
     contatti:'Per aiuto, domande o segnalazioni puoi scrivere a aulafinder@gmail.com.'
   };
@@ -395,6 +405,17 @@
     // Indicazioni per una stanza. Distingue sempre posizione/orario previsto da presenza reale.
     const roomMatch=q.match(/\b([stp])\s*\.?\s*(\d{1,2})\b|\b([123])\s*\.\s*(\d{1,2})\b|\b(palestra|archivio|caldaie|caldaia)\b/i);
     const code=roomMatch?roomMatch[5]?roomMatch[5].replace(/^caldaia$/,'Caldaie').replace(/^./,c=>c.toUpperCase()):roomMatch[1]?`${roomMatch[1].toUpperCase()}.${roomMatch[2].padStart(2,'0')}`:`${roomMatch[3]}.${roomMatch[4].padStart(2,'0')}`:null;
+    if(code && /orario|occupat|chi usa|chi c[e']|in aula|lezion/.test(q) && DATA.rooms[code]){
+      const d=day&&days.includes(day)?day:$('daySelect').value;
+      const h=q.match(/(?:ora|alla)\s*([1-6])/);
+      const idx=h?Number(h[1])-1:Number($('hourSelect').value)-1;
+      const lesson=DATA.rooms[code].days?.[d]?.[idx];
+      return lesson?`${d}, ${idx+1}ª ora: ${code} ospita ${lesson.class||'una classe'} per ${lesson.subject||'una lezione'}. Docente: ${lesson.teacher||'non indicato'}.`:`${d}, ${idx+1}ª ora: in ${code} non risultano lezioni nell’orario caricato.`;
+    }
+    if(/quante.*(?:aule|stanze).*liber/.test(q)){
+      const d=day&&days.includes(day)?day:$('daySelect').value, h=Number($('hourSelect').value)-1;
+      return `${d}, ${h+1}ª ora: ${(DATA.freeRooms[d]?.[h]||[]).length} aule senza lezione prevista, secondo gli orari caricati.`;
+    }
     if(code && /dove|trov|piano|posizione|aula|stanza/.test(q) && !/(materie|lezioni|orario|liber)/.test(q)){
       const floors=code==='Palestra'?'tra piano terra e sotterraneo':code==='Archivio'||code==='Caldaie'?'al piano sotterraneo':code.startsWith('S.')||code.startsWith('P.')?'al piano sotterraneo':code.startsWith('T.')?'al piano terra':`al piano ${code[0]}`;
       return `${code} si trova ${floors}. Per vedere il punto preciso usa Piantina; per arrivarci usa Navigatore.`;

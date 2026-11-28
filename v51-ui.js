@@ -53,6 +53,7 @@
  const suggestions=$('finderPrompts');
  let promptPage='';
  function refreshPrompts(){
+  if(document.documentElement.classList.contains('af57-ready'))return;
   const page=document.querySelector('#mainContent>.page:not([hidden])')?.id?.replace(/Page$/,'')||'home';
   if(page===promptPage||!suggestions)return;promptPage=page;
   const questions=[...(promptGroups[page]||promptGroups.home),...promptGroups.home.filter(q=>!(promptGroups[page]||[]).includes(q))].slice(0,6);

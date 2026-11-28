@@ -497,8 +497,16 @@
     // arrivare fino al centro della stanza, non fermarsi sulla porta.
     if(loc.id==='Palestra'){
       const entry=point(loc.cx,loc.cy);
-      const path=[center,point(center.x,entry.y),entry,point(entry.x,hall.y),hall];
-      return path.filter((p,i)=>i===0||!close(p,path[i-1]));
+      // Centro del locale → accesso reale → asse del corridoio. La palestra
+      // usa due porte su lati diversi: si avvicina alla porta dall'INTERNO,
+      // evitando il precedente zig-zag fuori dalle pareti.
+      const elbow=floor==='sotto'
+        ? point(entry.x,center.y)
+        : point(center.x,entry.y);
+      const path=[center,elbow,entry,point(entry.x,hall.y),hall]
+        .filter((p,i,a)=>i===0||!close(p,a[i-1]));
+      return path.filter((p,i,a)=>i===0||i===a.length-1||
+        Math.abs((p.x-a[i-1].x)*(a[i+1].y-p.y)-(p.y-a[i-1].y)*(a[i+1].x-p.x))>.05);
     }
     const corridor=geometryCorridors.get(floor);
     const rect=loc.rect;

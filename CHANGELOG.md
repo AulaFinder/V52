@@ -1,3 +1,7 @@
+## V57 · 2026-11-28
+- Tutorial a otto tappe, Finder e piantine aggiornati; accessibilità e layout rivisti; archivio V57.
+- Conservate le risorse originali. Admin: interfaccia migliorata, modifiche solo locali.
+
 ## V56 - Tutorial guidato e migliore contrasto (24 novembre 2026)
 - Disponibilità guidata senza obbligo di selezionare giorno e ora.
 - Istruzioni più marcate, evidenziazione con leggero oscuramento e frecce dei sottopassaggi.
