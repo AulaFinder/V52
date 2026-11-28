@@ -37,7 +37,7 @@
     clone.setAttribute('transform',`translate(${cx} ${cy}) scale(${scale}) rotate(180) translate(${-cx} ${-cy})`);
     (stage.querySelector('svg.plan .top')||stage.querySelector('svg.plan')).append(clone);
   }
-  viewer.querySelector('#af49ViewerNote').textContent='Aula '+selectedRoom+' selezionata';
+  viewer.querySelector('#af49ViewerNote').textContent='';
  }
  function executeSelection(kind){
   const room=selectedRoom;if(!room)return;
@@ -61,7 +61,7 @@
   stage.replaceChildren();selection.hidden=true;selectedRoom='';
   const copy=svg.cloneNode(true);copy.classList.add('af49-viewer-plan');copy.removeAttribute('id');
   copy.querySelectorAll('.sel-clone').forEach(el=>el.remove());
-  copy.querySelectorAll('g.room').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label','Seleziona aula '+(g.dataset.t||''));});
+  copy.querySelectorAll('g.room').forEach(g=>{g.removeAttribute('tabindex');g.removeAttribute('role');g.setAttribute('aria-hidden','true');});
   stage.append(copy);
   if(selectedCode){const found=[...copy.querySelectorAll('g.room')].find(g=>(g.dataset.t||'').split('·')[0].trim()===selectedCode);if(found)selectRoom(found);}
   viewer.querySelector('#af49ViewerTitle').textContent=card.querySelector('.plan-banner h2')?.textContent||'Piantina';
@@ -76,7 +76,7 @@
    scene.scrollTop=Math.max(0,(scene.scrollHeight-scene.clientHeight)/2);
   }));
   viewer.querySelector('#af49ViewerClose').focus({preventScroll:true});
-  if(!selectedRoom)viewer.querySelector('#af49ViewerNote').textContent="Seleziona un'aula. Trascina per esplorare e usa due dita per ingrandire.";
+  if(!selectedRoom)viewer.querySelector('#af49ViewerNote').textContent='Trascina per esplorare e usa due dita per ingrandire.';
   // Fullscreen API opzionale: l'overlay funziona anche su Safari senza supporto alla API.
   if(viewer.requestFullscreen){
    try {
@@ -168,12 +168,13 @@
  });
  scene.addEventListener('click',e=>{
   if(performance.now()-lastGestureTime<280){e.preventDefault();return;}
-  const g=e.target.closest('g.room');if(g)selectRoom(g);
+  // V60: il fullscreen è una vista di sola consultazione; il click non cambia selezione.
+  e.preventDefault();
  });
  scene.addEventListener('keydown',e=>{
   if(!['Enter',' '].includes(e.key))return;
-  const g=e.target.closest('g.room');if(!g)return;
-  e.preventDefault();selectRoom(g);
+  // Le stanze rimangono non selezionabili nel fullscreen.
+  e.preventDefault();
  });
  document.addEventListener('fullscreenchange',()=>{
   if(!document.fullscreenElement&&!viewer.hidden){

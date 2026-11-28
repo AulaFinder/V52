@@ -1,3 +1,6 @@
+## V60 — 28 novembre 2026
+Stabilità di Finder, piantine, Versioni e tutorial; dettagli in README_V60.md.
+
 ## V58 – Rifiniture interfaccia, Finder, piantine e documentazione (28 novembre 2026)
 
 - Header, tema, logo e focus corretti su desktop e mobile.

@@ -4,13 +4,13 @@ var cur=null;
 var tooltip=document.getElementById('room-tooltip');
 var hovered=null;
 var alwaysVisible={"Archivio":true,"Caldaie":true,"Palestra":true};
-var actionsPanel=null;
+var actionsPanel=null,actionsCleanup=null;
 var actionRoom='';
 function cleanRoomName(t){return String(t||'').split('·')[0].trim();}
 function canonicalRoom(t){return cleanRoomName(t).replace(/^Informatica\s+/i,'').replace(/[.\s]/g,'').toUpperCase();}
 function hasRoomSchedule(t){return Object.keys(window.AULAFINDER_DATA?.rooms||{}).some(function(k){return canonicalRoom(k)===canonicalRoom(t)});}
 function isNavigableRoom(t){return /^(?:[STP]\.\d+|[123]\.\d+|Palestra|Ingresso|Archivio|Caldaie)$/i.test(cleanRoomName(t));}
-function hideActions(){if(actionsPanel){actionsPanel.remove();actionsPanel=null;}actionRoom='';}
+function hideActions(){if(actionsCleanup){actionsCleanup();actionsCleanup=null;}if(actionsPanel){actionsPanel.remove();actionsPanel=null;}actionRoom='';}
 function showActions(g){
   hideActions();
   var code=cleanRoomName(g.dataset.t);
@@ -25,18 +25,28 @@ function showActions(g){
   actionsPanel=box;actionRoom=code;
   var banner=holder.closest('.plan-card').querySelector('.plan-banner');
   if(!banner)return;
-  // A fianco della stanza selezionata, con posizionamento che non esce dalla mappa.
-  holder.appendChild(box);
-  requestAnimationFrame(function(){
-    if(!box.isConnected)return;
-    var room=g.getBoundingClientRect(),area=holder.getBoundingClientRect();
-    var left=room.right-area.left+10+holder.scrollLeft;
-    var top=room.top-area.top+holder.scrollTop;
-    var maxLeft=holder.scrollWidth-box.offsetWidth-8;
-    if(left>maxLeft)left=room.left-area.left-box.offsetWidth-10+holder.scrollLeft;
-    box.style.left=Math.max(8,Math.min(maxLeft,left))+'px';
-    box.style.top=Math.max(8,Math.min(holder.scrollHeight-box.offsetHeight-8,top))+'px';
-  });
+  // V60: pannello ancorato visivamente all'aula ma nel body, senza essere ritagliato dalla piantina.
+  document.body.appendChild(box);
+  box.classList.add('af60-room-actions');
+  box.style.position='fixed';
+  box.style.zIndex='1500';
+  function placeActions(){
+    if(!box.isConnected||cur!==g)return;
+    var room=g.getBoundingClientRect();
+    var w=box.offsetWidth,h=box.offsetHeight,margin=10;
+    var left=room.right+margin;
+    if(left+w>window.innerWidth-8)left=room.left-w-margin;
+    left=Math.max(8,Math.min(window.innerWidth-w-8,left));
+    var top=room.top;
+    top=Math.max(8,Math.min(window.innerHeight-h-8,top));
+    box.style.left=left+'px';box.style.top=top+'px';
+  }
+  requestAnimationFrame(placeActions);
+  // Il pannello segue l'aula durante scroll e ridimensionamento, poi sparisce con la selezione.
+  var reposition=function(){if(box.isConnected)requestAnimationFrame(placeActions);};
+  window.addEventListener('scroll',reposition,{passive:true,capture:true});
+  window.addEventListener('resize',reposition,{passive:true});
+  actionsCleanup=function(){window.removeEventListener('scroll',reposition,true);window.removeEventListener('resize',reposition);};
 
 }
 

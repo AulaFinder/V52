@@ -1,0 +1,79 @@
+/* AulaFinder V60 — stabilizzazione delle funzioni richieste, non altera orari o piantine SVG. */
+
+/* Finder: un unico ancoraggio, identico in ogni sezione, senza offset storici. */
+html #finderLaunch,html.af52-orb-pinned #finderLaunch {
+  position:fixed!important;left:auto!important;right:92px!important;bottom:18px!important;top:auto!important;
+  transform:none!important;touch-action:manipulation!important;cursor:pointer!important;
+}
+#finderLaunch.is-dragging{cursor:pointer!important}
+#finderPanel .finder-panel-head{cursor:default!important;touch-action:auto!important}
+#finderPanel .finder-window-controls #af52FinderPin{display:none!important}
+.finder-chat-actions{display:flex;justify-content:flex-end;align-items:center;margin:3px 1px 5px}
+#finderClearChat{font-size:12px;min-height:34px;padding:7px 12px;border:1px solid #6caaa9;
+ border-radius:9px;color:#114b56;background:#e8f7f3;font-weight:800;cursor:pointer}
+html[data-theme="dark"] #finderClearChat{background:#1b5160;border-color:#76b9bb;color:#f3fffd}
+#finderClearChat:hover{filter:brightness(1.05)}
+@media(max-width:680px){html #finderLaunch,html.af52-orb-pinned #finderLaunch{left:12px!important;right:auto!important;bottom:max(13px,env(safe-area-inset-bottom))!important}}
+
+/* Orbita Aula sopra la parte iniziale del titolo, mantenendo il testo leggibile. */
+.site-header .brand-title .brand-aula-orbit,
+.site-header .brand-title:hover .brand-aula-orbit,
+.site-header .brand-title:focus-visible .brand-aula-orbit{
+  top:45%!important;left:-32%!important;width:157%!important;height:230%!important;
+  transform:translateY(-50%)!important;translate:none!important;
+}
+.site-header .brand-title .brand-aula-orbit .orbit-front{opacity:1!important;filter:drop-shadow(0 0 2px #56e7db)!important}
+
+/* Il footer torna al disegno originale: ritratti integri, nome in alto e ingrandimento semplice. */
+#siteFooter .team-area {background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+#siteFooter .team-list{padding:27px 4px 24px!important}
+#siteFooter .team-member{
+  position:relative!important;overflow:visible!important;isolation:auto!important;
+  background:#76cef0!important;border:3px solid #bdfbf5!important;
+  transform:none!important;box-shadow:0 0 0 2px #0c3448,0 5px 20px #021b25a8!important;
+  transition:transform .23s ease, box-shadow .23s ease,border-color .23s ease!important;
+}
+#siteFooter .team-member::after,#siteFooter .af58-member-ring{display:none!important;content:none!important}
+#siteFooter .team-member img{object-fit:cover!important;object-position:center!important;transform:none!important;
+  clip-path:none!important;filter:none!important;mix-blend-mode:normal!important}
+#siteFooter .team-member:hover,#siteFooter .team-member.is-selected,#siteFooter .team-member:focus-visible{
+  transform:scale(1.08)!important;border-color:#fff!important;
+  box-shadow:0 0 0 2px #23ffe3,0 0 24px #26ffeb96!important;
+}
+#siteFooter .team-member .team-name{
+  bottom:calc(100% + 12px)!important;top:auto!important;left:50%!important;
+  transform:translate(-50%,6px)!important;z-index:6!important;
+  transition:opacity .2s,transform .2s,visibility .2s!important;
+}
+#siteFooter .team-member:hover .team-name,#siteFooter .team-member.is-selected .team-name,
+#siteFooter .team-member:focus-visible .team-name{opacity:1!important;visibility:visible!important;transform:translate(-50%,0)!important}
+
+/* Piantine: un solo tasto fullscreen fisso nella testata, mai spinto dalle schede aula. */
+#piantinaPage .plan-banner{position:relative!important;padding-right:60px!important}
+#piantinaPage .plan-banner>.af49-plan-expand{
+  position:absolute!important;right:9px!important;top:50%!important;translate:0 -50%!important;
+  margin:0!important;flex:none!important;z-index:10!important;
+}
+/* Il pannello delle azioni ora è nel body per non venire tagliato ai bordi. */
+body>.af60-room-actions{position:fixed!important;z-index:1500!important;max-width:min(230px,calc(100vw - 16px))!important;
+ min-width:155px;padding:10px;border:1px solid #62b5ac;border-radius:12px;background:#f5fffc;
+ color:#123941;box-shadow:0 10px 24px #071f2959;display:flex;flex-direction:column;gap:7px}
+body>.af60-room-actions .room-actions-title{font-size:13px;font-weight:800;margin:0}
+body>.af60-room-actions button{min-height:37px;padding:7px 10px;border:1px solid #87c9c1;border-radius:9px;
+ background:#e4f6f2;color:#123941;font-weight:750;cursor:pointer}
+body>.af60-room-actions button:hover{background:#c9eee7}
+/* Fullscreen di sola consultazione: la selezione già effettuata mantiene il medesimo colore. */
+#af49MapViewer .af49-map-viewer-stage svg g.room{cursor:default!important}
+#af49MapViewer .af49-map-viewer-note:empty{display:none!important}
+#af49MapViewer .af58-viewer-selection .box{fill:#26a7a9!important;stroke:#0e6f80!important;stroke-width:1.9px!important;filter:none!important}
+#af49MapViewer .af58-viewer-selection .room-number{fill:#071f29!important}
+html[data-theme="dark"] #af49MapViewer .af58-viewer-selection .box{fill:#26a7a9!important;stroke:#b6f2e7!important}
+
+/* Versioni: indicazioni leggibili indipendentemente dal tema. */
+#versioniList .versioni-entry .versioni-status{background:#dcf6ef!important;color:#12444c!important;
+ border:1px solid #7dcbc0!important;font-weight:800!important}
+html[data-theme="dark"] #versioniList .versioni-entry .versioni-status{background:#dafaf0!important;color:#0b3645!important}
+/* Guide V60: niente vecchia puntina nel passo Finder; la demo usa la Home reale. */
+html.af57-demo[data-af52-demo-step="4"] #finderLaunch {left:16px!important;right:auto!important;bottom:17px!important}
+@media(max-width:680px){#siteFooter .team-list{padding:13px 0 9px!important}}
+@media(prefers-reduced-motion:reduce){#siteFooter .team-member{transition:none!important}}

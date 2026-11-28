@@ -18,10 +18,10 @@
   [{selector:'#navFrom',text:'Scrivi o seleziona l’aula di partenza.'},
    {selector:'#navTo',text:'Scrivi o seleziona l’aula di arrivo, anche Palestra.'},
    {selector:'#navigatorForm .navigator-go',text:'Mostra il percorso tra le aule lungo i corridoi.'}],
-  [{selector:'#finderLaunch',text:'Trascina l’orb dove preferisci, poi toccalo per aprire Finder.'},
-   {selector:'#finderQuestion',text:'Sposta la finestra se copre qualcosa, scegli una classe e scrivi la tua domanda.'},
-   {selector:'#finderForm .finder-send',text:'Premi Invio: Finder risponde usando i dati scolastici disponibili.'},
-   {selector:'#af52FinderPin',text:'Fissa Finder dove preferisci: il pulsante con la puntina conserva una posizione relativa alla sezione corrente.'}],
+  [{selector:'#finderLaunch',text:'Tocca l’orb di Finder, sempre nella stessa posizione, per aprire l’assistente.'},
+   {selector:'#finderQuestion',text:'Seleziona la tua classe e scrivi una domanda; Finder rimane vicino all’orb.'},
+   {selector:'#finderForm .finder-send',text:'Premi Invio per ottenere una risposta. Puoi poi svuotare la conversazione.'},
+   {selector:'#finderClearChat',text:'Prova Svuota chat per eliminare i messaggi e ricominciare.'}],
   [{selector:'#piantinaPage .floor-options input[value="terra"]',text:'Scegli un piano da esplorare.'},
    {selector:'#piantinaPage .plan-card:not([hidden]) svg g.room',text:'Tocca un’aula: trovi orario, navigazione e ingrandimento anche nel fullscreen.'}],
   [{selector:'#versioniSearch',text:'Cerca una versione (esempio V40) o una funzione come Finder.'},
@@ -71,7 +71,10 @@
    if(step===7){reveal(active);}
    requestPaint();setTimeout(requestPaint,100);post(current.text);
   }
-  function advance(){if(phase<STEPS[step].length-1){phase++;setTimeout(activate,90);}else{post('Ben fatto! Puoi passare alla tappa successiva.',true);}}
+  function advance(){
+   if(phase<STEPS[step].length-1){phase++;setTimeout(activate,150);}
+   else{clear();post('Passaggio completato! Proseguiamo alla funzione seguente.',true);}
+  }
   function changePhase(n){phase=Math.max(0,Math.min(STEPS[step].length-1,Number(n)||0));
    if(step===4){const finder=document.getElementById('finderPanel');if(phase>0&&finder?.hidden)document.getElementById('finderLaunch')?.click();}
    requestAnimationFrame(()=>setTimeout(activate,105));
@@ -93,24 +96,49 @@
    // Piantine: la stanza può essere selezionata, ma i link a Orari/Navigatore sono bloccati.
    if(step===5&&e.target.closest('[data-map-action],#af54MapNavigate,#af54MapSchedule')){e.preventDefault();e.stopImmediatePropagation();return;}
    const clicked=e.target.closest('button,input,select,summary,svg g.room');
-   if(!clicked||!active||step===7)return;
+   if(!clicked||!active)return;
+   // La ricerca nelle categorie degli Orari deve concludersi con la scelta di un risultato.
+   if(step===1&&[1,3,5].includes(phase)&&clicked.closest('[data-schedule-search-id]')){
+     setTimeout(advance,100);return;
+   }
+   if(step===0&&phase===2&&clicked.closest('#searchResults [data-choice],#searchSuggestions button,#searchResults button')){
+     setTimeout(advance,110);return;
+   }
+   if(step===7)return;
    const match=clicked===active||active.contains(clicked)||clicked.contains(active);
    if(!match)return;
    if(['#searchInput','#scheduleQuickSearch','#navFrom','#navTo','#finderQuestion','#versioniSearch'].includes(STEPS[step][phase].selector))return;
+   if(clicked.matches('input,select'))return; // il cambio è gestito da change; nessun doppio avanzamento
+   if(step===0&&phase===0&&clicked.closest('#searchForm .search-submit'))return;
    if(step===4&&phase===0)setTimeout(()=>{if(!document.getElementById('finderPanel')?.hidden)advance();},80);
    else if(step===0&&phase===1)setTimeout(()=>advance(),120);
    else advance();
   },true);
-  document.addEventListener('input',e=>{
-   if(!e.isTrusted||e.target!==active)return;
-   const sel=STEPS[step][phase].selector;
-   if(['#searchInput','#scheduleQuickSearch','#navFrom','#navTo','#finderQuestion','#versioniSearch'].includes(sel)&&String(e.target.value||'').trim().length>=2){
-    // Non avanzare troppo presto durante la digitazione: il testo resta leggibile.
-    if(step!==0||phase!==0)advance();
-   }
+  // Durante la digitazione non passare mai alla tappa seguente automaticamente.
+  // La lezione è completata solo dopo submit/selezione; la freccia resta disponibile.
+  document.addEventListener('focusout',e=>{
+    if(!e.isTrusted||e.target!==active)return;
+    const sel=STEPS[step][phase].selector;
+    if(sel==='#searchInput'&&step===0&&phase===0&&e.target.value.trim().length>=2){
+      setTimeout(()=>{if(step===0&&phase===0)advance();},160);
+    }
+    if(['#navFrom','#navTo','#finderQuestion','#versioniSearch'].includes(sel)&&e.target.value.trim().length>=2){
+      setTimeout(()=>{if(e.target.value.trim())advance();},190);
+    }
   },true);
-  document.addEventListener('submit',e=>{if(!e.isTrusted)return;if(step===0&&phase<=1&&e.target.id==='searchForm')setTimeout(()=>{phase=2;activate();},150);},true);
-  document.addEventListener('change',e=>{if(e.isTrusted&&e.target===active&&e.target.matches('select,input[type="checkbox"]'))advance();},true);
+  document.addEventListener('submit',e=>{
+    if(!e.isTrusted)return;
+    if(step===0&&e.target.id==='searchForm'&&document.getElementById('searchInput')?.value.trim()){
+      setTimeout(()=>{if(step===0){phase=2;activate();}},160);
+    }
+    if(step===3&&e.target.id==='navigatorForm'&&phase===2)setTimeout(advance,170);
+    if(step===4&&e.target.id==='finderForm'&&phase===2)setTimeout(advance,160);
+  },true);
+  document.addEventListener('change',e=>{
+    if(!e.isTrusted)return;
+    if(step===1&&[1,3,5].includes(phase)&&e.target.id==='scheduleEntity')setTimeout(advance,110);
+    else if(e.target===active&&e.target.matches('select,input[type="checkbox"]'))setTimeout(advance,100);
+  },true);
   addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent)return;
    if(e.data?.type==='aulafinder-v57-guide-step'){
     step=Math.max(0,Math.min(max-1,Number(e.data.step)||0));phase=0;clearTimeout(footerTimer);cancelAnimationFrame(footerFrame);
@@ -133,7 +161,7 @@
   'Scopri gli orari delle Classi, delle Aule e dei Professori. Per ogni categoria usa la ricerca senza perdere il contesto.',
   'Confronta Aule libere e Professori liberi senza cambiare per forza giorno o ora.',
   'Indica la partenza e la destinazione: il navigatore mostra il percorso schematico.',
-  'Puoi trascinare Finder e la sua finestra, ridimensionarla e fissare l’orb nella posizione scelta.',
+  'Apri Finder dall’orb ancorato nella parte bassa dello schermo, fai una domanda e prova a cancellare la conversazione.',
   'Scegli il piano, seleziona un’aula e prova l’ingrandimento. Non puoi uscire dalla guida andando ad altre sezioni.',
   'Cerca una versione, aprila ed esplora la sua anteprima storica.',
   'Prova il logo ingrandibile e il titolo animato nella testata, cambia tema e conosci i creatori nel footer. Preferiti e Cronologia sono disponibili nel menu del sito completo.'
@@ -166,7 +194,9 @@
  function setPhase(n){phase=Math.max(0,Math.min(STEPS[step].length-1,n));paintParent();frame.contentWindow?.postMessage({type:'aulafinder-v57-set-phase',phase},location.origin==='null'?'*':location.origin);place();}
  pp.addEventListener('click',()=>setPhase(phase-1));pn.addEventListener('click',()=>setPhase(phase+1));
  addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow||e.data?.type!==HINT||e.data.step!==step)return;
-  phase=Math.max(0,Math.min(STEPS[step].length-1,Number(e.data.phase)||0));hint.textContent=e.data.message;paintParent();});
+  phase=Math.max(0,Math.min(STEPS[step].length-1,Number(e.data.phase)||0));hint.textContent=e.data.message;paintParent();
+  if(e.data.completed && step<max-1){const finished=step;setTimeout(()=>{if(step===finished&&!page.hidden)show(step+1);},850);}
+ });
  frame.addEventListener('load',send);
  new MutationObserver(()=>{if(!page.hidden){send();place();}}).observe(page,{attributes:true,attributeFilter:['hidden']});
  paintParent();

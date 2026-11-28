@@ -65,64 +65,21 @@
     }
     launch.setAttribute('aria-expanded',String(open));
   };
-  // Drag button by pointer (mouse/touch/stylus), keep native keyboard click.
-  const posKey='aulafinder.finder.position.v48';
+  // V60: orb sempre nella stessa posizione della finestra, senza drag o puntina.
+  // In questo modo le vecchie coordinate salvate non possono più spostarlo.
   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
-  let drag=null, suppressNextClick=false;
-  function applyPosition(right,bottom){
-    launch.style.right=clamp(right,8,Math.max(8,innerWidth-launch.offsetWidth-8))+'px';
-    launch.style.bottom=clamp(bottom,8,Math.max(8,innerHeight-launch.offsetHeight-8))+'px';
-  }
-  function restorePosition(){if(document.documentElement.classList.contains('af52-orb-pinned'))return;try{const saved=JSON.parse(localStorage.getItem(posKey)||'null');if(saved&&Number.isFinite(saved.right)&&Number.isFinite(saved.bottom))applyPosition(saved.right,saved.bottom);}catch(_){}}
   function updatePanelPosition(){
     if(panel.hidden||panel.classList.contains('is-maximized'))return;
-    if(typeof panelCustom!=='undefined'&&panelCustom&&panelSaved){movePanel(panelSaved.x,panelSaved.y);return;}
     const r=launch.getBoundingClientRect();
     const w=panel.offsetWidth,h=panel.offsetHeight;
-    // Prefer above the button, otherwise below it; never leave the viewport.
-    const left=clamp(r.right-w,8,Math.max(8,innerWidth-w-8));
-    const top=r.top>=h+16?r.top-h-8:clamp(r.bottom+8,8,Math.max(8,innerHeight-h-8));
-    panel.style.left=left+'px';panel.style.top=top+'px';panel.style.right='auto';panel.style.bottom='auto';
+    panel.style.left=clamp(r.left,8,Math.max(8,innerWidth-w-8))+'px';
+    panel.style.top=clamp(r.top-h-10,8,Math.max(8,innerHeight-h-8))+'px';
+    panel.style.right='auto';panel.style.bottom='auto';
   }
-  launch.addEventListener('pointerdown',event=>{
-    if(event.button!==0)return;
-    const r=launch.getBoundingClientRect();
-    drag={pointerId:event.pointerId,x:event.clientX,y:event.clientY,right:innerWidth-r.right,bottom:innerHeight-r.bottom,left:scrollX+r.left,top:scrollY+r.top,moved:false};
-    try{launch.setPointerCapture(event.pointerId);}catch(_){}
-  });
-  launch.addEventListener('pointermove',event=>{
-    if(!drag||drag.pointerId!==event.pointerId)return;
-    const dx=event.clientX-drag.x,dy=event.clientY-drag.y;
-    if(Math.hypot(dx,dy)>7)drag.moved=true;
-    if(!drag.moved)return;
-    launch.classList.add('is-dragging');
-    if(document.documentElement.classList.contains('af52-orb-pinned')){
-      launch.style.left=(drag.left+dx)+'px';launch.style.top=(drag.top+dy)+'px';
-      launch.style.right='auto';launch.style.bottom='auto';
-    }else applyPosition(drag.right-dx,drag.bottom-dy);
-    updatePanelPosition();
-  });
-  function finishDrag(event){
-    if(!drag||drag.pointerId!==event.pointerId)return;
-    if(drag.moved){
-      suppressNextClick=true;
-      if(document.documentElement.classList.contains('af52-orb-pinned'))window.dispatchEvent(new Event('af58-finder-pinned-moved'));
-      else try{localStorage.setItem(posKey,JSON.stringify({right:parseFloat(launch.style.right),bottom:parseFloat(launch.style.bottom)}));}catch(_){}
-    }
-    drag=null;launch.classList.remove('is-dragging');
-  }
-  launch.addEventListener('pointerup',finishDrag);
-  launch.addEventListener('pointercancel',finishDrag);
-  launch.addEventListener('click',event=>{
-    if(suppressNextClick){suppressNextClick=false;event.preventDefault();return;}
-    setOpen(!desiredOpen);
-    updatePanelPosition();
-  });
-  window.addEventListener('resize',()=>{
-    if(!document.documentElement.classList.contains('af52-orb-pinned')&&launch.style.right){applyPosition(parseFloat(launch.style.right),parseFloat(launch.style.bottom));}
-    updatePanelPosition();
-  });
-  requestAnimationFrame(restorePosition);
+  launch.addEventListener('click',()=>setOpen(!desiredOpen));
+  window.addEventListener('resize',updatePanelPosition);
+  launch.removeAttribute('title');
+  launch.setAttribute('aria-label','Apri o chiudi Finder');
   close.addEventListener('click',()=>setOpen(false));
   document.addEventListener('keydown',e=>{if(e.key==='Escape' && desiredOpen)setOpen(false);});
   document.addEventListener('click',e=>{
@@ -133,7 +90,6 @@
   const panelKey='aulafinder.finder.panel.v49';
   const panelHead=panel.querySelector('.finder-panel-head');
   let windowDrag=null,panelCustom=false,panelSaved=null;
-  try{const v=JSON.parse(localStorage.getItem(panelKey)||'null');if(v&&Number.isFinite(v.x)&&Number.isFinite(v.y)){panelSaved=v;panelCustom=true;}}catch(_){}
   function limitPanel(x,y){
     const w=panel.offsetWidth||320,h=panel.offsetHeight||350;
     return {x:clamp(x,8,Math.max(8,innerWidth-w-8)),y:clamp(y,8,Math.max(8,innerHeight-h-8))};
@@ -146,29 +102,9 @@
     const rect=panel.getBoundingClientRect();panelSaved=movePanel(rect.left,rect.top);panelCustom=true;
     try{localStorage.setItem(panelKey,JSON.stringify(panelSaved));}catch(_){}
   }
-  panelHead.tabIndex=0;
-  panelHead.setAttribute('aria-label','Intestazione di Finder. Trascina per spostare la finestra; da tastiera usa Ctrl più frecce.');
-  panelHead.addEventListener('pointerdown',event=>{
-    if(event.button!==0||event.target.closest('button')||panel.classList.contains('is-maximized'))return;
-    const r=panel.getBoundingClientRect();windowDrag={id:event.pointerId,x:event.clientX,y:event.clientY,left:r.left,top:r.top,moved:false};
-    try{panelHead.setPointerCapture(event.pointerId);}catch(_){}
-  });
-  panelHead.addEventListener('pointermove',event=>{
-    if(!windowDrag||windowDrag.id!==event.pointerId)return;
-    const dx=event.clientX-windowDrag.x,dy=event.clientY-windowDrag.y;
-    if(Math.hypot(dx,dy)>6)windowDrag.moved=true;
-    if(windowDrag.moved){panel.classList.add('is-window-dragging');movePanel(windowDrag.left+dx,windowDrag.top+dy);}
-  });
-  function finishWindowDrag(event){
-    if(!windowDrag||windowDrag.id!==event.pointerId)return;
-    if(windowDrag.moved)savePanel();windowDrag=null;panel.classList.remove('is-window-dragging');
-  }
-  panelHead.addEventListener('pointerup',finishWindowDrag);panelHead.addEventListener('pointercancel',finishWindowDrag);
-  panelHead.addEventListener('keydown',event=>{
-    if(!event.ctrlKey||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;
-    event.preventDefault();const r=panel.getBoundingClientRect();const step=event.shiftKey?40:15;
-    movePanel(r.left+(event.key==='ArrowRight'?step:event.key==='ArrowLeft'?-step:0),r.top+(event.key==='ArrowDown'?step:event.key==='ArrowUp'?-step:0));savePanel();
-  });
+  // L'utente puo' ridimensionare Finder; la finestra rimane ancorata all'orb.
+  panelHead.removeAttribute('title');
+  panelHead.style.cursor='default';
   // V51: manual resizing by pointer (mouse/touch/pen) and accessible keyboard.
   const resizeHandle=$('finderResize');
   const dimensionsKey='aulafinder.finder.dimensions.v51';
@@ -180,8 +116,7 @@
     panel.style.width=width+'px';panel.style.height=height+'px';panel.style.maxHeight='none';
     panelSize={width,height};
     if(!panel.hidden&&!panel.classList.contains('is-maximized')){
-      const p=limitPanel(panel.getBoundingClientRect().left,panel.getBoundingClientRect().top);
-      movePanel(p.x,p.y);
+      updatePanelPosition();
     }
   }
   function saveSize(){try{localStorage.setItem(dimensionsKey,JSON.stringify(panelSize));}catch(_){}}
@@ -222,7 +157,7 @@
     const before=panel.getBoundingClientRect();
     const expanded=panel.classList.toggle('is-maximized');$('finderExpand').setAttribute('aria-pressed',String(expanded));
     $('finderExpand').innerHTML=expanded?'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 9h6V3M21 9h-6V3M3 15h6v6m12-6h-6v6"/></svg>':'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M3 15v6h6m12-6v6h-6"/></svg>';
-    if(!expanded){if(panelCustom&&panelSaved)movePanel(panelSaved.x,panelSaved.y);else updatePanelPosition();}
+    if(!expanded)updatePanelPosition();
     const after=panel.getBoundingClientRect();
     if(!prefersReduced()&&before.width&&after.width){
       // V58: l'animazione FLIP precedente trasformava l'intero pannello
@@ -251,7 +186,7 @@
   const panelObserver=new MutationObserver(()=>{if(!panel.hidden)resumeOrb();});
   panelObserver.observe(panel,{attributes:true,attributeFilter:['hidden']});
   window.addEventListener('resize',()=>{
-    if(panelCustom&&panelSaved&&!panel.classList.contains('is-maximized'))movePanel(panelSaved.x,panelSaved.y);
+    if(!panel.classList.contains('is-maximized'))updatePanelPosition();
   });
   // Suggerimenti organizzati per casi d'uso; nessun testo è inviato a servizi esterni.
   const questions=[
@@ -277,7 +212,7 @@
     const dayIndex={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6}[short]??0;
     return {dayIndex,now};
   }
-  function tomorrow(){const n=nowRome().dayIndex;return n+1;}
+  function tomorrow(){const n=days.indexOf(daySel.value);return (n>=0?n:nowRome().dayIndex)+1;}
   const tomorrowSchoolLabel=()=>{
     const i=tomorrow();return i<5?days[i]:null;
   };
@@ -351,7 +286,8 @@
   function normalizedText(s){return lower(s).replace(/[’']/g,"'").replace(/[?!,:;]+/g,' ').replace(/\s+/g,' ').trim();}
   function schoolDay(raw){
     const s=normalizedText(raw);
-    const base=nowRome().dayIndex;
+    const picked=days.indexOf(daySel.value);
+    const base=picked>=0?picked:nowRome().dayIndex;
     if(/dopodomani|dopo domani/.test(s))return {day:(base+2)%7<5?days[(base+2)%7]:null,label:'dopodomani'};
     if(/domani/.test(s))return {day:(base+1)%7<5?days[(base+1)%7]:null,label:'domani'};
     if(/oggi|stasera|stamattina/.test(s))return {day:base<5?days[base]:null,label:'oggi'};
@@ -395,9 +331,9 @@
     const freeTeacherQuery=/\b(?:professor[ie]|docent[ie]|insegnanti)\b.{0,42}\b(?:liber[iae]?|disponibil[ie]?|buc[ah]e?)\b|ore buche/.test(q);
     const intent=carry?'bag':freeRoomQuery?'freeRooms':freeTeacherQuery?'freeTeachers':study?'schedule':null;
     const effective=intent||(follow&&mentionedDay?dialogue.lastIntent:null);
-    const day=mentionedDay ? mentionedDay.day : (carry?days[nowRome().dayIndex<4?nowRome().dayIndex+1:0]:(dialogue.lastDay||$('daySelect').value));
+    const day=mentionedDay ? mentionedDay.day : (dialogue.lastDay||$('daySelect').value);
     const dayLabel=mentionedDay?.label||day;
-    if(mentionedDay&&!mentionedDay.day)return 'Per quel giorno non sono disponibili lezioni: AulaFinder contiene gli orari da lunedì a venerdì.';
+    if(mentionedDay&&!mentionedDay.day)return mentionedDay.label==='domani'&&daySel.value==='Venerdì'?'Domani è sabato: non sono previste lezioni scolastiche.':`Per ${mentionedDay.label} non sono previste lezioni: gli orari caricati coprono solo lunedì-venerdì.`;
 
     if(/come seleziono.*classe|selezionare.*classe.*finder/.test(q))return 'Apri Finder e scegli la tua classe nel menu «La tua classe». Le risposte su materie e orari useranno quella classe.';
     if(/come.*(?:trovo|trovare).*(?:un.aula|aula).*(?:piantin|mapp)|come.*piantin.*aula/.test(q))return siteHelp.mappe;
@@ -496,6 +432,16 @@
     while(log.children.length>13)log.removeChild(log.firstElementChild);
     log.scrollTop=log.scrollHeight;
   }
+  const eraseChat=document.createElement('button');
+  eraseChat.type='button';eraseChat.id='finderClearChat';eraseChat.className='finder-clear-chat';
+  eraseChat.textContent='Svuota chat';eraseChat.setAttribute('aria-label','Cancella la conversazione di Finder');
+  const chatLabel=document.createElement('div');chatLabel.className='finder-chat-actions';
+  chatLabel.append(eraseChat);log.before(chatLabel);
+  eraseChat.addEventListener('click',()=>{
+    log.replaceChildren();
+    addMessage('Conversazione cancellata. Puoi iniziare con una nuova domanda.','assistant');
+    status.textContent='Chat svuotata.';
+  });
   function ask(question){
     const q=String(question||'').trim();if(!q)return;
     if(!desiredOpen)setOpen(true);

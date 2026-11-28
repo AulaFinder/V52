@@ -46,69 +46,9 @@
   // La demo riceve lo stesso controllo Finder del sito, senza una versione separata.
  }
 
- // Finder: physically pin the freely placed orb at the exact position chosen by the visitor.
- const launch=$('finderLaunch'),panel=$('finderPanel'),controls=panel?.querySelector('.finder-window-controls');
- if(launch&&controls){
-  const pin=document.createElement('button');
-  pin.type='button';pin.id='af52FinderPin';pin.className='finder-window-btn af52-finder-pin';
-  pin.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m16 3 5 5-4 1-3 3-2 5-2-2-5 5-1-1 5-5-2-2 5-2 3-3z"/></svg>';
-  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-  const pinKey=nested?'aulafinder.finder.pinned.v59.demo':'aulafinder.finder.pinned.v59';
-  const anchorKey=nested?'aulafinder.finder.anchor.v59.demo':'aulafinder.finder.anchor.v59';
-  let pinned=false,anchor=null,lastPage='';
-  try {pinned=localStorage.getItem(pinKey)==='true';anchor=JSON.parse(localStorage.getItem(anchorKey)||'null');}catch(_){}
-  if(nested){pinned=false;anchor=null;}
-  const currentPage=()=>document.querySelector('#mainContent > .page:not([hidden])')||document.getElementById('mainContent');
-  const region=()=>{
-    const page=currentPage();if(!page)return null;
-    const rect=page.getBoundingClientRect();
-    return {id:page.id,x:rect.left+scrollX,y:rect.top+scrollY,
-      width:Math.max(rect.width,launch.offsetWidth+20),
-      height:Math.max(launch.offsetHeight+20,Math.min(rect.height,Math.max(innerHeight*.74,580)))};
-  };
-  function capture(){
-    const r=launch.getBoundingClientRect(),p=region();if(!p)return {rx:.8,ry:.5};
-    return {rx:clamp((r.left+scrollX-p.x)/Math.max(1,p.width-r.width),0,1),
-      ry:clamp((r.top+scrollY-p.y)/Math.max(1,p.height-r.height),0,1)};
-  }
-  function positionAbsolute(x,y){
-    launch.style.left=Math.round(x)+'px';launch.style.top=Math.round(y)+'px';
-    launch.style.right='auto';launch.style.bottom='auto';
-  }
-  function place(){
-    if(!pinned||!anchor)return;
-    const p=region();if(!p)return;
-    positionAbsolute(p.x+anchor.rx*Math.max(0,p.width-launch.offsetWidth),
-      p.y+anchor.ry*Math.max(0,p.height-launch.offsetHeight));
-  }
-  function save(){try{localStorage.setItem(pinKey,String(pinned));if(anchor)localStorage.setItem(anchorKey,JSON.stringify(anchor));}catch(_){}}
-  function paint(){
-    document.documentElement.classList.toggle('af52-orb-pinned',pinned);
-    pin.setAttribute('aria-pressed',String(pinned));
-    pin.setAttribute('aria-label',pinned?'Libera Finder':'Fissa Finder in questo punto della pagina');
-    launch.removeAttribute('title');pin.removeAttribute('title');
-  }
-  pin.addEventListener('click',event=>{
-    event.stopPropagation();
-    const r=launch.getBoundingClientRect();
-    if(!pinned){anchor=capture();pinned=true;paint();positionAbsolute(r.left+scrollX,r.top+scrollY);}
-    else{pinned=false;paint();launch.style.left='auto';launch.style.top='auto';
-      launch.style.right=clamp(innerWidth-r.right,8,Math.max(8,innerWidth-launch.offsetWidth-8))+'px';
-      launch.style.bottom=clamp(innerHeight-r.bottom,8,Math.max(8,innerHeight-launch.offsetHeight-8))+'px';}
-    lastPage=currentPage()?.id||'';save();
-  });
-  // Reposition only when the actual site section changes, never during scrolling or random clicks.
-  const main=document.getElementById('mainContent');lastPage=currentPage()?.id||'';
-  if(main)new MutationObserver(()=>{
-    if(!pinned)return;
-    const page=currentPage()?.id||'';
-    if(page!==lastPage){lastPage=page;requestAnimationFrame(place);}
-  }).observe(main,{attributes:true,attributeFilter:['hidden'],subtree:true});
-  window.addEventListener('resize',()=>{if(pinned)requestAnimationFrame(place)});
-  window.addEventListener('af58-finder-pinned-moved',()=>{if(!pinned)return;anchor=capture();save();});
-  controls.prepend(pin);paint();if(pinned&&anchor)requestAnimationFrame(place);
-
- }
+ // V60: nessun comando Fissa. L'orb rimane ancorato alla finestra.
+ document.documentElement.classList.remove('af52-orb-pinned');
+ document.getElementById('af52FinderPin')?.remove();
 
  // V53: niente inseguimento del puntatore; eliminati i listener di illuminazione.
  // Immagini: in caso di cache difettosa tenta una sola lettura di rete con URL aggiornato.

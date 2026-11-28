@@ -31,6 +31,16 @@
   'Mobile: eliminato un pannello di stato vuoto in Admin, migliorati i ritratti e allineati i colori di Preferiti e Cronologia nel tema chiaro.',
   'Tema: predefinito secondo le impostazioni del dispositivo, mantenendo la scelta manuale dell’utente. Immagini e video originali invariati.'
  ],documented:true,source:'Richieste di correzione V59, 28 novembre 2026',preview:'assets/versioni-home/V59.png',changedFiles:['index.html','v59.css','v59-ui.js','finder.js','v52-ui.js','v57-ui.js','v57-tutorial.js','navigator.js','admin-ui.js','versioni.js','sw.js']});
+ versions.push({number:60,version:'V60',title:'Stabilità di Finder, piantine e guida',details:[
+  'Finder: orb sempre nella stessa posizione sullo schermo, senza comando Fissa né trascinamento; finestra e ridimensionamento conservati.',
+  'Finder: pulsante Svuota chat; risposte alle richieste su domani calcolate a partire dal giorno selezionato nell’intestazione, con il sabato senza lezioni dopo venerdì.',
+  'Footer: ripristinate dimensioni, contrasto e animazione essenziale degli avatar originali, senza anelli progressivi né nuovi gradienti.',
+  'Piantine: azioni disponibili interamente anche ai bordi; unico pulsante fullscreen fisso e vista ingrandita non selezionabile, che conserva l’evidenziazione azzurra precedente.',
+  'Navigazione: voce Piantine al plurale e filtri Tutte/Nessuna.',
+  'Versioni: apertura esclusiva di una scheda alla volta e miglior contrasto delle etichette di stato.',
+  'Tutorial: stessi componenti del sito reale, niente puntina, passaggi corretti per digitazione e selezione; avanzamento automatico dopo completamento della tappa.',
+  'Conservati orari, geometrie originali delle mappe, video, immagini e dati delle versioni storiche.'
+ ],documented:true,source:'Richieste di aggiornamento V60, 28 novembre 2026',preview:'assets/versioni-home/V60.png',changedFiles:['index.html','v60.css','v60-ui.js','finder.js','piantina.js','v49-ui.js','v57-tutorial.js','v52-ui.js','versioni.js','sw.js']});
  const CURRENT_VERSION=Math.max(...versions.map(v=>v.number));
  const list=document.getElementById('versioniList');
  const search=document.getElementById('versioniSearch');
@@ -144,6 +154,9 @@
     }
    });
    content.append(button,panel);
+   item.addEventListener('toggle',()=>{
+     if(item.open)list.querySelectorAll('details.versioni-entry[open]').forEach(other=>{if(other!==item)other.open=false;});
+   });
    item.append(header,content);fragment.append(item);
   }
   list.replaceChildren(fragment);

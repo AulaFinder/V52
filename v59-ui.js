@@ -30,7 +30,7 @@
 
  // I controlli delle versioni puntano all'ultima voce: non restano fermi a V58.
  const latest=$('af58LatestVersion');
- if(latest){latest.dataset.currentVersion='59';latest.setAttribute('aria-label','Apri dettagli e anteprima di AulaFinder V59');}
+ if(latest){latest.dataset.currentVersion='60';latest.setAttribute('aria-label','Apri dettagli e anteprima di AulaFinder V60');}
 
  // La preferenza di sistema è la modalità iniziale finché l'utente non ne sceglie una.
  // Il comportamento è gestito da script.js e resta compatibile con le scelte salvate.
